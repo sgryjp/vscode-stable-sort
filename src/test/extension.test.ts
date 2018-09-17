@@ -58,7 +58,7 @@ suite("sortLines()", () => {
         );
     });
 
-    test("single selection", async () => {
+    test("single selection: logic", async () => {
         let result = await doTest(
             "a\n" +
             "c\n" +
@@ -71,11 +71,9 @@ suite("sortLines()", () => {
             "b\n" +
             "c\n"
         );
-        /*TODO: Fix issue
         assert.equal(stringifySelections(result.selections),
             stringifySelections([new Selection(0, 0, 3, 0)])
         );
-        */
 
         result = await doTest(
             "aaa\n" +
@@ -89,14 +87,30 @@ suite("sortLines()", () => {
             "aa\n" +
             "aaa\n"
         );
-        /*TODO: Fix issue
         assert.equal(stringifySelections(result.selections),
             stringifySelections([new Selection(0, 0, 3, 0)])
         );
-        */
     });
 
-    test("multiple selections:contiguous", async () => {
+    test("single selection: always compare entire line content", async () => {
+        let result = await doTest(
+            "Apple\n" +
+            "Orange\n" +
+            "Grape\n",
+            [new Selection(0, 3, 2, 4)],
+            false
+        );
+        assert.equal(result.text,
+            "Apple\n" +
+            "Grape\n" +
+            "Orange\n"
+        );
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 3, 2, 4)])
+        );
+    });
+
+    test("multiple selections: contiguous", async () => {
         let result = await doTest(
             "Apple\n" +
             "Orange\n" +
@@ -122,16 +136,16 @@ suite("sortLines()", () => {
         );
     });
 
-    test("multiple selections:sparse", async () => {
+    test("multiple selections: sparse", async () => {
         let result = await doTest(
             "Apple\n" +
             "Orange\n" +
             "Grape\n" +
             "Pineapple\n",
             [
-                new Selection(0, 1, 0, 2),
-                new Selection(1, 1, 1, 2),
-                new Selection(3, 1, 3, 2),
+                new Selection(0, 1, 0, 3),
+                new Selection(1, 3, 1, 1),
+                new Selection(3, 1, 3, 3),
             ],
             false
         );
@@ -143,9 +157,9 @@ suite("sortLines()", () => {
         );
         assert.equal(stringifySelections(result.selections),
             stringifySelections([
-                new Selection(0, 1, 0, 2),
-                new Selection(1, 1, 1, 2),
-                new Selection(3, 1, 3, 2),
+                new Selection(0, 1, 0, 3),
+                new Selection(1, 1, 1, 3),
+                new Selection(3, 3, 3, 1),
             ])
         );
     });
@@ -163,11 +177,9 @@ suite("sortLines()", () => {
             "b\n" +
             "a\n"
         );
-        /*TODO: Fix issue
         assert.equal(stringifySelections(result.selections),
             stringifySelections([new Selection(0, 0, 3, 0)]),
         );
-        */
 
         result = await doTest(
             "a\n" +
@@ -181,11 +193,9 @@ suite("sortLines()", () => {
             "aa\n" +
             "a\n"
         );
-        /*TODO: Fix issue
         assert.equal(stringifySelections(result.selections),
             stringifySelections([new Selection(0, 0, 3, 0)]),
         );
-        */
     });
 
     test("empty line: exclude trailing one in a selection", async () => {
@@ -203,11 +213,9 @@ suite("sortLines()", () => {
             "c\n" +
             "\n"
         );
-        /*TODO: Fix issue
         assert.equal(stringifySelections(result.selections),
             stringifySelections([new Selection(0, 0, 3, 0)]),
         );
-        */
     });
 
     test("empty line: include those selected by one of the multiple selections", async () => {
@@ -263,6 +271,76 @@ suite("sortLines()", () => {
         );
         assert.equal(result.text,
             expected.join("\n") + "\n"
+        );
+    });
+});
+
+
+suite("sortWords()", () => {
+    async function doTest(
+        input: string,
+        selections: Selection[],
+        sortDescending: boolean) {
+
+        // Set the test input text and the selection
+        const editor = vscode.window.activeTextEditor!;
+        await editor.edit((editBuilder: TextEditorEdit) => {
+            const document = editor.document;
+            const lastLine = document.lineAt(document.lineCount - 1);
+            const entireRange = new Range(
+                new Position(0, 0),
+                lastLine.range.end
+            );
+            editBuilder.replace(entireRange, input);
+        });
+        editor.selections = selections;
+
+        // Call the logic
+        await my.sortWords(editor, sortDescending);
+
+        // Return the result
+        return { text: editor.document.getText(), selections: editor.selections };
+    }
+
+    suiteSetup(async () => {
+        const uri = vscode.Uri.parse("untitled:test.txt");
+        const options = { preserveFocus: false };
+        const editor = await vscode.window.showTextDocument(uri, options);
+        await editor.edit(edit => {
+            edit.setEndOfLine(EndOfLine.LF);
+        });
+    });
+
+    suiteTeardown(async () => {
+        const commandName = "workbench.action.closeAllEditors";
+        await vscode.commands.executeCommand(commandName);
+    });
+
+    test("delimiter: csv-like", async () => {
+        let result = await doTest(
+            "1, 2,10",
+            [new Selection(0, 0, 0, 7)],
+            false
+        );
+        assert.equal(result.text,
+            "1, 10, 2"
+        );
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 0, 8)])
+        );
+    });
+
+    test("delimiter: space", async () => {
+        let result = await doTest(
+            "1 2 10",
+            [new Selection(0, 0, 0, 6)],
+            false
+        );
+        assert.equal(result.text,
+            "1 10 2"
+        );
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 0, 6)])
         );
     });
 });

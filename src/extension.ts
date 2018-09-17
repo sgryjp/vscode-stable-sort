@@ -7,13 +7,43 @@ export function activate(context: vscode.ExtensionContext) {
     let command: vscode.Disposable;
 
     command = vscode.commands.registerCommand(
-        'extension.doStableLineSortAscending',
+        'xsort.sortLinesAscending',
         () => { sortLines(vscode.window.activeTextEditor!, false); });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'extension.doStableLineSortDescending',
+        'xsort.sortLinesDescending',
         () => { sortLines(vscode.window.activeTextEditor!, true); });
+    context.subscriptions.push(command);
+
+    command = vscode.commands.registerCommand(
+        'xsort.sortLinesAscendingNumerically',
+        () => { sortLines(vscode.window.activeTextEditor!, false, true); });
+    context.subscriptions.push(command);
+
+    command = vscode.commands.registerCommand(
+        'xsort.sortLinesDescendingNumerically',
+        () => { sortLines(vscode.window.activeTextEditor!, true, true); });
+    context.subscriptions.push(command);
+
+    command = vscode.commands.registerCommand(
+        'xsort.sortWordsAscending',
+        () => { sortWords(vscode.window.activeTextEditor!, false); });
+    context.subscriptions.push(command);
+
+    command = vscode.commands.registerCommand(
+        'xsort.sortWordsDescending',
+        () => { sortWords(vscode.window.activeTextEditor!, true); });
+    context.subscriptions.push(command);
+
+    command = vscode.commands.registerCommand(
+        'xsort.sortWordsAscendingNumerically',
+        () => { sortWords(vscode.window.activeTextEditor!, false, true); });
+    context.subscriptions.push(command);
+
+    command = vscode.commands.registerCommand(
+        'xsort.sortWordsDescendingNumerically',
+        () => { sortWords(vscode.window.activeTextEditor!, true, true); });
     context.subscriptions.push(command);
 }
 
@@ -21,7 +51,11 @@ export function deactivate() {
 }
 
 //-----------------------------------------------------------------------------
-export function sortLines(editor: TextEditor, descending: boolean) {
+export function sortLines(
+    editor: TextEditor,
+    descending: boolean,
+    numeric?: boolean
+) {
     type Datum = {
         line: TextLine,
         selection: [number, number] | undefined,
@@ -36,12 +70,16 @@ export function sortLines(editor: TextEditor, descending: boolean) {
         // Preprocess incoming data
         const range1 = d1.selection ? d1.selection : [0, d1.line.text.length];
         const range2 = d2.selection ? d2.selection : [0, d2.line.text.length];
-        const str1 = d1.line.text.slice(range1[0], range1[1]).toLowerCase();
-        const str2 = d2.line.text.slice(range2[0], range2[1]).toLowerCase();
+        let str1 = d1.line.text;
+        let str2 = d2.line.text;
+        if (1 < selections.length) {
+            str1 = str1.slice(range1[0], range1[1]).toLowerCase();
+            str2 = str2.slice(range2[0], range2[1]).toLowerCase();
+        }
 
         // Do the comparison
         const sign = descending ? -1 : +1;
-        const diff = str1.localeCompare(str2);
+        const diff = str1.localeCompare(str2, undefined, { numeric: numeric });
         if (diff !== 0) {
             return sign * diff;
         }
@@ -103,6 +141,9 @@ export function sortLines(editor: TextEditor, descending: boolean) {
             e.replace(document.lineAt(lineNumber).range, datum.line.text);
         }
     }).then(() => {  // Restore selections
+        if (selections.length === 1) {
+            return true;  // VSCode restores selection well if there's only one
+        }
         let newSelections = new Array<Selection>();
         for (var i = 0; i < lineNumbers.length; i++) {
             const datum = data[i];
@@ -127,6 +168,71 @@ function intersectionInLine(selection: Selection, range: Range): [number, number
         return;
     }
     return [intersection.start.character, intersection.end.character];
+}
+
+export function sortWords(
+    editor: TextEditor,
+    descending: boolean,
+    numeric?: boolean
+) {
+    const document = editor.document;
+    const selection = editor.selection;
+
+    //TODO: Support sorting words spread over multiple lines
+    if (editor.selections.length !== 1 || !editor.selection.isSingleLine) {
+        vscode.window.showInformationMessage(
+            "Sorry, sorting words in multiple lines/selections are" +
+            " not supported yet..."
+        );
+        return;
+    }
+
+    // Get firstly used separator character in the selection
+    const selectedText = document.getText(selection).trim();
+    const [separator, withSpace] = getSeparatorAndPadding(selectedText);
+
+    // Separate words with it and sort them
+    const sign = descending ? -1 : +1;
+    const words = selectedText
+        .split(separator)
+        .map(w => w.trim())
+        .filter(w => 0 < w.length);
+    words.sort(
+        (a, b) => sign * a.localeCompare(b, undefined, { numeric: numeric })
+    );
+
+    // Compose sorted text
+    let newText = words.join(separator + (withSpace ? " " : ""));
+    if (1 < selectedText.length &&
+        selectedText[selectedText.length - 1] === separator) {
+        // Keep trailing separator if there was
+        newText += separator;
+    }
+
+    // Apply
+    return editor.edit(e => {
+        e.replace(selection, newText);
+    });
+}
+
+
+function getSeparatorAndPadding(text: string): [string, boolean] {
+    let matches = text.match(/^[^,]+,(\s*)(?:[^,]+,\s*)*[^,]+/);
+    if (matches) {
+        return [",", matches[1] !== ""];
+    }
+
+    matches = text.match(/^[^\t]+\t(\s*)(?:[^\t]+\t\s*)*[^\t]+/);
+    if (matches) {
+        return ["\t", matches[1] !== ""];
+    }
+
+    matches = text.match(/^[^\|]+\|(\s*)(?:[^\|]+\|\s*)*[^\|]+/);
+    if (matches) {
+        return ["|", matches[1] !== ""];
+    }
+
+    return [" ", false];
 }
 
 function series(begin: number, end: number) {

@@ -1,8 +1,9 @@
 {
-    "name": "stable-line-sort",
-    "displayName": "Stable Line Sort",
-    "description": "Sort Lines using stable sort algorithm.",
-    "version": "0.1.0",
+    "name": "xsort",
+    "displayName": "xsort",
+    "description": "Sort lines and words in a various way.",
+    "license": "MIT",
+    "version": "0.2.0",
     "publisher": "sgryjp",
     "repository": {
         "type": "git",
@@ -12,24 +13,72 @@
         "vscode": "^1.27.0"
     },
     "categories": [
-        "Other"
+        "Formatters"
     ],
     "activationEvents": [
-        "onCommand:extension.doStableLineSortAscending",
-        "onCommand:extension.doStableLineSortDescending"
+        "onCommand:xsort.sortLinesAscending",
+        "onCommand:xsort.sortLinesDescending",
+        "onCommand:xsort.sortLinesAscendingNumerically",
+        "onCommand:xsort.sortLinesDescendingNumerically",
+        "onCommand:xsort.sortWordsAscending",
+        "onCommand:xsort.sortWordsDescending",
+        "onCommand:xsort.sortWordsAscendingNumerically",
+        "onCommand:xsort.sortWordsDescendingNumerically"
     ],
     "main": "./out/extension",
     "contributes": {
-        "commands": [
+        "keybindings": [
             {
-                "command": "extension.doStableLineSortAscending",
-                "title": "Sort Lines Ascending",
-                "category": "Stable Line Sort"
+                "command": "xsort.sortLinesAscending",
+                "key": "Ctrl+Alt+L",
+                "when": "editorTextFocus"
             },
             {
-                "command": "extension.doStableLineSortCustom",
-                "title": "Sort Lines Descending",
-                "category": "Stable Line Sort"
+                "command": "xsort.sortLinesDescending",
+                "key": "Ctrl+Alt+Shift+L",
+                "when": "editorTextFocus"
+            }
+        ],
+        "commands": [
+            {
+                "command": "xsort.sortLinesAscending",
+                "title": "Sort Lines (ascending)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortLinesDescending",
+                "title": "Sort Lines (descending)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortLinesAscendingNumerically",
+                "title": "Sort Lines (ascending, numeric)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortLinesDescendingNumerically",
+                "title": "Sort Lines (descending, numeric)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortWordsAscending",
+                "title": "Sort Words (ascending)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortWordsDescending",
+                "title": "Sort Words (descending)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortWordsAscendingNumerically",
+                "title": "Sort Words (ascending, numeric)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortWordsDescendingNumerically",
+                "title": "Sort Words (descending, numeric)",
+                "category": "xsort"
             }
         ]
     },

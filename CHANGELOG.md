@@ -1,8 +1,13 @@
 # Change Log
 
-All notable changes to the "stable-line-sort" extension will be documented in this file.
+## [0.2.0-beta] - 2018-09-17
+### Added
+- New commands to sort words in a selection range
+- Add many new features
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### Changed
+- Renamed to "xsort"
 
-## 0.1.0
+## [0.1.0-beta] - 2018-09-16
+### Add
 - Initial beta release
