@@ -29,7 +29,7 @@ suite("sortLines()", () => {
         await my.sortLines(editor, sortDescending);
 
         // Return the result
-        return editor.document.getText();
+        return { text: editor.document.getText(), selections: editor.selections };
     }
 
     suiteSetup(async () => {
@@ -66,11 +66,16 @@ suite("sortLines()", () => {
             [new Selection(0, 0, 3, 0)],
             false
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "a\n" +
             "b\n" +
             "c\n"
         );
+        /*TODO: Fix issue
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 3, 0)])
+        );
+        */
 
         result = await doTest(
             "aaa\n" +
@@ -79,14 +84,19 @@ suite("sortLines()", () => {
             [new Selection(0, 0, 3, 0)],
             false
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "a\n" +
             "aa\n" +
             "aaa\n"
         );
+        /*TODO: Fix issue
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 3, 0)])
+        );
+        */
     });
 
-    test("multiple selections", async () => {
+    test("multiple selections:contiguous", async () => {
         let result = await doTest(
             "Apple\n" +
             "Orange\n" +
@@ -98,23 +108,45 @@ suite("sortLines()", () => {
             ],
             false
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "Pineapple\n" +
             "Apple\n" +
             "Orange\n"
         );
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([
+                new Selection(0, 1, 0, 2),
+                new Selection(1, 1, 1, 2),
+                new Selection(2, 1, 2, 2),
+            ])
+        );
+    });
 
-        result = await doTest(
-            "aaa\n" +
-            "aa\n" +
-            "a\n",
-            [new Selection(0, 0, 3, 0)],
+    test("multiple selections:sparse", async () => {
+        let result = await doTest(
+            "Apple\n" +
+            "Orange\n" +
+            "Grape\n" +
+            "Pineapple\n",
+            [
+                new Selection(0, 1, 0, 2),
+                new Selection(1, 1, 1, 2),
+                new Selection(3, 1, 3, 2),
+            ],
             false
         );
-        assert.equal(result,
-            "a\n" +
-            "aa\n" +
-            "aaa\n"
+        assert.equal(result.text,
+            "Pineapple\n" +
+            "Apple\n" +
+            "Grape\n" +
+            "Orange\n"
+        );
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([
+                new Selection(0, 1, 0, 2),
+                new Selection(1, 1, 1, 2),
+                new Selection(3, 1, 3, 2),
+            ])
         );
     });
 
@@ -126,11 +158,16 @@ suite("sortLines()", () => {
             [new Selection(0, 0, 3, 0)],
             true
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "c\n" +
             "b\n" +
             "a\n"
         );
+        /*TODO: Fix issue
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 3, 0)]),
+        );
+        */
 
         result = await doTest(
             "a\n" +
@@ -139,11 +176,16 @@ suite("sortLines()", () => {
             [new Selection(0, 0, 3, 0)],
             true
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "aaa\n" +
             "aa\n" +
             "a\n"
         );
+        /*TODO: Fix issue
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 3, 0)]),
+        );
+        */
     });
 
     test("empty line: exclude trailing one in a selection", async () => {
@@ -155,12 +197,17 @@ suite("sortLines()", () => {
             [new Selection(0, 0, 3, 0)],
             false
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "a\n" +
             "b\n" +
             "c\n" +
             "\n"
         );
+        /*TODO: Fix issue
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([new Selection(0, 0, 3, 0)]),
+        );
+        */
     });
 
     test("empty line: include those selected by one of the multiple selections", async () => {
@@ -176,11 +223,18 @@ suite("sortLines()", () => {
             ],
             false
         );
-        assert.equal(result,
+        assert.equal(result.text,
             "\n" +
             "a\n" +
             "b\n" +
             "\n"
+        );
+        assert.equal(stringifySelections(result.selections),
+            stringifySelections([
+                new Selection(0, 0, 0, 0),
+                new Selection(1, 0, 1, 1),
+                new Selection(2, 0, 2, 1),
+            ])
         );
     });
 
@@ -207,8 +261,17 @@ suite("sortLines()", () => {
             [new Selection(0, 0, N * 2, 0)],
             false
         );
-        assert.equal(result,
+        assert.equal(result.text,
             expected.join("\n") + "\n"
         );
     });
 });
+
+
+function stringifySelections(selections: Selection[]): string {
+    return '[' + selections
+        .map(s => [s.anchor.line, s.anchor.character, s.active.line, s.active.character])
+        .sort()
+        .map(s => '(' + s.join(',') + ')')
+        .join(',') + ']';
+}
