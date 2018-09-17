@@ -7,7 +7,7 @@
     "publisher": "sgryjp",
     "repository": {
         "type": "git",
-        "url": "https://github.com/sgryjp/stable-line-sort.git"
+        "url": "https://github.com/sgryjp/vscode-xsort.git"
     },
     "engines": {
         "vscode": "^1.27.0"
