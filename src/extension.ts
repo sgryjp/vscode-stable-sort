@@ -79,7 +79,7 @@ export function sortLines(
 
         // Compare by text
         const sign = descending ? -1 : +1;
-        const diff = str1.localeCompare(str2, undefined, { numeric: numeric });
+        const diff = str1.localeCompare(str2, vscode.env.language, { numeric: numeric });
         if (diff !== 0) {
             return sign * diff;
         }

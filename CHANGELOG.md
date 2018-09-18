@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Now uses user environment language as the locale for comparing strings
+
 ### Fixed
 - Sort result is not stable if sorting in descending order
 
