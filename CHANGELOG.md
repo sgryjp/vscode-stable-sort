@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.2.1-beta] - 2018-09-18
 ### Changed
 - Now uses user environment language as the locale for comparing strings
 

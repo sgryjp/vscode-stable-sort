@@ -3,7 +3,7 @@
     "displayName": "xsort",
     "description": "Sort lines and words in a various way.",
     "license": "MIT",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "publisher": "sgryjp",
     "repository": {
         "type": "git",
