@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+### Fixed
+- Sort result is not stable if sorting in descending order
+
 ## [0.2.0-beta] - 2018-09-17
 ### Added
 - New commands to sort words in a selection range

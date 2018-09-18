@@ -77,13 +77,15 @@ export function sortLines(
             str2 = str2.slice(range2[0], range2[1]).toLowerCase();
         }
 
-        // Do the comparison
+        // Compare by text
         const sign = descending ? -1 : +1;
         const diff = str1.localeCompare(str2, undefined, { numeric: numeric });
         if (diff !== 0) {
             return sign * diff;
         }
-        return sign * (d1.line.lineNumber - d2.line.lineNumber);  // stability
+
+        // Compare by line number (do not reverse the sign)
+        return d1.line.lineNumber - d2.line.lineNumber;
     };
 
     // List line numbers to be targeted
