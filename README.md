@@ -1,7 +1,7 @@
-# xsort
+# Stable Sort
 
 A [VS Code](https://code.visualstudio.com) extension to sort lines and words
-in a various way.
+in a various way, using stable sort algorithm.
 
 
 # Feature
@@ -21,27 +21,27 @@ in a various way.
 Open command palette (`Ctrl+Shift+P` by default) and choose one of the commands
 below:
 
-- xsort: Sort Lines (ascending)
-- xsort: Sort Lines (ascending, numeric)
-- xsort: Sort Lines (ascending, char-code)
-- xsort: Sort Lines (descending)
-- xsort: Sort Lines (descending, numeric)
-- xsort: Sort Lines (descending, char-code)
-- xsort: Sort Words (ascending)
-- xsort: Sort Words (ascending, numeric)
-- xsort: Sort Words (ascending, char-code)
-- xsort: Sort Words (descending)
-- xsort: Sort Words (descending, numeric)
-- xsort: Sort Words (descending, char-code)
+- Stable Sort: Sort Lines ( ascending )
+- Stable Sort: Sort Lines ( ascending, numeric )
+- Stable Sort: Sort Lines ( ascending, char-code )
+- Stable Sort: Sort Lines ( descending )
+- Stable Sort: Sort Lines ( descending, numeric )
+- Stable Sort: Sort Lines ( descending, char-code )
+- Stable Sort: Sort Words ( ascending )
+- Stable Sort: Sort Words ( ascending, numeric )
+- Stable Sort: Sort Words ( ascending, char-code )
+- Stable Sort: Sort Words ( descending )
+- Stable Sort: Sort Words ( descending, numeric )
+- Stable Sort: Sort Words ( descending, char-code )
 
 This extension assigns keyboard shortcuts as below:
 
-| Key                         | Command                       |
-| --------------------------- | ----------------------------- |
-| <kbd>Ctrl+Alt+L</kbd>       | xsort: SortLines (ascending)  |
-| <kbd>Ctrl+Shift+Alt+L</kbd> | xsort: SortLines (descending) |
-| <kbd>Ctrl+Alt+W</kbd>       | xsort: SortLines (ascending)  |
-| <kbd>Ctrl+Shift+Alt+W</kbd> | xsort: SortLines (descending) |
+| Key                         | Command                               |
+| --------------------------- | ------------------------------------- |
+| <kbd>Ctrl+Alt+L</kbd>       | Stable Sort: SortLines ( ascending )  |
+| <kbd>Ctrl+Shift+Alt+L</kbd> | Stable Sort: SortLines ( descending ) |
+| <kbd>Ctrl+Alt+W</kbd>       | Stable Sort: SortLines ( ascending )  |
+| <kbd>Ctrl+Shift+Alt+W</kbd> | Stable Sort: SortLines ( descending ) |
 
 To set shortcuts for commands not in the table above, or reassign/unassign 
 default shortcuts, see
@@ -68,7 +68,8 @@ App<span style="background: #264f78;">le&nbsp;</span><br>
 <span style="background: #264f78; border-right: 2px solid white;">Grap</span>e<br>
 </div>
 
-The sorting result will be `Apple`, `Grape`, `Orange`, with a selection range from `l` of `Apple` to `n` of `Orange`:
+The sorting result will be `Apple`, `Grape`, `Orange`, with a selection range
+from `l` of `Apple` to `n` of `Orange`:
 
 <div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
 App<span style="background: #264f78;">le&nbsp;</span><br>

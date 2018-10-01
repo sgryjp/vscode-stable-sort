@@ -7,7 +7,7 @@ export function activate(context: vscode.ExtensionContext) {
     let command: vscode.Disposable;
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesAscending', () => {
+        'stableSort.sortLinesAscending', () => {
             sortLines(vscode.window.activeTextEditor!,
                 false, ""
             );
@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesDescending', () => {
+        'stableSort.sortLinesDescending', () => {
             sortLines(vscode.window.activeTextEditor!,
                 true, ""
             );
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesAscendingNumerically', () => {
+        'stableSort.sortLinesAscendingNumerically', () => {
             sortLines(vscode.window.activeTextEditor!,
                 false, "n"
             );
@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesDescendingNumerically', () => {
+        'stableSort.sortLinesDescendingNumerically', () => {
             sortLines(vscode.window.activeTextEditor!,
                 true, "n"
             );
@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesAscendingCharCode', () => {
+        'stableSort.sortLinesAscendingCharCode', () => {
             sortLines(vscode.window.activeTextEditor!,
                 false, "c"
             );
@@ -47,7 +47,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesDescendingCharCode', () => {
+        'stableSort.sortLinesDescendingCharCode', () => {
             sortLines(vscode.window.activeTextEditor!,
                 true, "c"
             );
@@ -55,7 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsAscending', () => {
+        'stableSort.sortWordsAscending', () => {
             sortWords(vscode.window.activeTextEditor!,
                 false, ""
             );
@@ -63,7 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsDescending', () => {
+        'stableSort.sortWordsDescending', () => {
             sortWords(vscode.window.activeTextEditor!,
                 true, ""
             );
@@ -71,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsAscendingNumerically', () => {
+        'stableSort.sortWordsAscendingNumerically', () => {
             sortWords(vscode.window.activeTextEditor!,
                 false, "n"
             );
@@ -79,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsDescendingNumerically', () => {
+        'stableSort.sortWordsDescendingNumerically', () => {
             sortWords(vscode.window.activeTextEditor!,
                 true, "n"
             );
@@ -87,7 +87,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsAscendingCharCode', () => {
+        'stableSort.sortWordsAscendingCharCode', () => {
             sortWords(vscode.window.activeTextEditor!,
                 false, "c"
             );
@@ -95,7 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsDescendingCharCode', () => {
+        'stableSort.sortWordsDescendingCharCode', () => {
             sortWords(vscode.window.activeTextEditor!,
                 true, "c"
             );

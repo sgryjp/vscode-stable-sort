@@ -1,13 +1,13 @@
 {
-    "name": "xsort",
-    "displayName": "xsort",
-    "description": "Sort lines and words in a various way.",
+    "name": "vscode-stable-sort",
+    "displayName": "Stable Sort",
+    "description": "Sort lines and words using stable sort algorithm.",
     "license": "MIT",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "publisher": "sgryjp",
     "repository": {
         "type": "git",
-        "url": "https://github.com/sgryjp/vscode-xsort.git"
+        "url": "https://github.com/sgryjp/vscode-stable-sort.git"
     },
     "engines": {
         "vscode": "^1.27.0"
@@ -15,94 +15,101 @@
     "categories": [
         "Formatters"
     ],
+    "badges": [
+        {
+            "url": "https://img.shields.io/badge/license-zlib-lightgrey.svg?longCache=true&style=popout",
+            "href": "https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE",
+            "description": "zlib License"
+        }
+    ],
     "activationEvents": [
-        "onCommand:xsort.sortLinesAscending",
-        "onCommand:xsort.sortLinesDescending",
-        "onCommand:xsort.sortLinesAscendingNumerically",
-        "onCommand:xsort.sortLinesAscendingCharCode",
-        "onCommand:xsort.sortLinesDescendingNumerically",
-        "onCommand:xsort.sortLinesDescendingCharCode",
-        "onCommand:xsort.sortWordsAscending",
-        "onCommand:xsort.sortWordsDescending",
-        "onCommand:xsort.sortWordsAscendingNumerically",
-        "onCommand:xsort.sortWordsAscendingCharCode",
-        "onCommand:xsort.sortWordsDescendingNumerically",
-        "onCommand:xsort.sortWordsDescendingCharCode"
+        "onCommand:stableSort.sortLinesAscending",
+        "onCommand:stableSort.sortLinesDescending",
+        "onCommand:stableSort.sortLinesAscendingNumerically",
+        "onCommand:stableSort.sortLinesAscendingCharCode",
+        "onCommand:stableSort.sortLinesDescendingNumerically",
+        "onCommand:stableSort.sortLinesDescendingCharCode",
+        "onCommand:stableSort.sortWordsAscending",
+        "onCommand:stableSort.sortWordsDescending",
+        "onCommand:stableSort.sortWordsAscendingNumerically",
+        "onCommand:stableSort.sortWordsAscendingCharCode",
+        "onCommand:stableSort.sortWordsDescendingNumerically",
+        "onCommand:stableSort.sortWordsDescendingCharCode"
     ],
     "main": "./out/extension",
     "contributes": {
         "keybindings": [
             {
-                "command": "xsort.sortLinesAscending",
+                "command": "stableSort.sortLinesAscending",
                 "key": "Ctrl+Alt+L",
                 "when": "editorTextFocus"
             },
             {
-                "command": "xsort.sortLinesDescending",
+                "command": "stableSort.sortLinesDescending",
                 "key": "Ctrl+Alt+Shift+L",
                 "when": "editorTextFocus"
             }
         ],
         "commands": [
             {
-                "command": "xsort.sortLinesAscending",
-                "title": "Sort Lines (ascending)",
-                "category": "xsort"
+                "command": "stableSort.sortLinesAscending",
+                "title": "Sort Lines ( ascending )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortLinesDescending",
-                "title": "Sort Lines (descending)",
-                "category": "xsort"
+                "command": "stableSort.sortLinesDescending",
+                "title": "Sort Lines ( descending )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortLinesAscendingNumerically",
-                "title": "Sort Lines (ascending, numeric)",
-                "category": "xsort"
+                "command": "stableSort.sortLinesAscendingNumerically",
+                "title": "Sort Lines ( ascending, numeric )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortLinesDescendingNumerically",
-                "title": "Sort Lines (descending, numeric)",
-                "category": "xsort"
+                "command": "stableSort.sortLinesDescendingNumerically",
+                "title": "Sort Lines ( descending, numeric )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortLinesAscendingCharCode",
-                "title": "Sort Lines (ascending, char-code)",
-                "category": "xsort"
+                "command": "stableSort.sortLinesAscendingCharCode",
+                "title": "Sort Lines ( ascending, char-code )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortLinesDescendingCharCode",
-                "title": "Sort Lines (descending, char-code)",
-                "category": "xsort"
+                "command": "stableSort.sortLinesDescendingCharCode",
+                "title": "Sort Lines ( descending, char-code )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortWordsAscending",
-                "title": "Sort Words (ascending)",
-                "category": "xsort"
+                "command": "stableSort.sortWordsAscending",
+                "title": "Sort Words ( ascending )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortWordsDescending",
-                "title": "Sort Words (descending)",
-                "category": "xsort"
+                "command": "stableSort.sortWordsDescending",
+                "title": "Sort Words ( descending )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortWordsAscendingNumerically",
-                "title": "Sort Words (ascending, numeric)",
-                "category": "xsort"
+                "command": "stableSort.sortWordsAscendingNumerically",
+                "title": "Sort Words ( ascending, numeric )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortWordsDescendingNumerically",
-                "title": "Sort Words (descending, numeric)",
-                "category": "xsort"
+                "command": "stableSort.sortWordsDescendingNumerically",
+                "title": "Sort Words ( descending, numeric )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortWordsAscendingCharCode",
-                "title": "Sort Words (ascending, char-code)",
-                "category": "xsort"
+                "command": "stableSort.sortWordsAscendingCharCode",
+                "title": "Sort Words ( ascending, char-code )",
+                "category": "Stable Sort"
             },
             {
-                "command": "xsort.sortWordsDescendingCharCode",
-                "title": "Sort Words (descending, char-code)",
-                "category": "xsort"
+                "command": "stableSort.sortWordsDescendingCharCode",
+                "title": "Sort Words ( descending, char-code )",
+                "category": "Stable Sort"
             }
         ]
     },
