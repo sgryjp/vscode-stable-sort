@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.3.0] - 2018-10-01
 ### Added
 - New sort options to use character code for string comparison
 
