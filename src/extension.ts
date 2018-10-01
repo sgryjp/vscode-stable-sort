@@ -7,43 +7,67 @@ export function activate(context: vscode.ExtensionContext) {
     let command: vscode.Disposable;
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesAscending',
-        () => { sortLines(vscode.window.activeTextEditor!, false); });
+        'xsort.sortLinesAscending', () => {
+            sortLines(vscode.window.activeTextEditor!,
+                false, false
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesDescending',
-        () => { sortLines(vscode.window.activeTextEditor!, true); });
+        'xsort.sortLinesDescending', () => {
+            sortLines(vscode.window.activeTextEditor!,
+                true, false
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesAscendingNumerically',
-        () => { sortLines(vscode.window.activeTextEditor!, false, true); });
+        'xsort.sortLinesAscendingNumerically', () => {
+            sortLines(vscode.window.activeTextEditor!,
+                false, true
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortLinesDescendingNumerically',
-        () => { sortLines(vscode.window.activeTextEditor!, true, true); });
+        'xsort.sortLinesDescendingNumerically', () => {
+            sortLines(vscode.window.activeTextEditor!,
+                true, true
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsAscending',
-        () => { sortWords(vscode.window.activeTextEditor!, false); });
+        'xsort.sortWordsAscending', () => {
+            sortWords(vscode.window.activeTextEditor!,
+                false, false
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsDescending',
-        () => { sortWords(vscode.window.activeTextEditor!, true); });
+        'xsort.sortWordsDescending', () => {
+            sortWords(vscode.window.activeTextEditor!,
+                true, false
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsAscendingNumerically',
-        () => { sortWords(vscode.window.activeTextEditor!, false, true); });
+        'xsort.sortWordsAscendingNumerically', () => {
+            sortWords(vscode.window.activeTextEditor!,
+                false, true
+            );
+        });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'xsort.sortWordsDescendingNumerically',
-        () => { sortWords(vscode.window.activeTextEditor!, true, true); });
+        'xsort.sortWordsDescendingNumerically', () => {
+            sortWords(vscode.window.activeTextEditor!,
+                true, true
+            );
+        });
     context.subscriptions.push(command);
 }
 
@@ -65,31 +89,9 @@ export function sortLines(
     const selections = editor.selections.slice()
         .sort((a, b) => a.active.compareTo(b.active));
 
-    // Determine operations according to the options
-    let compare = function (d1: Datum, d2: Datum): number {
-        // Preprocess incoming data
-        const range1 = d1.selection ? d1.selection : [0, d1.line.text.length];
-        const range2 = d2.selection ? d2.selection : [0, d2.line.text.length];
-        let str1 = d1.line.text;
-        let str2 = d2.line.text;
-        if (1 < selections.length) {
-            str1 = str1.slice(range1[0], range1[1]).toLowerCase();
-            str2 = str2.slice(range2[0], range2[1]).toLowerCase();
-        }
-
-        // Compare by text
-        const locale = vscode.env.language;
-        const diff = str1.localeCompare(str2, locale, { numeric: numeric });
-        if (diff !== 0) {
-            return descending ? -diff : +diff;
-        }
-
-        // Compare by line number (do not reverse the sign)
-        return d1.line.lineNumber - d2.line.lineNumber;
-    };
-
     // List line numbers to be targeted
-    let lineNumbers = selections.map(s => series(s.start.line, s.end.line + 1))
+    let lineNumbers = selections
+        .map(s => _series(s.start.line, s.end.line + 1))
         .reduce((prev, curr) => prev.concat(curr))  // flatten
         .reduce((prev, curr) => {  // unique
             if (prev.length === 0 || prev[prev.length - 1] !== curr) {
@@ -108,7 +110,8 @@ export function sortLines(
     }
 
     // Prepare data to process
-    // (2-tuple, a text line and a selection range in it)
+    // (An array of 3-tuples made with TextLine object, selection range,
+    // and whether the selection is reversed or not)
     const data: Datum[] = lineNumbers
         .map(lineNumber => document.lineAt(lineNumber))
         .map(line => ({
@@ -119,7 +122,7 @@ export function sortLines(
                         _map(
                             selections,
                             s => ({
-                                range: intersectionInLine(s, line.range),
+                                range: _intersection(s, line.range),
                                 reversed: s.isReversed
                             })
                         ),
@@ -134,7 +137,28 @@ export function sortLines(
         }));
 
     // Sort
-    data.sort(compare);
+    data.sort((d1: Datum, d2: Datum) => {
+        // Preprocess incoming data
+        const range1 = d1.selection ? d1.selection : [0, d1.line.text.length];
+        const range2 = d2.selection ? d2.selection : [0, d2.line.text.length];
+        let str1 = d1.line.text;
+        let str2 = d2.line.text;
+        if (1 < selections.length) {
+            str1 = str1.slice(range1[0], range1[1]).toLowerCase();
+            str2 = str2.slice(range2[0], range2[1]).toLowerCase();
+        }
+
+        // Compare by text
+        const locale = vscode.env.language;
+        const options = { numeric: numeric };
+        const diff = str1.localeCompare(str2, locale, options);
+        if (diff !== 0) {
+            return descending ? -diff : +diff;
+        }
+
+        // Compare by line number (do not reverse the sign)
+        return d1.line.lineNumber - d2.line.lineNumber;
+    });
 
     return editor.edit(e => {  // Replace text
         for (var i = 0; i < lineNumbers.length; i++) {
@@ -164,14 +188,6 @@ export function sortLines(
     });
 }
 
-function intersectionInLine(selection: Selection, range: Range): [number, number] | undefined {
-    const intersection = selection.intersection(range);
-    if (!intersection) {
-        return;
-    }
-    return [intersection.start.character, intersection.end.character];
-}
-
 export function sortWords(
     editor: TextEditor,
     descending: boolean,
@@ -191,7 +207,7 @@ export function sortWords(
 
     // Get firstly used separator character in the selection
     const selectedText = document.getText(selection).trim();
-    const [separator, withSpace] = getSeparatorAndPadding(selectedText);
+    const [separator, withSpace] = _getSeparatorAndPadding(selectedText);
 
     // Separate words with it and sort them
     const sign = descending ? -1 : +1;
@@ -218,7 +234,18 @@ export function sortWords(
 }
 
 
-function getSeparatorAndPadding(text: string): [string, boolean] {
+function _intersection(
+    selection: Selection,
+    range: Range
+): [number, number] | undefined {
+    const intersection = selection.intersection(range);
+    if (!intersection) {
+        return;
+    }
+    return [intersection.start.character, intersection.end.character];
+}
+
+function _getSeparatorAndPadding(text: string): [string, boolean] {
     let matches = text.match(/^[^,]+,(\s*)(?:[^,]+,\s*)*[^,]+/);
     if (matches) {
         return [",", matches[1] !== ""];
@@ -237,7 +264,7 @@ function getSeparatorAndPadding(text: string): [string, boolean] {
     return [" ", false];
 }
 
-function series(begin: number, end: number) {
+function _series(begin: number, end: number) {
     return Array.from({ length: end - begin }, (v, i) => begin + i);
 }
 
