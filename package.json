@@ -19,11 +19,15 @@
         "onCommand:xsort.sortLinesAscending",
         "onCommand:xsort.sortLinesDescending",
         "onCommand:xsort.sortLinesAscendingNumerically",
+        "onCommand:xsort.sortLinesAscendingCharCode",
         "onCommand:xsort.sortLinesDescendingNumerically",
+        "onCommand:xsort.sortLinesDescendingCharCode",
         "onCommand:xsort.sortWordsAscending",
         "onCommand:xsort.sortWordsDescending",
         "onCommand:xsort.sortWordsAscendingNumerically",
-        "onCommand:xsort.sortWordsDescendingNumerically"
+        "onCommand:xsort.sortWordsAscendingCharCode",
+        "onCommand:xsort.sortWordsDescendingNumerically",
+        "onCommand:xsort.sortWordsDescendingCharCode"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -61,6 +65,16 @@
                 "category": "xsort"
             },
             {
+                "command": "xsort.sortLinesAscendingCharCode",
+                "title": "Sort Lines (ascending, char-code)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortLinesDescendingCharCode",
+                "title": "Sort Lines (descending, char-code)",
+                "category": "xsort"
+            },
+            {
                 "command": "xsort.sortWordsAscending",
                 "title": "Sort Words (ascending)",
                 "category": "xsort"
@@ -78,6 +92,16 @@
             {
                 "command": "xsort.sortWordsDescendingNumerically",
                 "title": "Sort Words (descending, numeric)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortWordsAscendingCharCode",
+                "title": "Sort Words (ascending, char-code)",
+                "category": "xsort"
+            },
+            {
+                "command": "xsort.sortWordsDescendingCharCode",
+                "title": "Sort Words (descending, char-code)",
                 "category": "xsort"
             }
         ]

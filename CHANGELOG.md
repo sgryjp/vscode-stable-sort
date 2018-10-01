@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+### Added
+- New sort options to use character code for string comparison
+
 ## [0.2.1-beta] - 2018-09-18
 ### Changed
 - Now uses user environment language as the locale for comparing strings

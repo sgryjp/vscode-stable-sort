@@ -6,11 +6,14 @@ in a various way.
 
 # Feature
 
-1. Sort lines or words acending or descending order
-2. Sort lines or words using numerical order (e.g.: `2` comes before `10`)
-3. Sort lines by comparing substring of them
-4. Sorted words separated by comma, tab, pipe (`|`), or space
-5. Using stable sort algorithm
+1. Sort lines in one or more selections
+2. Sort words separated by comma, tab, pipe (`|`), or space in a selection
+3. Sorting result is stable
+   - Order of semantically same lines or words are kept unchanged
+4. Supports various options to compare strings:
+   - acending order or descending order
+   - numerical comparison (e.g.: `2` comes before `10`)
+   - character-code based comparison (compare as byte sequences)
 
 
 # How to use
@@ -20,14 +23,18 @@ below:
 
 - xsort: Sort Lines (ascending)
 - xsort: Sort Lines (ascending, numeric)
+- xsort: Sort Lines (ascending, char-code)
 - xsort: Sort Lines (descending)
 - xsort: Sort Lines (descending, numeric)
+- xsort: Sort Lines (descending, char-code)
 - xsort: Sort Words (ascending)
 - xsort: Sort Words (ascending, numeric)
+- xsort: Sort Words (ascending, char-code)
 - xsort: Sort Words (descending)
 - xsort: Sort Words (descending, numeric)
+- xsort: Sort Words (descending, char-code)
 
-Keyboard shortcuts are assigned for four commands as below:
+This extension assigns keyboard shortcuts as below:
 
 | Key                         | Command                       |
 | --------------------------- | ----------------------------- |
@@ -35,6 +42,11 @@ Keyboard shortcuts are assigned for four commands as below:
 | <kbd>Ctrl+Shift+Alt+L</kbd> | xsort: SortLines (descending) |
 | <kbd>Ctrl+Alt+W</kbd>       | xsort: SortLines (ascending)  |
 | <kbd>Ctrl+Shift+Alt+W</kbd> | xsort: SortLines (descending) |
+
+To set shortcuts for commands not in the table above, or reassign/unassign 
+default shortcuts, see
+["Key Bindings" page](https://code.visualstudio.com/docs/getstarted/keybindings)
+of VSCode's document.
 
 
 # Sorting lines by single selection
@@ -47,8 +59,8 @@ with the selection will be sorted. This behavior is almost identical to the
 VS Code's built-in "Sort Lines Xxx" command except that this extension uses
 "stable" sort algorithm (see below for cases the stability becomes valuable.)
 
-For example, let a document has three lines, "Apple", "Orange", "Grape", and
-you have selected from "l" of "Apple", to "p" of "Grape":
+For example, let a document has three lines, `Apple`, `Orange`, `Grape`, and
+you have selected from `l` of `Apple`, to `p` of `Grape`:
 
 <div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
 App<span style="background: #264f78;">le&nbsp;</span><br>
@@ -56,7 +68,7 @@ App<span style="background: #264f78;">le&nbsp;</span><br>
 <span style="background: #264f78; border-right: 2px solid white;">Grap</span>e<br>
 </div>
 
-The sorting result will be:
+The sorting result will be `Apple`, `Grape`, `Orange`, with a selection range from `l` of `Apple` to `n` of `Orange`:
 
 <div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
 App<span style="background: #264f78;">le&nbsp;</span><br>
@@ -71,7 +83,7 @@ If there are multiple selection in a document, the lines overlapped one of
 those (even if its range is empty) will be sorted. In this case, the lines will
 be compared with only the selected part, not the entire line content.
 
-For example, let a document has three lines, "Apple", "Orange", "Lemon", and
+For example, let a document has three lines, `Apple`, `Orange`, `Lemon`, and
 only the second and third characters of those were selected:
 
 <div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
@@ -80,7 +92,8 @@ O<span style="background: #264f78; border-left: 2px solid white;">ra</span>nge<b
 L<span style="background: #264f78; border-right: 2px solid white;">em</span>on<br>
 </div>
 
-The sorting result will be:
+The sorting result will be `Lemon`, `Apple`, `Orange` with each selected from
+second character to third character:
 
 <div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
 L<span style="background: #264f78; border-right: 2px solid white;">em</span>on<br>
@@ -102,17 +115,13 @@ and uses it on composing sort result.
 
 Example of "Sort Words (acending)":
 
-<pre>
-Apple Orange Grape &rarr; Apple Grape Orange
-1, 10,2            &rarr; 1, 10, 2
-</pre>
+    Apple Orange Grape → Apple Grape Orange
+    1, 10,2            → 1, 10, 2
 
 Example of "Sort Words (descending, numeric)":
 
-<pre>
-Apple Orange Grape &rarr; Orange Grape Apple
-1, 10,2            &rarr; 10, 2, 1
-</pre>
+    Apple Orange Grape → Orange Grape Apple
+    1, 10,2            → 10, 2, 1
 
 
 # Background of stability
