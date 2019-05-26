@@ -40,33 +40,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     command = vscode.commands.registerCommand(
         'stableSort.sortWordsAscending', () => {
-            sortWords(vscode.window.activeTextEditor!,
-                false, false
-            );
+            sortWords(vscode.window.activeTextEditor!, false);
         });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
         'stableSort.sortWordsDescending', () => {
-            sortWords(vscode.window.activeTextEditor!,
-                true, false
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortWordsAscendingNumerically', () => {
-            sortWords(vscode.window.activeTextEditor!,
-                false, true
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortWordsDescendingNumerically', () => {
-            sortWords(vscode.window.activeTextEditor!,
-                true, true
-            );
+            sortWords(vscode.window.activeTextEditor!, true);
         });
     context.subscriptions.push(command);
 }
@@ -188,8 +168,7 @@ export function sortLines(
 
 export function sortWords(
     editor: TextEditor,
-    descending: boolean,
-    numeric: boolean
+    descending: boolean
 ) {
     const document = editor.document;
     const selection = editor.selection;
@@ -212,6 +191,10 @@ export function sortWords(
     const words = selectedText
         .split(sepPattern)
         .map(w => w.trim());
+    const numeric = words
+        .map(w => !isNaN(parseFloat(w)) || w.trim() === "")
+        .reduce((prev, curr) => prev && curr);
+
     words.sort((a, b) => sign * _compare(a, b, numeric));
 
     // Compose sorted text

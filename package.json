@@ -28,9 +28,7 @@
         "onCommand:stableSort.sortLinesAscendingNumerically",
         "onCommand:stableSort.sortLinesDescendingNumerically",
         "onCommand:stableSort.sortWordsAscending",
-        "onCommand:stableSort.sortWordsDescending",
-        "onCommand:stableSort.sortWordsAscendingNumerically",
-        "onCommand:stableSort.sortWordsDescendingNumerically"
+        "onCommand:stableSort.sortWordsDescending"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -75,16 +73,6 @@
             {
                 "command": "stableSort.sortWordsDescending",
                 "title": "Sort Words ( descending )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortWordsAscendingNumerically",
-                "title": "Sort Words ( ascending, numeric )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortWordsDescendingNumerically",
-                "title": "Sort Words ( descending, numeric )",
                 "category": "Stable Sort"
             }
         ]

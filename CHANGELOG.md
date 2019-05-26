@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Changed
+- Now whether to sort words numerically or not are guessed automatically
 - Removed character code based sorting (not considered useful much)
 - Now this extension reproduces spaces around separators according to what
   the separator character is
