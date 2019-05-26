@@ -298,31 +298,6 @@ suite("sortLines()", () => {
 
 
 suite("sortWords()", () => {
-    async function doTest(
-        input: string,
-        selections: Selection[],
-        descending: boolean,
-        numeric: boolean) {
-
-        // Set the test input text and the selection
-        const editor = vscode.window.activeTextEditor!;
-        await editor.edit((editBuilder: TextEditorEdit) => {
-            const document = editor.document;
-            const lastLine = document.lineAt(document.lineCount - 1);
-            const entireRange = new Range(
-                new Position(0, 0),
-                lastLine.range.end
-            );
-            editBuilder.replace(entireRange, input);
-        });
-        editor.selections = selections;
-
-        // Call the logic
-        await my.sortWords(editor, descending, numeric);
-
-        // Return the result
-        return { text: editor.document.getText(), selections: editor.selections };
-    }
 
     suiteSetup(async () => {
         const uri = vscode.Uri.parse("untitled:test.txt");
@@ -338,52 +313,48 @@ suite("sortWords()", () => {
         await vscode.commands.executeCommand(commandName);
     });
 
-    test("delimiter: csv-like", async () => {
-        let result = await doTest(
-            "1, 2,10",
-            [new Selection(0, 0, 0, 7)],
-            false, false
-        );
-        assert.equal(result.text,
-            "1, 10, 2"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 0, 8)])
-        );
-    });
-
-    test("delimiter: space", async () => {
-        let result = await doTest(
-            "1 2 10",
-            [new Selection(0, 0, 0, 6)],
-            false, false
-        );
-        assert.equal(result.text,
-            "1 10 2"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 0, 6)])
-        );
-    });
-
     // Collate options
-    [
-        { descending: false, numeric: false, expected: "10,2,２,ab,Ac,あ,ア" },
-        { descending: false, numeric: true, expected: "2,２,10,ab,Ac,あ,ア" },
-        { descending: true, numeric: false, expected: "あ,ア,Ac,ab,2,２,10" },
-        { descending: true, numeric: true, expected: "あ,ア,Ac,ab,10,2,２" },
-    ].forEach(t => {
-        const input = "2,10,あ,ab,２,Ac,ア";
-        test(`options: {descending: ${t.descending}, mode: "${t.numeric}"}`,
-            async () => {
-                const result = await doTest(
-                    input,
-                    [new Selection(0, 0, 0, 16)],
-                    t.descending,
-                    t.numeric
+    let tt: Array<[string, boolean, boolean, string, string]> = [
+        ["delimiter: comma (CSV)",
+            false, false, "1,   2,10", "1, 10, 2"],
+        ["delimiter: space",
+            false, false, "1 2   10", "1 10 2"],
+        ["options: asc",
+            false, false, "2,10,あ,ab,２,Ac,ア", "10,2,２,ab,Ac,あ,ア"],
+        ["options: asc, numeric",
+            false, true, "2,10,あ,ab,２,Ac,ア", "2,２,10,ab,Ac,あ,ア"],
+        ["options: desc",
+            true, false, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,2,２,10"],
+        ["options: desc, numeric",
+            true, true, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,10,2,２"],
+    ];
+    tt.forEach(t => {
+        const [title, descending, numeric, input, expected] = t;
+        test(title, async () => {
+            // Set the test input text and the selection
+            const editor = vscode.window.activeTextEditor!;
+            await editor.edit((editBuilder: TextEditorEdit) => {
+                const document = editor.document;
+                const lastLine = document.lineAt(document.lineCount - 1);
+                const entireRange = new Range(
+                    new Position(0, 0),
+                    lastLine.range.end
                 );
-                assert.equal(result.text, t.expected);
+                editBuilder.replace(entireRange, input);
             });
+            const eod = editor.document.positionAt(9999);
+            editor.selections = [new Selection(0, 0, eod.line, eod.character)];
+
+            // Call the logic
+            await my.sortWords(editor, descending, numeric);
+
+            const result = {
+                text: editor.document.getText(),
+                selections: editor.selections
+            };
+
+            assert.equal(result.text, expected);
+        });
     });
 });
 
