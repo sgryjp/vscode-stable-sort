@@ -3,6 +3,13 @@
 ## [Unreleased]
 ### Changed
 - Removed character code based sorting (not considered useful much)
+- Now this extension reproduces spaces around separators according to what
+  the separator character is
+  - If it's a comma (`,`) or a tab (`\t`), only trailing whiespaces will be
+    reproduced
+  - If it's a vertical bar (or "pipe", `|`), preceding whiespaces and/or
+    trailling whitespaces will be reproduced
+  - Reproduced whitespace will always be a single space (U+0020)
 - Now word separator is guessed using firstly appeared candidate
 
 ### Fixed

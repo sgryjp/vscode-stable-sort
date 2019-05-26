@@ -256,9 +256,11 @@ function _guessSeparator(text: string): [RegExp, string] {
         return [/\t[ \n\r]*/, "\t"];
     }
 
-    matches = text.match(/^[^\s\|]+\|(\s*)(?:[^\|]+\|\s*)*/);
+    matches = text.match(/^[^\s\|]+(\s*)\|(\s*)(?:[^\|]+\|\s*)*/);
     if (matches) {
-        return [/\|\s*/, matches[1] !== "" ? "| " : "|"];
+        const pre = matches[1] !== "" ? " " : "";
+        const post = matches[2] !== "" ? " " : "";
+        return [/\|\s*/, pre + "|" + post];
     }
 
     return [/\s+/, " "];
