@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Removed character code based sorting (not considered useful much)
+- Now word separator is guessed using firstly appeared candidate
 
 ### Fixed
 - Ignore spaces after tab characters on sorting words separated with them

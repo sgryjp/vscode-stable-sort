@@ -247,17 +247,17 @@ function _intersection(
 }
 
 function _getSeparatorAndPadding(text: string): [string, boolean] {
-    let matches = text.match(/^[^,]+,(\s*)(?:[^,]+,\s*)*[^,]+/);
+    let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*[^,]+/);
     if (matches) {
         return [",", matches[1] !== ""];
     }
 
-    matches = text.match(/^[^\t]+\t+(?:[^\t]+\t+)*[^\t]+/);
+    matches = text.match(/^[^\t\s\|]+\t+(?:[^\t]+\t+)*[^\t]+/);
     if (matches) {
         return ["\t", false];
     }
 
-    matches = text.match(/^[^\|]+\|(\s*)(?:[^\|]+\|\s*)*[^\|]+/);
+    matches = text.match(/^[^\s\|]+\|(\s*)(?:[^\|]+\|\s*)*[^\|]+/);
     if (matches) {
         return ["|", matches[1] !== ""];
     }
