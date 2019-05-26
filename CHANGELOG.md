@@ -6,7 +6,8 @@
 - Now word separator is guessed using firstly appeared candidate
 
 ### Fixed
-- Ignore spaces after tab characters on sorting words separated with them
+- Now ignores spaces after tab characters on sorting words separated with them
+- Wrongly treated consecutive occurrence of separators as single occurrence
 
 ## [0.3.0] - 2018-10-01
 ### Added

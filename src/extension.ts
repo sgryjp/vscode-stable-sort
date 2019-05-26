@@ -211,8 +211,7 @@ export function sortWords(
     const sign = descending ? -1 : +1;
     const words = selectedText
         .split(sepPattern)
-        .map(w => w.trim())
-        .filter(w => 0 < w.length);
+        .map(w => w.trim());
     words.sort((a, b) => sign * _compare(a, b, numeric));
 
     // Compose sorted text
@@ -247,17 +246,17 @@ function _intersection(
 }
 
 function _guessSeparator(text: string): [RegExp, string] {
-    let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*[^,]+/);
+    let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*/);
     if (matches) {
         return [/,\s*/, matches[1] !== "" ? ", " : ","];
     }
 
-    matches = text.match(/^[^\t\s\|]+\t+(?:[^\t]+\t+)*[^\t]+/);
+    matches = text.match(/^[^\t\s\|]+\t+(?:[^\t]+\t+)*/);
     if (matches) {
-        return [/\t\s*/, "\t"];
+        return [/\t[ \n\r]*/, "\t"];
     }
 
-    matches = text.match(/^[^\s\|]+\|(\s*)(?:[^\|]+\|\s*)*[^\|]+/);
+    matches = text.match(/^[^\s\|]+\|(\s*)(?:[^\|]+\|\s*)*/);
     if (matches) {
         return [/\|\s*/, matches[1] !== "" ? "| " : "|"];
     }
