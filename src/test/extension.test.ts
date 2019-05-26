@@ -315,8 +315,20 @@ suite("sortWords()", () => {
 
     // Collate options
     let tt: Array<[string, boolean, boolean, string, string]> = [
-        ["delimiter: comma (CSV)",
+        ["delimiter: comma",
+            false, false, "1,2,   10", "1,10,2"],
+        ["delimiter: comma, with spaces after them",
             false, false, "1,   2,10", "1, 10, 2"],
+        ["delimiter: tab",
+            false, false, "1\t2\t \t\t10", "1\t10\t2"],
+        // ["delimiter: tab, with spaces after them",
+        //     false, false, "1\t   2\t10", "1\t10\t2"],
+        // ["delimiter: tab (not applicable)",
+        //     false, false, "1 \t2\t \t\t10", "1 10 2"],
+        // ["delimiter: pipe",
+        //     false, false, "1|   2|10", "1|10|2"],
+        // ["delimiter: pipe, with spaces after them",
+        //     false, false, "1   |2|10", "1 | 10 | 2"],
         ["delimiter: space",
             false, false, "1 2   10", "1 10 2"],
         ["options: asc",
