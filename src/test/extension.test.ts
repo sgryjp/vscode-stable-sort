@@ -276,24 +276,28 @@ suite("sortLines()", () => {
     });
 
     // Collate options
-    [
-        { descending: false, numeric: false, expected: "10,2,２,ab,Ac,あ,ア" },
-        { descending: false, numeric: true, expected: "2,２,10,ab,Ac,あ,ア" },
-        { descending: true, numeric: false, expected: "あ,ア,Ac,ab,2,２,10" },
-        { descending: true, numeric: true, expected: "あ,ア,Ac,ab,10,2,２" },
-    ].forEach(t => {
-        const input = "2,10,あ,ab,２,Ac,ア";
-        test(`options: {descending: ${t.descending}, numeric: "${t.numeric}"}`,
-            async () => {
-                const result = await doTest(
-                    input.replace(/,/g, "\n"),
-                    [new Selection(0, 0, 6, 1)],
-                    t.descending,
-                    t.numeric
-                );
-                assert.equal(result.text.replace(/\n/g, ","), t.expected);
-            });
-    });
+    const tt: Array<[string, boolean, boolean, string, string]> = [
+        ["options: ascending",
+            false, false, "2,10,あ,ab,２,Ac,ア", "10,2,２,ab,Ac,あ,ア"],
+        ["options: ascending, numeric",
+            false, true, "2,10,あ,ab,２,Ac,ア", "2,２,10,ab,Ac,あ,ア"],
+        ["options: descending",
+            true, false, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,2,２,10"],
+        ["options: descending, numeric",
+            true, true, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,10,2,２"],
+    ];
+    for (const t of tt) {
+        const [title, descending, numeric, input, expected] = t;
+        test(title, async () => {
+            const result = await doTest(
+                input.replace(/,/g, "\n"),
+                [new Selection(0, 0, 6, 1)],
+                descending,
+                numeric
+            );
+            assert.equal(result.text.replace(/\n/g, ","), expected);
+        });
+    }
 });
 
 
@@ -313,8 +317,7 @@ suite("sortWords()", () => {
         await vscode.commands.executeCommand(commandName);
     });
 
-    // Collate options
-    let tt: Array<[string, boolean, string, string]> = [
+    const tt: Array<[string, boolean, string, string]> = [
         ["delimiter: comma",
             false, "1,2,10", "1,2,10"],
         ["delimiter: comma; keep consecutive occurrence",
