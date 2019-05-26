@@ -252,9 +252,9 @@ function _getSeparatorAndPadding(text: string): [string, boolean] {
         return [",", matches[1] !== ""];
     }
 
-    matches = text.match(/^[^\t]+\t(\s*)(?:[^\t]+\t\s*)*[^\t]+/);
+    matches = text.match(/^[^\t]+\t+(?:[^\t]+\t+)*[^\t]+/);
     if (matches) {
-        return ["\t", matches[1] !== ""];
+        return ["\t", false];
     }
 
     matches = text.match(/^[^\|]+\|(\s*)(?:[^\|]+\|\s*)*[^\|]+/);

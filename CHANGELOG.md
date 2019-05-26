@@ -4,6 +4,9 @@
 ### Changed
 - Removed character code based sorting (not considered useful much)
 
+### Fixed
+- Ignore spaces after tab characters on sorting words separated with them
+
 ## [0.3.0] - 2018-10-01
 ### Added
 - New sort options to use character code for string comparison
