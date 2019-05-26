@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortLinesAscending', () => {
             sortLines(vscode.window.activeTextEditor!,
-                false, ""
+                false, false
             );
         });
     context.subscriptions.push(command);
@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortLinesDescending', () => {
             sortLines(vscode.window.activeTextEditor!,
-                true, ""
+                true, false
             );
         });
     context.subscriptions.push(command);
@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortLinesAscendingNumerically', () => {
             sortLines(vscode.window.activeTextEditor!,
-                false, "n"
+                false, true
             );
         });
     context.subscriptions.push(command);
@@ -33,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortLinesDescendingNumerically', () => {
             sortLines(vscode.window.activeTextEditor!,
-                true, "n"
+                true, true
             );
         });
     context.subscriptions.push(command);
@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortWordsAscending', () => {
             sortWords(vscode.window.activeTextEditor!,
-                false, ""
+                false, false
             );
         });
     context.subscriptions.push(command);
@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortWordsDescending', () => {
             sortWords(vscode.window.activeTextEditor!,
-                true, ""
+                true, false
             );
         });
     context.subscriptions.push(command);
@@ -57,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortWordsAscendingNumerically', () => {
             sortWords(vscode.window.activeTextEditor!,
-                false, "n"
+                false, true
             );
         });
     context.subscriptions.push(command);
@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
     command = vscode.commands.registerCommand(
         'stableSort.sortWordsDescendingNumerically', () => {
             sortWords(vscode.window.activeTextEditor!,
-                true, "n"
+                true, true
             );
         });
     context.subscriptions.push(command);
@@ -75,12 +75,10 @@ export function deactivate() {
 }
 
 //-----------------------------------------------------------------------------
-export type Mode = "n" | "";
-
 export function sortLines(
     editor: TextEditor,
     descending: boolean,
-    mode: Mode
+    numeric: boolean
 ) {
     type Datum = {
         line: TextLine,
@@ -151,7 +149,7 @@ export function sortLines(
         }
 
         // Compare by text
-        const diff = _compare(str1, str2, mode);
+        const diff = _compare(str1, str2, numeric);
         if (diff !== 0) {
             return descending ? -diff : +diff;
         }
@@ -191,7 +189,7 @@ export function sortLines(
 export function sortWords(
     editor: TextEditor,
     descending: boolean,
-    mode: Mode
+    numeric: boolean
 ) {
     const document = editor.document;
     const selection = editor.selection;
@@ -215,7 +213,7 @@ export function sortWords(
         .split(separator)
         .map(w => w.trim())
         .filter(w => 0 < w.length);
-    words.sort((a, b) => sign * _compare(a, b, mode));
+    words.sort((a, b) => sign * _compare(a, b, numeric));
 
     // Compose sorted text
     let newText = words.join(separator + (withSpace ? " " : ""));
@@ -231,9 +229,9 @@ export function sortWords(
     });
 }
 
-function _compare(str1: string, str2: string, mode: Mode): number {
+function _compare(str1: string, str2: string, numeric: boolean): number {
     const locale = vscode.env.language;
-    const options = { numeric: mode === "n" };
+    const options = { numeric: numeric };
     return str1.localeCompare(str2, locale, options);
 }
 

@@ -11,7 +11,7 @@ suite("sortLines()", () => {
         input: string,
         selections: Selection[],
         descending: boolean,
-        mode: my.Mode) {
+        numeric: boolean) {
 
         // Set the test input text and the selection
         const editor = vscode.window.activeTextEditor!;
@@ -27,7 +27,7 @@ suite("sortLines()", () => {
         editor.selections = selections;
 
         // Call the logic
-        await my.sortLines(editor, descending, mode);
+        await my.sortLines(editor, descending, numeric);
 
         // Return the result
         return { text: editor.document.getText(), selections: editor.selections };
@@ -65,7 +65,7 @@ suite("sortLines()", () => {
             "c\n" +
             "b\n",
             [new Selection(0, 0, 3, 0)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "a\n" +
@@ -81,7 +81,7 @@ suite("sortLines()", () => {
             "aa\n" +
             "a\n",
             [new Selection(0, 0, 3, 0)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "a\n" +
@@ -99,7 +99,7 @@ suite("sortLines()", () => {
             "Orange\n" +
             "Grape\n",
             [new Selection(0, 3, 2, 4)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "Apple\n" +
@@ -121,7 +121,7 @@ suite("sortLines()", () => {
                 new Selection(1, 1, 1, 2),
                 new Selection(2, 1, 2, 2),
             ],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "Pineapple\n" +
@@ -148,7 +148,7 @@ suite("sortLines()", () => {
                 new Selection(1, 3, 1, 1),
                 new Selection(3, 1, 3, 3),
             ],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "Pineapple\n" +
@@ -171,7 +171,7 @@ suite("sortLines()", () => {
             "c\n" +
             "b\n",
             [new Selection(0, 0, 3, 0)],
-            true, ""
+            true, false
         );
         assert.equal(result.text,
             "c\n" +
@@ -187,7 +187,7 @@ suite("sortLines()", () => {
             "aa\n" +
             "aaa\n",
             [new Selection(0, 0, 3, 0)],
-            true, ""
+            true, false
         );
         assert.equal(result.text,
             "aaa\n" +
@@ -206,7 +206,7 @@ suite("sortLines()", () => {
             "b\n" +
             "\n",
             [new Selection(0, 0, 3, 0)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "a\n" +
@@ -230,7 +230,7 @@ suite("sortLines()", () => {
                 new Selection(1, 0, 1, 0),
                 new Selection(2, 0, 2, 1),
             ],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "\n" +
@@ -268,7 +268,7 @@ suite("sortLines()", () => {
         let result = await doTest(
             input.join("\n") + "\n",
             [new Selection(0, 0, N * 2, 0)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             expected.join("\n") + "\n"
@@ -277,19 +277,19 @@ suite("sortLines()", () => {
 
     // Collate options
     [
-        { descending: false, mode: "", expected: "10,2,２,ab,Ac,あ,ア" },
-        { descending: false, mode: "n", expected: "2,２,10,ab,Ac,あ,ア" },
-        { descending: true, mode: "", expected: "あ,ア,Ac,ab,2,２,10" },
-        { descending: true, mode: "n", expected: "あ,ア,Ac,ab,10,2,２" },
+        { descending: false, numeric: false, expected: "10,2,２,ab,Ac,あ,ア" },
+        { descending: false, numeric: true, expected: "2,２,10,ab,Ac,あ,ア" },
+        { descending: true, numeric: false, expected: "あ,ア,Ac,ab,2,２,10" },
+        { descending: true, numeric: true, expected: "あ,ア,Ac,ab,10,2,２" },
     ].forEach(t => {
         const input = "2,10,あ,ab,２,Ac,ア";
-        test(`options: {descending: ${t.descending}, mode: "${t.mode}"}`,
+        test(`options: {descending: ${t.descending}, numeric: "${t.numeric}"}`,
             async () => {
                 const result = await doTest(
                     input.replace(/,/g, "\n"),
                     [new Selection(0, 0, 6, 1)],
                     t.descending,
-                    t.mode as my.Mode
+                    t.numeric
                 );
                 assert.equal(result.text.replace(/\n/g, ","), t.expected);
             });
@@ -302,7 +302,7 @@ suite("sortWords()", () => {
         input: string,
         selections: Selection[],
         descending: boolean,
-        mode: my.Mode) {
+        numeric: boolean) {
 
         // Set the test input text and the selection
         const editor = vscode.window.activeTextEditor!;
@@ -318,7 +318,7 @@ suite("sortWords()", () => {
         editor.selections = selections;
 
         // Call the logic
-        await my.sortWords(editor, descending, mode);
+        await my.sortWords(editor, descending, numeric);
 
         // Return the result
         return { text: editor.document.getText(), selections: editor.selections };
@@ -342,7 +342,7 @@ suite("sortWords()", () => {
         let result = await doTest(
             "1, 2,10",
             [new Selection(0, 0, 0, 7)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "1, 10, 2"
@@ -356,7 +356,7 @@ suite("sortWords()", () => {
         let result = await doTest(
             "1 2 10",
             [new Selection(0, 0, 0, 6)],
-            false, ""
+            false, false
         );
         assert.equal(result.text,
             "1 10 2"
@@ -368,19 +368,19 @@ suite("sortWords()", () => {
 
     // Collate options
     [
-        { descending: false, mode: "", expected: "10,2,２,ab,Ac,あ,ア" },
-        { descending: false, mode: "n", expected: "2,２,10,ab,Ac,あ,ア" },
-        { descending: true, mode: "", expected: "あ,ア,Ac,ab,2,２,10" },
-        { descending: true, mode: "n", expected: "あ,ア,Ac,ab,10,2,２" },
+        { descending: false, numeric: false, expected: "10,2,２,ab,Ac,あ,ア" },
+        { descending: false, numeric: true, expected: "2,２,10,ab,Ac,あ,ア" },
+        { descending: true, numeric: false, expected: "あ,ア,Ac,ab,2,２,10" },
+        { descending: true, numeric: true, expected: "あ,ア,Ac,ab,10,2,２" },
     ].forEach(t => {
         const input = "2,10,あ,ab,２,Ac,ア";
-        test(`options: {descending: ${t.descending}, mode: "${t.mode}"}`,
+        test(`options: {descending: ${t.descending}, mode: "${t.numeric}"}`,
             async () => {
                 const result = await doTest(
                     input,
                     [new Selection(0, 0, 0, 16)],
                     t.descending,
-                    t.mode as my.Mode
+                    t.numeric
                 );
                 assert.equal(result.text, t.expected);
             });
