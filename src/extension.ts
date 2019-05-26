@@ -205,22 +205,22 @@ export function sortWords(
 
     // Get firstly used separator character in the selection
     const selectedText = document.getText(selection).trim();
-    const [separator, withSpace] = _getSeparatorAndPadding(selectedText);
+    const [sepPattern, sepText] = _guessSeparator(selectedText);
 
     // Separate words with it and sort them
     const sign = descending ? -1 : +1;
     const words = selectedText
-        .split(separator)
+        .split(sepPattern)
         .map(w => w.trim())
         .filter(w => 0 < w.length);
     words.sort((a, b) => sign * _compare(a, b, numeric));
 
     // Compose sorted text
-    let newText = words.join(separator + (withSpace ? " " : ""));
+    let newText = words.join(sepText);
     if (1 < selectedText.length &&
-        selectedText[selectedText.length - 1] === separator) {
+        sepPattern.test(selectedText[selectedText.length - 1])) {
         // Keep trailing separator if there was
-        newText += separator;
+        newText += sepText;
     }
 
     // Apply
@@ -246,23 +246,23 @@ function _intersection(
     return [intersection.start.character, intersection.end.character];
 }
 
-function _getSeparatorAndPadding(text: string): [string, boolean] {
+function _guessSeparator(text: string): [RegExp, string] {
     let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*[^,]+/);
     if (matches) {
-        return [",", matches[1] !== ""];
+        return [/,\s*/, matches[1] !== "" ? ", " : ","];
     }
 
     matches = text.match(/^[^\t\s\|]+\t+(?:[^\t]+\t+)*[^\t]+/);
     if (matches) {
-        return ["\t", false];
+        return [/\t\s*/, "\t"];
     }
 
     matches = text.match(/^[^\s\|]+\|(\s*)(?:[^\|]+\|\s*)*[^\|]+/);
     if (matches) {
-        return ["|", matches[1] !== ""];
+        return [/\|\s*/, matches[1] !== "" ? "| " : "|"];
     }
 
-    return [" ", false];
+    return [/\s+/, " "];
 }
 
 function _series(begin: number, end: number) {
