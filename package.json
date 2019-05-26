@@ -26,15 +26,11 @@
         "onCommand:stableSort.sortLinesAscending",
         "onCommand:stableSort.sortLinesDescending",
         "onCommand:stableSort.sortLinesAscendingNumerically",
-        "onCommand:stableSort.sortLinesAscendingCharCode",
         "onCommand:stableSort.sortLinesDescendingNumerically",
-        "onCommand:stableSort.sortLinesDescendingCharCode",
         "onCommand:stableSort.sortWordsAscending",
         "onCommand:stableSort.sortWordsDescending",
         "onCommand:stableSort.sortWordsAscendingNumerically",
-        "onCommand:stableSort.sortWordsAscendingCharCode",
-        "onCommand:stableSort.sortWordsDescendingNumerically",
-        "onCommand:stableSort.sortWordsDescendingCharCode"
+        "onCommand:stableSort.sortWordsDescendingNumerically"
     ],
     "main": "./out/extension",
     "contributes": {
@@ -72,16 +68,6 @@
                 "category": "Stable Sort"
             },
             {
-                "command": "stableSort.sortLinesAscendingCharCode",
-                "title": "Sort Lines ( ascending, char-code )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortLinesDescendingCharCode",
-                "title": "Sort Lines ( descending, char-code )",
-                "category": "Stable Sort"
-            },
-            {
                 "command": "stableSort.sortWordsAscending",
                 "title": "Sort Words ( ascending )",
                 "category": "Stable Sort"
@@ -99,16 +85,6 @@
             {
                 "command": "stableSort.sortWordsDescendingNumerically",
                 "title": "Sort Words ( descending, numeric )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortWordsAscendingCharCode",
-                "title": "Sort Words ( ascending, char-code )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortWordsDescendingCharCode",
-                "title": "Sort Words ( descending, char-code )",
                 "category": "Stable Sort"
             }
         ]

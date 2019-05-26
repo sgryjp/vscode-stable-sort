@@ -39,22 +39,6 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'stableSort.sortLinesAscendingCharCode', () => {
-            sortLines(vscode.window.activeTextEditor!,
-                false, "c"
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortLinesDescendingCharCode', () => {
-            sortLines(vscode.window.activeTextEditor!,
-                true, "c"
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
         'stableSort.sortWordsAscending', () => {
             sortWords(vscode.window.activeTextEditor!,
                 false, ""
@@ -85,29 +69,13 @@ export function activate(context: vscode.ExtensionContext) {
             );
         });
     context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortWordsAscendingCharCode', () => {
-            sortWords(vscode.window.activeTextEditor!,
-                false, "c"
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortWordsDescendingCharCode', () => {
-            sortWords(vscode.window.activeTextEditor!,
-                true, "c"
-            );
-        });
-    context.subscriptions.push(command);
 }
 
 export function deactivate() {
 }
 
 //-----------------------------------------------------------------------------
-export type Mode = "n" | "c" | "";
+export type Mode = "n" | "";
 
 export function sortLines(
     editor: TextEditor,
@@ -264,18 +232,9 @@ export function sortWords(
 }
 
 function _compare(str1: string, str2: string, mode: Mode): number {
-    if (mode === "c") {
-        if (str1 > str2) {
-            return +1;
-        } else if (str1 < str2) {
-            return -1;
-        }
-        return 0;
-    } else {
-        const locale = vscode.env.language;
-        const options = { numeric: mode === "n" };
-        return str1.localeCompare(str2, locale, options);
-    }
+    const locale = vscode.env.language;
+    const options = { numeric: mode === "n" };
+    return str1.localeCompare(str2, locale, options);
 }
 
 function _intersection(

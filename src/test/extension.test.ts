@@ -279,10 +279,8 @@ suite("sortLines()", () => {
     [
         { descending: false, mode: "", expected: "10,2,２,ab,Ac,あ,ア" },
         { descending: false, mode: "n", expected: "2,２,10,ab,Ac,あ,ア" },
-        { descending: false, mode: "c", expected: "10,2,Ac,ab,あ,ア,２" },
         { descending: true, mode: "", expected: "あ,ア,Ac,ab,2,２,10" },
         { descending: true, mode: "n", expected: "あ,ア,Ac,ab,10,2,２" },
-        { descending: true, mode: "c", expected: "２,ア,あ,ab,Ac,2,10" },
     ].forEach(t => {
         const input = "2,10,あ,ab,２,Ac,ア";
         test(`options: {descending: ${t.descending}, mode: "${t.mode}"}`,
@@ -372,10 +370,8 @@ suite("sortWords()", () => {
     [
         { descending: false, mode: "", expected: "10,2,２,ab,Ac,あ,ア" },
         { descending: false, mode: "n", expected: "2,２,10,ab,Ac,あ,ア" },
-        { descending: false, mode: "c", expected: "10,2,Ac,ab,あ,ア,２" },
         { descending: true, mode: "", expected: "あ,ア,Ac,ab,2,２,10" },
         { descending: true, mode: "n", expected: "あ,ア,Ac,ab,10,2,２" },
-        { descending: true, mode: "c", expected: "２,ア,あ,ab,Ac,2,10" },
     ].forEach(t => {
         const input = "2,10,あ,ab,２,Ac,ア";
         test(`options: {descending: ${t.descending}, mode: "${t.mode}"}`,

@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+### Changed
+- Removed character code based sorting (not considered useful much)
+
 ## [0.3.0] - 2018-10-01
 ### Added
 - New sort options to use character code for string comparison
