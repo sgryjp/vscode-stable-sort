@@ -70,15 +70,13 @@ export function sortLines(
         .sort((a, b) => a.active.compareTo(b.active));
 
     // List line numbers to be targeted
-    let lineNumbers = selections
-        .map(s => _series(s.start.line, s.end.line + 1))
-        .reduce((prev, curr) => prev.concat(curr))  // flatten
-        .reduce((prev, curr) => {  // unique
-            if (prev.length === 0 || prev[prev.length - 1] !== curr) {
-                prev.push(curr);
-            }
-            return prev;
-        }, new Array<number>());
+    let lineNumberSet = new Set<number>();
+    for (const s of selections) {
+        for (var i = s.start.line; i <= s.end.line; i++) {
+            lineNumberSet.add(i);
+        }
+    }
+    let lineNumbers = Array.from(lineNumberSet);
     if (1 === selections.length && 1 < lineNumbers.length) {
         // Exclude last line if there is only one selection which ends at
         // start of a line
@@ -92,29 +90,25 @@ export function sortLines(
     // Prepare data to process
     // (An array of 3-tuples made with TextLine object, selection range,
     // and whether the selection is reversed or not)
-    const data: Datum[] = lineNumbers
-        .map(lineNumber => document.lineAt(lineNumber))
-        .map(line => ({
+    let data: Array<Datum> = [];
+    for (const lineNumber of lineNumbers) {
+        const line = document.lineAt(lineNumber);
+        let range: Range;
+        let reversed: boolean = false;
+        for (const s of selections) {
+            const r = s.intersection(line.range);
+            if (r !== undefined) {
+                range = r!;
+                reversed = s.isReversed;
+                break;
+            }
+        }
+        data.push({
             line: line,
-            selection:
-                _first(
-                    _filter(
-                        _map(
-                            selections,
-                            s => ({
-                                range: _intersection(s, line.range),
-                                reversed: s.isReversed
-                            })
-                        ),
-                        x => x.range !== undefined
-                    )
-                ),
-        }))
-        .map(x => ({
-            line: x.line,
-            selection: x.selection ? x.selection.range : undefined,
-            reversed: x.selection ? x.selection.reversed : false,
-        }));
+            selection: [range!.start.character, range!.end.character],
+            reversed: reversed,
+        });
+    }
 
     // Sort
     data.sort((d1: Datum, d2: Datum) => {
@@ -217,17 +211,6 @@ function _compare(str1: string, str2: string, numeric: boolean): number {
     return str1.localeCompare(str2, locale, options);
 }
 
-function _intersection(
-    selection: Selection,
-    range: Range
-): [number, number] | undefined {
-    const intersection = selection.intersection(range);
-    if (!intersection) {
-        return;
-    }
-    return [intersection.start.character, intersection.end.character];
-}
-
 function _guessSeparator(text: string): [RegExp, string] {
     let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*/);
     if (matches) {
@@ -251,25 +234,4 @@ function _guessSeparator(text: string): [RegExp, string] {
 
 function _series(begin: number, end: number) {
     return Array.from({ length: end - begin }, (v, i) => begin + i);
-}
-
-function _first<T>(iterable: Iterable<T>): T | undefined {
-    for (var item of iterable) {
-        return item;
-    }
-}
-
-function* _map<T, U>(iterable: Iterable<T>, op: (value: T, index: number) => U) {
-    let i = 0;
-    for (var item of iterable) {
-        yield op(item, i++);
-    }
-}
-
-function* _filter<T>(iterable: Iterable<T>, op: (value: T) => boolean) {
-    for (var item of iterable) {
-        if (op(item)) {
-            yield item;
-        }
-    }
 }
