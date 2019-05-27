@@ -61,8 +61,7 @@ export function sortLines(
     numeric: boolean
 ) {
     type Datum = {
-        line: TextLine,
-        selection: [number, number] | undefined,
+        selection: Range,
         reversed: boolean
     };
     const document = editor.document;
@@ -88,8 +87,6 @@ export function sortLines(
     }
 
     // Prepare data to process
-    // (An array of 3-tuples made with TextLine object, selection range,
-    // and whether the selection is reversed or not)
     let data: Array<Datum> = [];
     for (const lineNumber of lineNumbers) {
         const line = document.lineAt(lineNumber);
@@ -104,22 +101,22 @@ export function sortLines(
             }
         }
         data.push({
-            line: line,
-            selection: [range!.start.character, range!.end.character],
+            selection: range!,
             reversed: reversed,
         });
     }
 
     // Sort
     data.sort((d1: Datum, d2: Datum) => {
-        // Preprocess incoming data
-        const range1 = d1.selection ? d1.selection : [0, d1.line.text.length];
-        const range2 = d2.selection ? d2.selection : [0, d2.line.text.length];
-        let str1 = d1.line.text;
-        let str2 = d2.line.text;
+        // Get substrings to compare
+        let str1: string;
+        let str2: string;
         if (1 < selections.length) {
-            str1 = str1.slice(range1[0], range1[1]).toLowerCase();
-            str2 = str2.slice(range2[0], range2[1]).toLowerCase();
+            str1 = document.getText(d1.selection);
+            str2 = document.getText(d2.selection);
+        } else {
+            str1 = document.lineAt(d1.selection.start.line).text;
+            str2 = document.lineAt(d2.selection.start.line).text;
         }
 
         // Compare by text
@@ -129,14 +126,17 @@ export function sortLines(
         }
 
         // Compare by line number (do not reverse the sign)
-        return d1.line.lineNumber - d2.line.lineNumber;
+        return d1.selection.start.line - d2.selection.start.line;
     });
 
     return editor.edit(e => {  // Replace text
         for (var i = 0; i < lineNumbers.length; i++) {
             const datum = data[i];
             const lineNumber = lineNumbers[i];
-            e.replace(document.lineAt(lineNumber).range, datum.line.text);
+            e.replace(
+                document.lineAt(lineNumber).range,
+                document.lineAt(datum.selection.start.line).text,
+            );
         }
     }).then(() => {  // Restore selections
         if (selections.length === 1) {
@@ -146,15 +146,19 @@ export function sortLines(
         for (var i = 0; i < lineNumbers.length; i++) {
             const datum = data[i];
             const lineNumber = lineNumbers[i];
-            if (datum.selection) {
-                const s = new Selection(
-                    lineNumber,
-                    datum.reversed ? datum.selection[1] : datum.selection[0],
-                    lineNumber,
-                    datum.reversed ? datum.selection[0] : datum.selection[1]
+            let s: Selection;
+            if (datum.reversed) {
+                s = new Selection(
+                    lineNumber, datum.selection.end.character,
+                    lineNumber, datum.selection.start.character
                 );
-                newSelections.push(s);
+            } else {
+                s = new Selection(
+                    lineNumber, datum.selection.start.character,
+                    lineNumber, datum.selection.end.character,
+                );
             }
+            newSelections.push(s);
         }
         editor.selections = newSelections;
     });
@@ -230,8 +234,4 @@ function _guessSeparator(text: string): [RegExp, string] {
     }
 
     return [/\s+/, " "];
-}
-
-function _series(begin: number, end: number) {
-    return Array.from({ length: end - begin }, (v, i) => begin + i);
 }
