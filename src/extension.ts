@@ -1,6 +1,6 @@
 'use strict';
 import * as vscode from 'vscode';
-import { TextEditor, Range, Selection, TextLine } from 'vscode';
+import { TextEditor, Selection } from 'vscode';
 
 //-----------------------------------------------------------------------------
 export function activate(context: vscode.ExtensionContext) {
@@ -60,10 +60,6 @@ export function sortLines(
     descending: boolean,
     numeric: boolean
 ) {
-    type Datum = {
-        selection: Range,
-        reversed: boolean
-    };
     const document = editor.document;
     const selections = editor.selections.slice()
         .sort((a, b) => a.active.compareTo(b.active));
@@ -87,36 +83,33 @@ export function sortLines(
     }
 
     // Prepare data to process
-    let data: Array<Datum> = [];
+    let selectionsPerLine: Array<Selection> = [];
     for (const lineNumber of lineNumbers) {
         const line = document.lineAt(lineNumber);
-        let range: Range;
-        let reversed: boolean = false;
         for (const s of selections) {
             const r = s.intersection(line.range);
             if (r !== undefined) {
-                range = r!;
-                reversed = s.isReversed;
+                selectionsPerLine.push(
+                    s.isReversed
+                        ? new Selection(r!.end, r!.start)
+                        : new Selection(r!.start, r!.end),
+                );
                 break;
             }
         }
-        data.push({
-            selection: range!,
-            reversed: reversed,
-        });
     }
 
     // Sort
-    data.sort((d1: Datum, d2: Datum) => {
+    selectionsPerLine.sort((s1: Selection, s2: Selection) => {
         // Get substrings to compare
         let str1: string;
         let str2: string;
         if (1 < selections.length) {
-            str1 = document.getText(d1.selection);
-            str2 = document.getText(d2.selection);
+            str1 = document.getText(s1);
+            str2 = document.getText(s2);
         } else {
-            str1 = document.lineAt(d1.selection.start.line).text;
-            str2 = document.lineAt(d2.selection.start.line).text;
+            str1 = document.lineAt(s1.start.line).text;
+            str2 = document.lineAt(s2.start.line).text;
         }
 
         // Compare by text
@@ -126,16 +119,16 @@ export function sortLines(
         }
 
         // Compare by line number (do not reverse the sign)
-        return d1.selection.start.line - d2.selection.start.line;
+        return s1.start.line - s2.start.line;
     });
 
     return editor.edit(e => {  // Replace text
         for (var i = 0; i < lineNumbers.length; i++) {
-            const datum = data[i];
+            const selection = selectionsPerLine[i];
             const lineNumber = lineNumbers[i];
             e.replace(
                 document.lineAt(lineNumber).range,
-                document.lineAt(datum.selection.start.line).text,
+                document.lineAt(selection.start.line).text,
             );
         }
     }).then(() => {  // Restore selections
@@ -144,21 +137,12 @@ export function sortLines(
         }
         let newSelections = new Array<Selection>();
         for (var i = 0; i < lineNumbers.length; i++) {
-            const datum = data[i];
+            const selection = selectionsPerLine[i];
             const lineNumber = lineNumbers[i];
-            let s: Selection;
-            if (datum.reversed) {
-                s = new Selection(
-                    lineNumber, datum.selection.end.character,
-                    lineNumber, datum.selection.start.character
-                );
-            } else {
-                s = new Selection(
-                    lineNumber, datum.selection.start.character,
-                    lineNumber, datum.selection.end.character,
-                );
-            }
-            newSelections.push(s);
+            newSelections.push(new Selection(
+                lineNumber, selection.anchor.character,
+                lineNumber, selection.active.character,
+            ));
         }
         editor.selections = newSelections;
     });
