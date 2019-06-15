@@ -298,6 +298,33 @@ suite("sortLines()", () => {
             assert.equal(result.text.replace(/\n/g, ","), expected);
         });
     }
+
+    {
+        const pointOfView = "excludes last line?";
+        const tt: Array<[string, Selection[], string]> = [
+            [`no (not single selection)`,
+                [new Selection(0, 0, 0, 1), new Selection(1, 0, 0, 1)],
+                "foo,qux,bar"],
+            [`no (not covering multiple lines)`,
+                [new Selection(0, 0, 0, 3)], "qux,foo,bar"],
+            [`no (selection end not at the start of the lastly selected line)`,
+                [new Selection(0, 0, 2, 1)], "bar,foo,qux"],
+            [`yes`,
+                [new Selection(0, 0, 2, 0)], "foo,qux,bar"],
+        ];
+        for (const t of tt) {
+            const [title, selections, expected] = t;
+            test(`${pointOfView}: ${title}`, async () => {
+                const result = await doTest(
+                    "qux,foo,bar".replace(/,/g, "\n"),
+                    selections,
+                    false,
+                    false
+                );
+                assert.equal(result.text.replace(/\n/g, ","), expected);
+            });
+        }
+    }
 });
 
 
