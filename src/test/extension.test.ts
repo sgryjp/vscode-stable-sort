@@ -59,192 +59,83 @@ suite("sortLines()", () => {
         );
     });
 
-    test("single selection: logic", async () => {
-        let result = await doTest(
-            "a\n" +
-            "c\n" +
-            "b\n",
-            [new Selection(0, 0, 3, 0)],
-            false, false
-        );
-        assert.equal(result.text,
-            "a\n" +
-            "b\n" +
-            "c\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 3, 0)])
-        );
-
-        result = await doTest(
-            "aaa\n" +
-            "aa\n" +
-            "a\n",
-            [new Selection(0, 0, 3, 0)],
-            false, false
-        );
-        assert.equal(result.text,
-            "a\n" +
-            "aa\n" +
-            "aaa\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 3, 0)])
-        );
+    suite("single selection", () => {
+        const tt: Array<[string, string, Selection[], boolean, string, Selection[]]> = [
+            ["same length, ascending",
+                "a,c,b", [new Selection(0, 0, 2, 1)], false,
+                "a,b,c", [new Selection(0, 0, 2, 1)]],
+            ["same length, descending",
+                "a,c,b", [new Selection(0, 0, 2, 1)], true,
+                "c,b,a", [new Selection(0, 0, 2, 1)]],
+            ["different length, ascending",
+                "aa,a,aaa", [new Selection(0, 0, 2, 3)], false,
+                "a,aa,aaa", [new Selection(0, 0, 2, 3)]],
+            ["different length, descending",
+                "aa,a,aaa", [new Selection(0, 0, 2, 3)], true,
+                "aaa,aa,a", [new Selection(0, 0, 2, 1)]],
+            ["compares entire line contents",
+                "Apple,Orange,Grape,", [new Selection(0, 3, 2, 4)], false,
+                "Apple,Grape,Orange,", [new Selection(0, 3, 2, 4)]],
+        ];
+        for (const t of tt) {
+            const [title, input, selections, descending, xtext, xsels] = t;
+            test(title, async () => {
+                const result = await doTest(
+                    input.replace(/,/g, "\n"),
+                    selections,
+                    descending,
+                    false
+                );
+                assert.equal(result.text.replace(/\n/g, ","), xtext);
+                assert.equal(
+                    stringifySelections(result.selections),
+                    stringifySelections(xsels),
+                );
+            });
+        }
     });
 
-    test("single selection: always compare entire line content", async () => {
-        let result = await doTest(
-            "Apple\n" +
-            "Orange\n" +
-            "Grape\n",
-            [new Selection(0, 3, 2, 4)],
-            false, false
-        );
-        assert.equal(result.text,
-            "Apple\n" +
-            "Grape\n" +
-            "Orange\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 3, 2, 4)])
-        );
-    });
-
-    test("multiple selections: contiguous", async () => {
-        let result = await doTest(
-            "Apple\n" +
-            "Orange\n" +
-            "Pineapple\n",
-            [
-                new Selection(0, 1, 0, 2),
-                new Selection(1, 1, 1, 2),
-                new Selection(2, 1, 2, 2),
-            ],
-            false, false
-        );
-        assert.equal(result.text,
-            "Pineapple\n" +
-            "Apple\n" +
-            "Orange\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([
-                new Selection(0, 1, 0, 2),
-                new Selection(1, 1, 1, 2),
-                new Selection(2, 1, 2, 2),
-            ])
-        );
-    });
-
-    test("multiple selections: sparse", async () => {
-        let result = await doTest(
-            "Apple\n" +
-            "Orange\n" +
-            "Grape\n" +
-            "Pineapple\n",
-            [
-                new Selection(0, 1, 0, 3),
-                new Selection(1, 3, 1, 1),
-                new Selection(3, 1, 3, 3),
-            ],
-            false, false
-        );
-        assert.equal(result.text,
-            "Pineapple\n" +
-            "Apple\n" +
-            "Grape\n" +
-            "Orange\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([
-                new Selection(0, 1, 0, 3),
-                new Selection(1, 1, 1, 3),
-                new Selection(3, 3, 3, 1),
-            ])
-        );
-    });
-
-    test("descending order", async () => {
-        let result = await doTest(
-            "a\n" +
-            "c\n" +
-            "b\n",
-            [new Selection(0, 0, 3, 0)],
-            true, false
-        );
-        assert.equal(result.text,
-            "c\n" +
-            "b\n" +
-            "a\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 3, 0)]),
-        );
-
-        result = await doTest(
-            "a\n" +
-            "aa\n" +
-            "aaa\n",
-            [new Selection(0, 0, 3, 0)],
-            true, false
-        );
-        assert.equal(result.text,
-            "aaa\n" +
-            "aa\n" +
-            "a\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 3, 0)]),
-        );
-    });
-
-    test("empty line: exclude trailing one in a selection", async () => {
-        let result = await doTest(
-            "a\n" +
-            "c\n" +
-            "b\n" +
-            "\n",
-            [new Selection(0, 0, 3, 0)],
-            false, false
-        );
-        assert.equal(result.text,
-            "a\n" +
-            "b\n" +
-            "c\n" +
-            "\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([new Selection(0, 0, 3, 0)]),
-        );
-    });
-
-    test("empty line: include those selected by one of the multiple selections", async () => {
-        let result = await doTest(
-            "b\n" +
-            "\n" +
-            "a\n" +
-            "\n",
-            [
-                new Selection(0, 0, 0, 1),
-                new Selection(1, 0, 1, 0),
-                new Selection(2, 0, 2, 1),
-            ],
-            false, false
-        );
-        assert.equal(result.text,
-            "\n" +
-            "a\n" +
-            "b\n" +
-            "\n"
-        );
-        assert.equal(stringifySelections(result.selections),
-            stringifySelections([
-                new Selection(0, 0, 0, 0),
-                new Selection(1, 0, 1, 1),
-                new Selection(2, 0, 2, 1),
-            ])
-        );
+    suite("multiple selections", () => {
+        const tt: Array<[string, string, Selection[], string, Selection[]]> = [
+            ["contiguous",
+                "Apple,Orange,Pineapple,", [
+                    new Selection(0, 1, 0, 2),
+                    new Selection(1, 1, 1, 2),
+                    new Selection(2, 1, 2, 2),
+                ],
+                "Pineapple,Apple,Orange,", [
+                    new Selection(0, 1, 0, 2),
+                    new Selection(1, 1, 1, 2),
+                    new Selection(2, 1, 2, 2),
+                ]],
+            ["sparse",
+                "Apple,Orange,Grape,Pineapple,", [
+                    new Selection(0, 1, 0, 3),
+                    new Selection(1, 3, 1, 1),
+                    new Selection(3, 1, 3, 3),
+                ],
+                "Pineapple,Apple,Grape,Orange,", [
+                    new Selection(0, 1, 0, 3),
+                    new Selection(1, 1, 1, 3),
+                    new Selection(3, 3, 3, 1),
+                ]],
+        ];
+        for (const t of tt) {
+            const [title, input, selections, xtext, xsels] = t;
+            test(title, async () => {
+                const result = await doTest(
+                    input.replace(/,/g, "\n"),
+                    selections,
+                    false,
+                    false
+                );
+                assert.equal(result.text.replace(/\n/g, ","), xtext);
+                assert.equal(
+                    stringifySelections(result.selections),
+                    stringifySelections(xsels),
+                );
+            });
+        }
     });
 
     test("stability", async () => {
@@ -252,69 +143,74 @@ suite("sortLines()", () => {
         // algorithm for a small collection so the test data must be large
         // enough to let Node use the unstable algorithm.
         // As of VSCode 1.27.2 (Node.js 8.9.3), N must be larger than 5.
-        const N = 6;
-        const input = Array<string>();
-        for (let i = 0; i < N; i++) {
-            input.push(String.fromCharCode('A'.charCodeAt(0) + N - 1 - i));
-            input.push(String.fromCharCode('Ａ'.charCodeAt(0) + N - 1 - i));
-        }
 
-        const expected = Array<string>();
-        for (let i = 0; i < N; i++) {
-            expected.push(String.fromCharCode('A'.charCodeAt(0) + i));
-            expected.push(String.fromCharCode('Ａ'.charCodeAt(0) + i));
-        }
+        // Test data was generated by Julia code below:
+        // julia> N=12; A=join([('a'+floor(Int,(N-n)/2))*('A'+n-1) for n in 1:N], ",")
+        // julia> join(sort(split(A, ","), by=s -> s[1]), ",")
+        // julia> foreach(s -> println(s), ["new Selection($n, 0, $n, 1)," for n in 0:N-1])
 
+        const input = "fA,fB,eC,eD,dE,dF,cG,cH,bI,bJ,aK,aL";
+        const expected = "aK,aL,bI,bJ,cG,cH,dE,dF,eC,eD,fA,fB";
         let result = await doTest(
-            input.join("\n") + "\n",
-            [new Selection(0, 0, N * 2, 0)],
-            false, false
+            input.replace(/,/g, "\n"), [
+                new Selection(0, 0, 0, 1),
+                new Selection(1, 0, 1, 1),
+                new Selection(2, 0, 2, 1),
+                new Selection(3, 0, 3, 1),
+                new Selection(4, 0, 4, 1),
+                new Selection(5, 0, 5, 1),
+                new Selection(6, 0, 6, 1),
+                new Selection(7, 0, 7, 1),
+                new Selection(8, 0, 8, 1),
+                new Selection(9, 0, 9, 1),
+                new Selection(10, 0, 10, 1),
+                new Selection(11, 0, 11, 1),
+            ], false, false
         );
-        assert.equal(result.text,
-            expected.join("\n") + "\n"
-        );
+        assert.equal(result.text.replace(/\n/g, ","), expected);
     });
 
-    // Collate options
-    const tt: Array<[string, boolean, boolean, string, string]> = [
-        ["options: ascending",
-            false, false, "2,10,あ,ab,２,Ac,ア", "10,2,２,ab,Ac,あ,ア"],
-        ["options: ascending, numeric",
-            false, true, "2,10,あ,ab,２,Ac,ア", "2,２,10,ab,Ac,あ,ア"],
-        ["options: descending",
-            true, false, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,2,２,10"],
-        ["options: descending, numeric",
-            true, true, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,10,2,２"],
-    ];
-    for (const t of tt) {
-        const [title, descending, numeric, input, expected] = t;
-        test(title, async () => {
-            const result = await doTest(
-                input.replace(/,/g, "\n"),
-                [new Selection(0, 0, 6, 1)],
-                descending,
-                numeric
-            );
-            assert.equal(result.text.replace(/\n/g, ","), expected);
-        });
-    }
+    suite("options", () => {
+        // Collate options
+        const tt: Array<[string, boolean, boolean, string, string]> = [
+            ["ascending",
+                false, false, "2,10,あ,ab,２,Ac,ア", "10,2,２,ab,Ac,あ,ア"],
+            ["ascending, numeric",
+                false, true, "2,10,あ,ab,２,Ac,ア", "2,２,10,ab,Ac,あ,ア"],
+            ["descending",
+                true, false, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,2,２,10"],
+            ["descending, numeric",
+                true, true, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,10,2,２"],
+        ];
+        for (const t of tt) {
+            const [title, descending, numeric, input, expected] = t;
+            test(title, async () => {
+                const result = await doTest(
+                    input.replace(/,/g, "\n"),
+                    [new Selection(0, 0, 6, 1)],
+                    descending,
+                    numeric
+                );
+                assert.equal(result.text.replace(/\n/g, ","), expected);
+            });
+        }
+    });
 
-    {
-        const pointOfView = "excludes last line?";
+    suite("excludes last line?", () => {
         const tt: Array<[string, Selection[], string]> = [
-            [`no (not single selection)`,
+            ["no (not single selection)",
                 [new Selection(0, 0, 0, 1), new Selection(1, 0, 0, 1)],
                 "foo,qux,bar"],
-            [`no (not covering multiple lines)`,
+            ["no (not covering multiple lines)",
                 [new Selection(0, 0, 0, 3)], "qux,foo,bar"],
-            [`no (selection end not at the start of the lastly selected line)`,
+            ["no (selection end not at the start of the lastly selected line)",
                 [new Selection(0, 0, 2, 1)], "bar,foo,qux"],
-            [`yes`,
+            ["yes",
                 [new Selection(0, 0, 2, 0)], "foo,qux,bar"],
         ];
         for (const t of tt) {
             const [title, selections, expected] = t;
-            test(`${pointOfView}: ${title}`, async () => {
+            test(title, async () => {
                 const result = await doTest(
                     "qux,foo,bar".replace(/,/g, "\n"),
                     selections,
@@ -324,7 +220,7 @@ suite("sortLines()", () => {
                 assert.equal(result.text.replace(/\n/g, ","), expected);
             });
         }
-    }
+    });
 });
 
 
