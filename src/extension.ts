@@ -1,6 +1,7 @@
 'use strict';
 import * as vscode from 'vscode';
 import { TextEditor, Selection } from 'vscode';
+import { computeWidth } from "meaw";
 
 //-----------------------------------------------------------------------------
 export function activate(context: vscode.ExtensionContext) {
@@ -93,8 +94,8 @@ export function sortLines(
 
         // Check if they start with a word looking like a numeric value
         const numeric = (
-            (str1 === "" || !isNaN(parseFloat(str1))) &&
-            (str2 === "" || !isNaN(parseFloat(str2)))
+            (str1.trim() === "" || !isNaN(parseFloat(str1))) &&
+            (str2.trim() === "" || !isNaN(parseFloat(str2)))
         );
 
         // Compare by text
@@ -140,17 +141,32 @@ export function sortWords(
     const document = editor.document;
     const selection = editor.selection;
 
-    //TODO: Support sorting words spread over multiple lines
-    if (editor.selections.length !== 1 || !editor.selection.isSingleLine) {
+    if (1 < editor.selections.length) {
         vscode.window.showInformationMessage(
-            "Sorry, sorting words in multiple lines/selections are" +
-            " not supported yet..."
+            "Sorting words in multiple selections are not supported."
         );
         return;
     }
 
+    // Collect indentation and width of each line
+    let indents: Array<string> = [""];
+    let widths: Array<number> = [
+        computeWidth(
+            document.lineAt(selection.start.line)
+                .text
+                .substring(selection.start.character)
+        )
+    ];
+    for (let i = selection.start.line + 1; i <= selection.end.line; i++) {
+        const lineText = document.lineAt(i).text;
+        const firstNonSpaceCharIndex = lineText.search(/[^\s]/);
+        const indent = lineText.substring(0, firstNonSpaceCharIndex);
+        indents.push(indent);
+        widths.push(computeWidth(lineText));
+    }
+
     // Get firstly used separator character in the selection
-    const selectedText = document.getText(selection).trim();
+    const selectedText = document.getText(selection).replace("\n", "").trim();
     const [sepPattern, sepText] = _guessSeparator(selectedText);
 
     // Separate words with it and sort them
@@ -164,13 +180,26 @@ export function sortWords(
 
     words.sort((a, b) => sign * _compare(a, b, numeric));
 
-    // Compose sorted text
-    let newText = words.join(sepText);
-    if (1 < selectedText.length &&
-        sepPattern.test(selectedText[selectedText.length - 1])) {
-        // Keep trailing separator if there was
-        newText += sepText;
+    // Compose new text according to the rules below:
+    // 1. Keep indentations
+    // 2. For each line, place words in sorted order until placing a word makes
+    //    the line longer than the original
+    // 3. Exceptionally, at least one word must be place for each line
+    // 4. Append words which were not accommodated within the original space
+    let lines: Array<string> = [];
+    let j = 0;
+    for (let i = 0; i < indents.length; i++) {
+        let line = indents[i] + words[j++] + sepText;
+        while (j < words.length && line.length + words[j].length <= widths[i]) {
+            line += words[j++] + sepText;
+        }
+        lines.push(line);
     }
+    for (; j < words.length; j++) {
+        lines[lines.length - 1] += words[j] + sepText;
+    }
+    let newText = lines.join("\n");
+    newText = newText.substring(0, newText.length - sepText.length);
 
     // Apply
     return editor.edit(e => {

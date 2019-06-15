@@ -294,6 +294,47 @@ suite("sortWords()", () => {
             assert.equal(result.text, expected);
         });
     });
+
+    suite("sort words spread over lines", () => {
+        const tt: Array<[string, Selection[], string, Selection[], string]> = [
+            ["case 1",
+                [new Selection(0, 7, 2, 9)],
+                "export orange,\n  apple, pineapple,\n    grape",
+                [new Selection(0, 7, 2, 13)],
+                "export apple, \n  grape, orange, \n    pineapple",
+            ],
+        ];
+        for (const t of tt) {
+            const [title, sels, str, xsels, xstr] = t;
+            test(title, async () => {
+                // Set the test input text and the selection
+                const editor = vscode.window.activeTextEditor!;
+                await editor.edit((editBuilder: TextEditorEdit) => {
+                    const document = editor.document;
+                    const lastLine = document.lineAt(document.lineCount - 1);
+                    const entireRange = new Range(
+                        new Position(0, 0),
+                        lastLine.range.end
+                    );
+                    editBuilder.replace(entireRange, str);
+                });
+                editor.selections = sels;
+
+                // Call the logic
+                await my.sortWords(editor, false);
+                const result = {
+                    text: editor.document.getText(),
+                    selections: editor.selections
+                };
+
+                assert.equal(result.text, xstr);
+                assert.equal(
+                    stringifySelections(result.selections),
+                    stringifySelections(xsels),
+                );
+            });
+        }
+    });
 });
 
 

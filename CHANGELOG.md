@@ -1,8 +1,11 @@
 # Change Log
 
 ## [Unreleased]
-### Changed
+### Added
+- Now words spread over multiple lines can be sorted
 - Now whether to sort numerically or not are guessed automatically
+
+### Changed
 - Removed character code based sorting (not considered useful much)
 - Now this extension reproduces spaces around separators according to what
   the separator character is
