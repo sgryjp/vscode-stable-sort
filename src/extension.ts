@@ -8,33 +8,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     command = vscode.commands.registerCommand(
         'stableSort.sortLinesAscending', () => {
-            sortLines(vscode.window.activeTextEditor!,
-                false, false
-            );
+            sortLines(vscode.window.activeTextEditor!, false);
         });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
         'stableSort.sortLinesDescending', () => {
-            sortLines(vscode.window.activeTextEditor!,
-                true, false
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortLinesAscendingNumerically', () => {
-            sortLines(vscode.window.activeTextEditor!,
-                false, true
-            );
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortLinesDescendingNumerically', () => {
-            sortLines(vscode.window.activeTextEditor!,
-                true, true
-            );
+            sortLines(vscode.window.activeTextEditor!, true);
         });
     context.subscriptions.push(command);
 
@@ -57,8 +37,7 @@ export function deactivate() {
 //-----------------------------------------------------------------------------
 export function sortLines(
     editor: TextEditor,
-    descending: boolean,
-    numeric: boolean
+    descending: boolean
 ) {
     const document = editor.document;
     const selections = editor.selections.slice()
@@ -111,6 +90,12 @@ export function sortLines(
             str1 = document.lineAt(s1.start.line).text;
             str2 = document.lineAt(s2.start.line).text;
         }
+
+        // Check if they start with a word looking like a numeric value
+        const numeric = (
+            (str1 === "" || !isNaN(parseFloat(str1))) &&
+            (str2 === "" || !isNaN(parseFloat(str2)))
+        );
 
         // Compare by text
         const diff = _compare(str1, str2, numeric);

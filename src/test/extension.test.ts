@@ -10,8 +10,7 @@ suite("sortLines()", () => {
     async function doTest(
         input: string,
         selections: Selection[],
-        descending: boolean,
-        numeric: boolean) {
+        descending: boolean) {
 
         // Set the test input text and the selection
         const editor = vscode.window.activeTextEditor!;
@@ -27,7 +26,7 @@ suite("sortLines()", () => {
         editor.selections = selections;
 
         // Call the logic
-        await my.sortLines(editor, descending, numeric);
+        await my.sortLines(editor, descending);
 
         // Return the result
         return { text: editor.document.getText(), selections: editor.selections };
@@ -73,6 +72,12 @@ suite("sortLines()", () => {
             ["different length, descending",
                 "aa,a,aaa", [new Selection(0, 0, 2, 3)], true,
                 "aaa,aa,a", [new Selection(0, 0, 2, 1)]],
+            ["numeric, ascending",
+                "2a,10c,,5b,", [new Selection(0, 0, 4, 0)], false,
+                ",2a,5b,10c,", [new Selection(0, 0, 4, 0)]],
+            ["numeric, descending",
+                "2a,10c,,5b,", [new Selection(0, 0, 4, 0)], true,
+                "10c,5b,2a,,", [new Selection(0, 0, 4, 0)]],
             ["compares entire line contents",
                 "Apple,Orange,Grape,", [new Selection(0, 3, 2, 4)], false,
                 "Apple,Grape,Orange,", [new Selection(0, 3, 2, 4)]],
@@ -81,10 +86,7 @@ suite("sortLines()", () => {
             const [title, input, selections, descending, xtext, xsels] = t;
             test(title, async () => {
                 const result = await doTest(
-                    input.replace(/,/g, "\n"),
-                    selections,
-                    descending,
-                    false
+                    input.replace(/,/g, "\n"), selections, descending
                 );
                 assert.equal(result.text.replace(/\n/g, ","), xtext);
                 assert.equal(
@@ -124,10 +126,7 @@ suite("sortLines()", () => {
             const [title, input, selections, xtext, xsels] = t;
             test(title, async () => {
                 const result = await doTest(
-                    input.replace(/,/g, "\n"),
-                    selections,
-                    false,
-                    false
+                    input.replace(/,/g, "\n"), selections, false
                 );
                 assert.equal(result.text.replace(/\n/g, ","), xtext);
                 assert.equal(
@@ -165,35 +164,9 @@ suite("sortLines()", () => {
                 new Selection(9, 0, 9, 1),
                 new Selection(10, 0, 10, 1),
                 new Selection(11, 0, 11, 1),
-            ], false, false
+            ], false
         );
         assert.equal(result.text.replace(/\n/g, ","), expected);
-    });
-
-    suite("options", () => {
-        // Collate options
-        const tt: Array<[string, boolean, boolean, string, string]> = [
-            ["ascending",
-                false, false, "2,10,あ,ab,２,Ac,ア", "10,2,２,ab,Ac,あ,ア"],
-            ["ascending, numeric",
-                false, true, "2,10,あ,ab,２,Ac,ア", "2,２,10,ab,Ac,あ,ア"],
-            ["descending",
-                true, false, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,2,２,10"],
-            ["descending, numeric",
-                true, true, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,10,2,２"],
-        ];
-        for (const t of tt) {
-            const [title, descending, numeric, input, expected] = t;
-            test(title, async () => {
-                const result = await doTest(
-                    input.replace(/,/g, "\n"),
-                    [new Selection(0, 0, 6, 1)],
-                    descending,
-                    numeric
-                );
-                assert.equal(result.text.replace(/\n/g, ","), expected);
-            });
-        }
     });
 
     suite("excludes last line?", () => {
@@ -212,10 +185,7 @@ suite("sortLines()", () => {
             const [title, selections, expected] = t;
             test(title, async () => {
                 const result = await doTest(
-                    "qux,foo,bar".replace(/,/g, "\n"),
-                    selections,
-                    false,
-                    false
+                    "qux,foo,bar".replace(/,/g, "\n"), selections, false
                 );
                 assert.equal(result.text.replace(/\n/g, ","), expected);
             });
