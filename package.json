@@ -3,7 +3,7 @@
     "displayName": "Stable Sort",
     "description": "Sort lines and words using stable sort algorithm.",
     "license": "MIT",
-    "version": "0.3.0",
+    "version": "1.0.0",
     "publisher": "sgryjp",
     "repository": {
         "type": "git",
@@ -17,9 +17,9 @@
     ],
     "badges": [
         {
-            "url": "https://img.shields.io/badge/license-zlib-lightgrey.svg?longCache=true&style=popout",
-            "href": "https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE",
-            "description": "zlib License"
+            "url": "https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=popout",
+            "href": "https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md",
+            "description": "MIT License"
         }
     ],
     "activationEvents": [

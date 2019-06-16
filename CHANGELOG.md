@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [1.0.0] - 2019-06-16
 ### Added
 - Unified commands to sort words and lines
   - New keybinding: <kbd>Ctrl+Alt+R</kbd> and <kbd>Ctrl+Alt+Shift+R</kbd>
@@ -9,6 +9,7 @@
 - Now whether to sort numerically or not are guessed automatically
 
 ### Changed
+- Changed zlib License to MIT License
 - Removed character code based sorting (not considered useful much)
 - Now this extension reproduces spaces around separators according to what
   the separator character is

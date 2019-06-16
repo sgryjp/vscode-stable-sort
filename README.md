@@ -1,145 +1,108 @@
 # Stable Sort
 
-A [VS Code](https://code.visualstudio.com) extension to sort lines and words
-in a various way, using stable sort algorithm.
+[![Version (VS Marketplace)](https://vsmarketplacebadge.apphb.com/version-short/sgryjp.vscode-stable-sort.svg)](https://marketplace.visualstudio.com/items?itemName=sgryjp.vscode-stable-sort)
+![Rating (VS Marketplace)](https://vsmarketplacebadge.apphb.com/rating-star/sgryjp.vscode-stable-sort.svg)
+![Installs (VS Marketplace)](https://vsmarketplacebadge.apphb.com/installs-short/sgryjp.vscode-stable-sort.svg)
+&nbsp;
+[![MIT license](https://img.shields.io/badge/license-MIT-lightgray.svg?longCache=true&style=popout)](https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md)
 
+Sort CSV-like words or lines in [VS Code](https://code.visualstudio.com) using stable sort algorithm.
 
 # Feature
 
-1. Sort lines in one or more selections
-2. Sort words separated by comma, tab, pipe (`|`), or space in a selection
-3. Sorting result is stable
-   - Order of semantically same lines or words are kept unchanged
-4. Supports various options to compare strings:
-   - acending order or descending order
-   - numerical comparison (e.g.: `2` comes before `10`)
-   - character-code based comparison (compare as byte sequences)
+With single shortcut <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>),
+you can:
+
+- Sort words separated by
+  - space, comma, tab, pipe (`|`)
+  - separators recognized automatically
+- Sort lines by
+  - entire content
+  - selected parts
+
+If you want to sort in reversed (descending) order, use
+<kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kbd>).
+
+Some other key ponits:
+
+- Words or lines will be sorted as numbers if every one of them starts with a
+  token which looks like a numeric value (e.g.: `2` comes before `10`)
+- Sorting algorithm is
+  [stable](https://en.wikipedia.org/wiki/Sorting_algorithm#Stability)
+  - The order of semantically same (depends on locale) words or lines
+    will be unchanged.
+
+## Sorting Words
+
+If there is only one selection range and either start position, end position
+or both are in the middle of a line, words inside the selection. You can select
+words across lines; in that case the original indentation and line widths will
+be kept.
+
+Word separators will be recognized automatically. If one of comma (`U+0013`),
+tab (`U+0009`), or pipe (`U+007C`) was found it will be used as word separator.
+If not found any of them, a space (`U+0020`) will be used.
+
+Note that spaces surrounding word separators will be normalized as below:
+
+- Comma: Zero or one space character following after the first comma will be kept.
+- Tab: Surrounding spaces are simply ignored.
+- Pipe: At most one spaces preceding before and/or following after the first
+  pipe character will be kept.
+- Space: Word separator will always be exactly one space character.
+
+### Example Animations
+
+- Comma<br>
+  ![Sorting words separated by comma](images/sort-words-comma.gif)
+- Tab<br>
+  ![Sorting words separated by tab](images/sort-words-tab.gif)
+- Pipe<br>
+  ![Sorting words separated by pipe](images/sort-words-pipe.gif)
+- Space<br>
+  ![Sorting words separated by space](images/sort-words-space.gif)
+
+## Sorting Lines
+
+If the condition to sort words are not met, selected lines will be sorted.
+
+Strictly writing, lines which contains selection range(s) will be sorted using
+selected part. This means that you can sort lines not only by comparing entire
+content but also by comparing a portion of them. This is useful if you want to
+sort on arbitrary column of visually aligned text data such as output of
+[`ps` command](https://en.wikipedia.org/wiki/Ps_(Unix)) or CSV data.
+
+### Example Animations
+
+- Sort lines by entire content (CSV colorized with
+  [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv))<br>
+  ![Sorting lines by entire content](images/sort-lines-whole.gif)
+- Sort lines by selected parts<br>
+  ![Sorting lines by selected parts](images/sort-lines-part.gif)
+
+## Gallery
+
+- Sorting targets of `import` of TypeScript:<br>
+  ![Sorting imports](images/sort-imports.gif)
+- Sorting visually aligned text data is (relatively) easy:<br>
+  ![Sorting visually aligned](images/sort-visually-aligned.gif)
 
 
-# How to use
+# Background
 
-Open command palette (`Ctrl+Shift+P` by default) and choose one of the commands
-below:
-
-- Stable Sort: Sort Lines ( ascending )
-- Stable Sort: Sort Lines ( ascending, numeric )
-- Stable Sort: Sort Lines ( ascending, char-code )
-- Stable Sort: Sort Lines ( descending )
-- Stable Sort: Sort Lines ( descending, numeric )
-- Stable Sort: Sort Lines ( descending, char-code )
-- Stable Sort: Sort Words ( ascending )
-- Stable Sort: Sort Words ( ascending, numeric )
-- Stable Sort: Sort Words ( ascending, char-code )
-- Stable Sort: Sort Words ( descending )
-- Stable Sort: Sort Words ( descending, numeric )
-- Stable Sort: Sort Words ( descending, char-code )
-
-This extension assigns keyboard shortcuts as below:
-
-| Key                         | Command                               |
-| --------------------------- | ------------------------------------- |
-| <kbd>Ctrl+Alt+L</kbd>       | Stable Sort: SortLines ( ascending )  |
-| <kbd>Ctrl+Shift+Alt+L</kbd> | Stable Sort: SortLines ( descending ) |
-| <kbd>Ctrl+Alt+W</kbd>       | Stable Sort: SortLines ( ascending )  |
-| <kbd>Ctrl+Shift+Alt+W</kbd> | Stable Sort: SortLines ( descending ) |
-
-To set shortcuts for commands not in the table above, or reassign/unassign 
-default shortcuts, see
-["Key Bindings" page](https://code.visualstudio.com/docs/getstarted/keybindings)
-of VSCode's document.
-
-
-# Sorting lines by single selection
-
-Sorting lines with one selection only in a document works just like the
-VS Code's built-in "Sort Lines" commands.
-
-If there is only one selection range in a document, lines which is overlapped
-with the selection will be sorted. This behavior is almost identical to the
-VS Code's built-in "Sort Lines Xxx" command except that this extension uses
-"stable" sort algorithm (see below for cases the stability becomes valuable.)
-
-For example, let a document has three lines, `Apple`, `Orange`, `Grape`, and
-you have selected from `l` of `Apple`, to `p` of `Grape`:
-
-<div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
-App<span style="background: #264f78;">le&nbsp;</span><br>
-<span style="background: #264f78;">Orange&nbsp;</span><br>
-<span style="background: #264f78; border-right: 2px solid white;">Grap</span>e<br>
-</div>
-
-The sorting result will be `Apple`, `Grape`, `Orange`, with a selection range
-from `l` of `Apple` to `n` of `Orange`:
-
-<div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
-App<span style="background: #264f78;">le&nbsp;</span><br>
-<span style="background: #264f78;">Grape&nbsp;</span><br>
-<span style="background: #264f78; border-right: 2px solid white;">Oran</span>ge<br>
-</div>
-
-
-# Sorting lines by multiple selections
-
-If there are multiple selection in a document, the lines overlapped one of
-those (even if its range is empty) will be sorted. In this case, the lines will
-be compared with only the selected part, not the entire line content.
-
-For example, let a document has three lines, `Apple`, `Orange`, `Lemon`, and
-only the second and third characters of those were selected:
-
-<div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
-A<span style="background: #264f78; border-right: 2px solid white;">pp</span>le<br>
-O<span style="background: #264f78; border-left: 2px solid white;">ra</span>nge<br>
-L<span style="background: #264f78; border-right: 2px solid white;">em</span>on<br>
-</div>
-
-The sorting result will be `Lemon`, `Apple`, `Orange` with each selected from
-second character to third character:
-
-<div style="background: #1e1e1e; font-family: monospace; color: #d4d4d4; padding: 2em;">
-L<span style="background: #264f78; border-right: 2px solid white;">em</span>on<br>
-A<span style="background: #264f78; border-right: 2px solid white;">pp</span>le<br>
-O<span style="background: #264f78; border-left: 2px solid white;">ra</span>nge<br>
-</div>
-
-
-# Sorting words
-
-If there is only one selection range in a document, words inside it will be
-sorted.
-
-This extension try to guess separator character. If the guess failed, space
-character is used as separator. The "words" here are technically the substrings
-generated by separating the selected text. In addition to guessing the
-separator, this extension guesses whether a space exists after those separators
-and uses it on composing sort result.
-
-Example of "Sort Words (acending)":
-
-    Apple Orange Grape → Apple Grape Orange
-    1, 10,2            → 1, 10, 2
-
-Example of "Sort Words (descending, numeric)":
-
-    Apple Orange Grape → Orange Grape Apple
-    1, 10,2            → 10, 2, 1
-
-
-# Background of stability
-
-Stability for sorting line is not valuable in most cases except for some.
+Stability of sorting is not valuable in most cases except for some.
 
 As of VS Code 1.27.2, its algorithm to sort lines are not "stable" so sorting
-textually "same" lines may change those order. This behavior will not be a
-problem in most cases because those are normally completely identical so
+textually "same" words or lines may change those order. This behavior will not
+be a problem in most cases because those are normally completely identical so
 swapping those is not a change by all means. But, there are exceptional cases
 where two textually differrent lines are evaluated as equal. In those cases,
-sorting lines changes the result time to time.
+sorted result will be different time to time.
 
 For example, an ASCII digit character and its counter part in
 [fullwidth forms](https://www.unicode.org/charts/PDF/UFF00.pdf)
-are treated as equal so result of sorting words like below (BTW it's "type 2
-diabetes" writen in Japanese) may change time to time:
+are treated as equal in Japanese locale so result of sorting words like below
+(BTW it's "type 2 diabetes" writen in Japanese) may change time to time:
 
     2型糖尿病
     ２型糖尿病
