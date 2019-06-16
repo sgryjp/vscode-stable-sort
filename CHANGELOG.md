@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Added
 - Unified commands to sort words and lines
+  - New keybinding: <kbd>Ctrl+Alt+R</kbd> and <kbd>Ctrl+Alt+Shift+R</kbd>
+    (mac: <kbd>Cmd+Ctrl+R</kbd> and <kbd>Cmd+Ctrl+Shift+R</kbd>)
 - Now words spread over multiple lines can be sorted
 - Now whether to sort numerically or not are guessed automatically
 

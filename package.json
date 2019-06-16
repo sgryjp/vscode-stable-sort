@@ -31,12 +31,14 @@
         "keybindings": [
             {
                 "command": "stableSort.sortAscending",
-                "key": "Ctrl+Alt+L",
+                "key": "Ctrl+Alt+R",
+                "mac": "Cmd+Ctrl+R",
                 "when": "editorTextFocus"
             },
             {
                 "command": "stableSort.sortDescending",
-                "key": "Ctrl+Alt+Shift+L",
+                "key": "Ctrl+Alt+Shift+R",
+                "mac": "Cmd+Ctrl+Shift+R",
                 "when": "editorTextFocus"
             }
         ],
