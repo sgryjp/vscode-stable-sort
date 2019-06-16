@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Unified commands to sort words and lines
 - Now words spread over multiple lines can be sorted
 - Now whether to sort numerically or not are guessed automatically
 

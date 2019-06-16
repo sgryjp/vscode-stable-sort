@@ -23,44 +23,32 @@
         }
     ],
     "activationEvents": [
-        "onCommand:stableSort.sortLinesAscending",
-        "onCommand:stableSort.sortLinesDescending",
-        "onCommand:stableSort.sortWordsAscending",
-        "onCommand:stableSort.sortWordsDescending"
+        "onCommand:stableSort.sortAscending",
+        "onCommand:stableSort.sortDescending"
     ],
     "main": "./out/extension",
     "contributes": {
         "keybindings": [
             {
-                "command": "stableSort.sortLinesAscending",
+                "command": "stableSort.sortAscending",
                 "key": "Ctrl+Alt+L",
                 "when": "editorTextFocus"
             },
             {
-                "command": "stableSort.sortLinesDescending",
+                "command": "stableSort.sortDescending",
                 "key": "Ctrl+Alt+Shift+L",
                 "when": "editorTextFocus"
             }
         ],
         "commands": [
             {
-                "command": "stableSort.sortLinesAscending",
-                "title": "Sort Lines ( ascending )",
+                "command": "stableSort.sortAscending",
+                "title": "Sort (ascending)",
                 "category": "Stable Sort"
             },
             {
-                "command": "stableSort.sortLinesDescending",
-                "title": "Sort Lines ( descending )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortWordsAscending",
-                "title": "Sort Words ( ascending )",
-                "category": "Stable Sort"
-            },
-            {
-                "command": "stableSort.sortWordsDescending",
-                "title": "Sort Words ( descending )",
+                "command": "stableSort.sortDescending",
+                "title": "Sort (descending)",
                 "category": "Stable Sort"
             }
         ]

@@ -8,26 +8,14 @@ export function activate(context: vscode.ExtensionContext) {
     let command: vscode.Disposable;
 
     command = vscode.commands.registerCommand(
-        'stableSort.sortLinesAscending', () => {
-            sortLines(vscode.window.activeTextEditor!, false);
+        'stableSort.sortAscending', () => {
+            sort(vscode.window.activeTextEditor!, false);
         });
     context.subscriptions.push(command);
 
     command = vscode.commands.registerCommand(
-        'stableSort.sortLinesDescending', () => {
-            sortLines(vscode.window.activeTextEditor!, true);
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortWordsAscending', () => {
-            sortWords(vscode.window.activeTextEditor!, false);
-        });
-    context.subscriptions.push(command);
-
-    command = vscode.commands.registerCommand(
-        'stableSort.sortWordsDescending', () => {
-            sortWords(vscode.window.activeTextEditor!, true);
+        'stableSort.sortDescending', () => {
+            sort(vscode.window.activeTextEditor!, true);
         });
     context.subscriptions.push(command);
 }
@@ -36,6 +24,19 @@ export function deactivate() {
 }
 
 //-----------------------------------------------------------------------------
+export function sort(
+    editor: TextEditor,
+    descending: boolean
+) {
+    const selection = editor.selection;
+    if (1 < editor.selections.length ||
+        (selection.start.character === 0 && selection.end.character === 0)) {
+        return sortLines(editor, descending);
+    } else {
+        return sortWords(editor, descending);
+    }
+}
+
 export function sortLines(
     editor: TextEditor,
     descending: boolean
