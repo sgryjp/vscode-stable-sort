@@ -53,7 +53,16 @@
                 "title": "Sort (descending)",
                 "category": "Stable Sort"
             }
-        ]
+        ],
+        "configuration": {
+            "properties": {
+                "stableSort.preferWordSorting": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Prefer to sort words when you select multiple lines (you can always sort lines if you select from a beginning of a line to a beginning of another line)"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

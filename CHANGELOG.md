@@ -1,6 +1,16 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- New setting `stableSort.preferWordSorting` (see Changed subsection below)
+
+### Changed
+- Now lines touched by a selection will be sorted under the condition below
+  unless `stableSort.preferWordSorting` setting is set `true`
+  1. there is only one selection range
+  2. it covers multiple lines
+  3. either it's start or end position is not at the beginning of a line
+
 ### Fixed
 - Words may be concatenated on sorting (Issue #2)
 

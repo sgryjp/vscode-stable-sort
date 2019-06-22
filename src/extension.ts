@@ -1,6 +1,6 @@
 'use strict';
 import * as vscode from 'vscode';
-import { TextEditor, Selection } from 'vscode';
+import { Selection, TextEditor, workspace } from 'vscode';
 import { computeWidth } from "meaw";
 
 //-----------------------------------------------------------------------------
@@ -28,12 +28,25 @@ export function sort(
     editor: TextEditor,
     descending: boolean
 ) {
+    const config = workspace.getConfiguration("stableSort", null);
+    const preferWordSorting = config.get("preferWordSorting");
     const selection = editor.selection;
-    if (1 < editor.selections.length ||
-        (selection.start.character === 0 && selection.end.character === 0)) {
-        return sortLines(editor, descending);
-    } else {
+    if (editor.selections.length == 1 && selection.isSingleLine) {
+        // There is just one selection range inside a line
         return sortWords(editor, descending);
+    } else if (editor.selections.length == 1 &&
+        !selection.isSingleLine &&
+        (selection.start.character !== 0 || selection.end.character !== 0)) {
+        // There is one selection range and it covers multiple lines partially
+        if (preferWordSorting) {
+            return sortWords(editor, descending);
+        }
+        else {
+            return sortLines(editor, descending);
+        }
+    } else {
+        // Other cases
+        return sortLines(editor, descending);
     }
 }
 
