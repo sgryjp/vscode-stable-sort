@@ -1,5 +1,9 @@
 # Change Log
 
+## [Unreleased]
+### Fixed
+- Words may be concatenated on sorting (Issue #2)
+
 ## [1.0.0] - 2019-06-16
 ### Added
 - Unified commands to sort words and lines
