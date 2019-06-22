@@ -167,7 +167,7 @@ export function sortWords(
     }
 
     // Get firstly used separator character in the selection
-    const selectedText = document.getText(selection).replace("\n", "").trim();
+    const selectedText = document.getText(selection);
     const [sepPattern, sepText] = _guessSeparator(selectedText);
 
     // Separate words with it and sort them
@@ -189,13 +189,19 @@ export function sortWords(
     // 4. Append words which were not accommodated within the original space
     let lines: Array<string> = [];
     let j = 0;
-    for (let i = 0; i < indents.length; i++) {
+    for (let i = 0; i < indents.length && j < words.length; i++) {
         // Add the first word
-        let line = indents[i] + words[j++] + sepText;
+        let line = indents[i] + words[j++];
+        if (j < words.length) {
+            line += sepText;
+        }
 
         // Append following words until it reaches the maximum column position
         while (j < words.length && line.length + words[j].length <= widths[i]) {
-            line += words[j++] + sepText;
+            line += words[j++];
+            if (j < words.length) {
+                line += sepText;
+            }
         }
 
         // Push the composed line
@@ -204,14 +210,16 @@ export function sortWords(
 
     // Concat remaining words to the last line
     while (j < words.length) {
-        lines[lines.length - 1] += words[j++] + sepText;
+        let line = words[j++];
+        if (j < words.length) {
+            line += sepText;
+        }
+        lines[lines.length - 1] += line;
     }
-    let newText = lines.join("\n");
-    newText = newText.substring(0, newText.length - sepText.length);
 
     // Apply
     return editor.edit(e => {
-        e.replace(selection, newText);
+        e.replace(selection, lines.map(s => s.trimRight()).join("\n"));
     });
 }
 
