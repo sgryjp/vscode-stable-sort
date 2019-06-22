@@ -190,14 +190,21 @@ export function sortWords(
     let lines: Array<string> = [];
     let j = 0;
     for (let i = 0; i < indents.length; i++) {
+        // Add the first word
         let line = indents[i] + words[j++] + sepText;
+
+        // Append following words until it reaches the maximum column position
         while (j < words.length && line.length + words[j].length <= widths[i]) {
             line += words[j++] + sepText;
         }
+
+        // Push the composed line
         lines.push(line);
     }
-    for (; j < words.length; j++) {
-        lines[lines.length - 1] += words[j] + sepText;
+
+    // Concat remaining words to the last line
+    while (j < words.length) {
+        lines[lines.length - 1] += words[j++] + sepText;
     }
     let newText = lines.join("\n");
     newText = newText.substring(0, newText.length - sepText.length);
@@ -215,16 +222,19 @@ function _compare(str1: string, str2: string, numeric: boolean): number {
 }
 
 function _guessSeparator(text: string): [RegExp, string] {
+    // CSV?
     let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*/);
     if (matches) {
         return [/,\s*/, matches[1] !== "" ? ", " : ","];
     }
 
+    // TSV?
     matches = text.match(/^[^\t\s\|]+\t+(?:[^\t]+\t+)*/);
     if (matches) {
         return [/\t[ \n\r]*/, "\t"];
     }
 
+    // Separated with pipe (vertical bar)?
     matches = text.match(/^[^\s\|]+(\s*)\|(\s*)(?:[^\|]+\|\s*)*/);
     if (matches) {
         const pre = matches[1] !== "" ? " " : "";
@@ -232,5 +242,6 @@ function _guessSeparator(text: string): [RegExp, string] {
         return [/\|\s*/, pre + "|" + post];
     }
 
+    // Then we treat this as space delimited fields
     return [/\s+/, " "];
 }
