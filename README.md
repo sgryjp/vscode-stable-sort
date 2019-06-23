@@ -79,14 +79,23 @@ sort on arbitrary column of visually aligned text data such as output of
   ![Sorting lines by entire content](images/sort-lines-whole.gif)
 - Sort lines by selected parts<br>
   ![Sorting lines by selected parts](images/sort-lines-part.gif)
+- Sort visually aligned lines by specific "column"<br>
+  ![Sorting lines by selected parts](images/sort-visually-aligned.gif)
 
-## Gallery
+## Sorting Words Spread over Multiple Lines
 
-- Sorting targets of `import` of TypeScript:<br>
-  ![Sorting imports](images/sort-imports.gif)
-- Sorting visually aligned text data is (relatively) easy:<br>
-  ![Sorting visually aligned](images/sort-visually-aligned.gif)
+By default you cannot sort words spread over multiple lines. If the selection
+covers multiple lines, those lines touched by the selection will be sorted.
+To change this behavior, set `true` to `stableSort.preferWordSorting` option.
+Doing so makes this extension sort selected words if start or end of the
+selection is in the middle of a line. Note that even if this option was enabled
+you can sort multiple words by placing both start and end of the selection at
+the beginning of a line (as in the example animation above.)
 
+- For example, we can sort import target in Julia language:<br>
+  ![Sorting words spread over multiple lines](images/sort-words-multiline.gif)<br>
+  In this example, we don't need to care about where to insert a new target; just
+  appending one and sorting them will move it to the right place.
 
 # Background
 

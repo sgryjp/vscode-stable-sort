@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [1.1.0] - 2019-06-23
 ### Added
 - New setting `stableSort.preferWordSorting` (see Changed subsection below)
 

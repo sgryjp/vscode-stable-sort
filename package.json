@@ -3,7 +3,7 @@
     "displayName": "Stable Sort",
     "description": "Sort lines and words using stable sort algorithm.",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "publisher": "sgryjp",
     "repository": {
         "type": "git",
