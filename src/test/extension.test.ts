@@ -277,9 +277,9 @@ suite("sortWords()", () => {
         ["multiline: nothing between first word and EOL (#2)",
             false, "2\n10\n1", "1\n2\n10"],
         ["options: ascending",
-            false, "2,10,あ,ab,２,Ac,ア", "10,2,２,ab,Ac,あ,ア"],
+            false, "2,10,ab,Ac", "10,2,ab,Ac"],
         ["options: descending",
-            true, "2,10,あ,ab,２,Ac,ア", "あ,ア,Ac,ab,2,２,10"],
+            true, "2,10,ab,Ac", "Ac,ab,2,10"],
     ];
     tt.forEach(t => {
         const [title, descending, input, expected] = t;
