@@ -3,7 +3,7 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
 import { Position, Range, TextEditorEdit, Selection, EndOfLine } from "vscode";
-import * as my from "../extension";
+import * as my from "../../extension";
 
 suite("sortLines()", () => {
   async function doTest(
