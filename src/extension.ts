@@ -25,11 +25,11 @@ export function sort(editor: TextEditor, descending: boolean) {
   const config = workspace.getConfiguration("stableSort", null);
   const preferWordSorting = config.get("preferWordSorting");
   const selection = editor.selection;
-  if (editor.selections.length == 1 && selection.isSingleLine) {
+  if (editor.selections.length === 1 && selection.isSingleLine) {
     // There is just one selection range inside a line
     return sortWords(editor, descending);
   } else if (
-    editor.selections.length == 1 &&
+    editor.selections.length === 1 &&
     !selection.isSingleLine &&
     (selection.start.character !== 0 || selection.end.character !== 0)
   ) {
