@@ -371,7 +371,7 @@ suite("sortWords()", () => {
   });
 });
 
-function stringifySelections(selections: Selection[]): string {
+function stringifySelections(selections: readonly Selection[]): string {
   return (
     "[" +
     selections
