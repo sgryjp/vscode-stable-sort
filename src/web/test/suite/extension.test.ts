@@ -27,9 +27,11 @@ suite("sortLines()", () => {
   }
 
   suiteSetup(async () => {
-    const uri = vscode.Uri.parse("untitled:test.txt");
-    const options = { preserveFocus: false };
-    const editor = await vscode.window.showTextDocument(uri, options);
+    const doc = await vscode.workspace.openTextDocument({
+      language: "Plain Text",
+      content: "",
+    });
+    const editor = await vscode.window.showTextDocument(doc);
     await editor.edit((edit) => {
       edit.setEndOfLine(EndOfLine.LF);
     });
@@ -212,9 +214,11 @@ suite("sortLines()", () => {
 
 suite("sortWords()", () => {
   suiteSetup(async () => {
-    const uri = vscode.Uri.parse("untitled:test.txt");
-    const options = { preserveFocus: false };
-    const editor = await vscode.window.showTextDocument(uri, options);
+    const doc = await vscode.workspace.openTextDocument({
+      language: "Plain Text",
+      content: "",
+    });
+    const editor = await vscode.window.showTextDocument(doc);
     await editor.edit((edit) => {
       edit.setEndOfLine(EndOfLine.LF);
     });
