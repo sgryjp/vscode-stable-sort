@@ -1,5 +1,3 @@
-// Note: This test is leveraging the Mocha test framework (https://mochajs.org/)
-
 import * as assert from "assert";
 import * as vscode from "vscode";
 import { Position, Range, TextEditorEdit, Selection, EndOfLine } from "vscode";

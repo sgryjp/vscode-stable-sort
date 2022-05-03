@@ -1,4 +1,3 @@
-"use strict";
 import * as vscode from "vscode";
 import { Selection, TextEditor, workspace } from "vscode";
 import { computeWidth } from "meaw";
