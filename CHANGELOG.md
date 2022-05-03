@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Update [meaw](https://github.com/susisu/meaw) to v6.0.0
+
 ## [1.1.0] - 2019-06-23
 
 ### Added
