@@ -70,7 +70,7 @@ Strictly writing, lines which contains selection range(s) will be sorted using
 selected part. This means that you can sort lines not only by comparing entire
 content but also by comparing a portion of them. This is useful if you want to
 sort on arbitrary column of visually aligned text data such as output of
-[`ps` command](https://en.wikipedia.org/wiki/Ps_(Unix)) or CSV data.
+[`ps` command](<https://en.wikipedia.org/wiki/Ps_(Unix)>) or CSV data.
 
 ### Example Animations
 
