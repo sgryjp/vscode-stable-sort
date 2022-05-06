@@ -1,4 +1,4 @@
-# Stable Sort
+# Smart Sort
 
 <!-- markdownlint-configure-file
 {
@@ -13,7 +13,7 @@
 &nbsp;
 [![MIT license](https://img.shields.io/badge/license-MIT-lightgray.svg?longCache=true&style=popout)](https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md)
 
-Sort CSV-like words or lines in [VS Code](https://code.visualstudio.com) using stable sort algorithm.
+Sort CSV-like words or lines in [Visual Studio Code](https://code.visualstudio.com).
 
 ## Feature
 
@@ -34,10 +34,6 @@ Some other key ponits:
 
 - Words or lines will be sorted as numbers if every one of them starts with a
   token which looks like a numeric value (e.g.: `2` comes before `10`)
-- Sorting algorithm is
-  [stable](https://en.wikipedia.org/wiki/Sorting_algorithm#Stability)
-  - The order of semantically same (depends on locale) words or lines
-    will be unchanged.
 
 ### Sorting words
 
@@ -93,7 +89,7 @@ sort on arbitrary column of visually aligned text data such as output of
 
 By default you cannot sort words spread over multiple lines. If the selection
 covers multiple lines, those lines touched by the selection will be sorted.
-To change this behavior, set `true` to `stableSort.preferWordSorting` option.
+To change this behavior, set `true` to `smartSort.preferWordSorting` option.
 Doing so makes this extension sort selected words if start or end of the
 selection is in the middle of a line. Note that even if this option was enabled
 you can sort multiple words by placing both start and end of the selection at
@@ -104,29 +100,25 @@ the beginning of a line (as in the example animation above.)
   In this example, we don't need to care about where to insert a new target; just
   appending one and sorting them will move it to the right place.
 
-## Background
+## Historical Background
 
-Stability of sorting is not valuable in most cases except for some.
+Previously the name of this extension was "Stable Sort". Here is why I wanted
+and created an extension which uses stable sort algorithm.
 
-As of VS Code 1.27.2, its algorithm to sort lines are not "stable" so sorting
-textually "same" words or lines may change those order. This behavior will not
-be a problem in most cases because those are normally completely identical so
-swapping those is not a change by all means. But, there are exceptional cases
-where two textually differrent lines are evaluated as equal. In those cases,
-sorted result will be different time to time.
+Back when Visual Studio Code was version 1.27.2, it have used unstable sort
+algorithm. This means that sorting textually identical words or lines may
+change those order. This behavior will not be a problem in most cases since
+swapping those is not a change by all means.
 
-For example, an ASCII digit character and its counter part in
+Unfortunately, I encountered an exceptional case. In Japanese locale, an ASCII
+digit character and its counter part in
 [fullwidth forms](https://www.unicode.org/charts/PDF/UFF00.pdf)
-are treated as equal in Japanese locale so result of sorting words like below
-(BTW it's "type 2 diabetes" writen in Japanese) may change time to time:
+are treated as equal so the order of words like below changed every time I sort
+them:
 
     2型糖尿病
     ２型糖尿病
 
-This behavior is not appreciated for tasks like compositing dictionary data,
-since you cannot normalize data by simply sorting. This extension solves the
-problem.
-
-(Note that the "unstable" sort algorithm of VS Code (strictly, of Node.js) is
-used for relatively large number of lines so working with small data might not
-raise the problem.)
+This behavior was very annoying when I was compositing dictionary data
+since I cannot normalize entries by simple sorting. To solve this problem, I
+wrote this extension.

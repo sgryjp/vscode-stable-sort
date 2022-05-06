@@ -6,12 +6,12 @@ import { computeWidth } from "meaw";
 export function activate(context: vscode.ExtensionContext) {
   let command: vscode.Disposable;
 
-  command = vscode.commands.registerCommand("stableSort.sortAscending", () => {
+  command = vscode.commands.registerCommand("smartSort.sortAscending", () => {
     sort(vscode.window.activeTextEditor!, false);
   });
   context.subscriptions.push(command);
 
-  command = vscode.commands.registerCommand("stableSort.sortDescending", () => {
+  command = vscode.commands.registerCommand("smartSort.sortDescending", () => {
     sort(vscode.window.activeTextEditor!, true);
   });
   context.subscriptions.push(command);
@@ -21,7 +21,7 @@ export function deactivate() {}
 
 //-----------------------------------------------------------------------------
 export function sort(editor: TextEditor, descending: boolean) {
-  const config = workspace.getConfiguration("stableSort", null);
+  const config = workspace.getConfiguration("smartSort", null);
   const preferWordSorting = config.get("preferWordSorting");
   const selection = editor.selection;
   if (editor.selections.length === 1 && selection.isSingleLine) {

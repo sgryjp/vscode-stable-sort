@@ -1,7 +1,7 @@
 {
     "name": "vscode-stable-sort",
-    "displayName": "Stable Sort",
-    "description": "Sort lines and words using stable sort algorithm.",
+    "displayName": "Smart Sort",
+    "description": "Sort CSV-like words or lines.",
     "license": "MIT",
     "version": "1.1.0",
     "publisher": "sgryjp",
@@ -23,20 +23,20 @@
         }
     ],
     "activationEvents": [
-        "onCommand:stableSort.sortAscending",
-        "onCommand:stableSort.sortDescending"
+        "onCommand:smartSort.sortAscending",
+        "onCommand:smartSort.sortDescending"
     ],
     "browser": "./dist/web/extension.js",
     "contributes": {
         "keybindings": [
             {
-                "command": "stableSort.sortAscending",
+                "command": "smartSort.sortAscending",
                 "key": "Ctrl+Alt+R",
                 "mac": "Cmd+Ctrl+R",
                 "when": "editorTextFocus"
             },
             {
-                "command": "stableSort.sortDescending",
+                "command": "smartSort.sortDescending",
                 "key": "Ctrl+Alt+Shift+R",
                 "mac": "Cmd+Ctrl+Shift+R",
                 "when": "editorTextFocus"
@@ -44,19 +44,19 @@
         ],
         "commands": [
             {
-                "command": "stableSort.sortAscending",
+                "command": "smartSort.sortAscending",
                 "title": "Sort (ascending)",
-                "category": "Stable Sort"
+                "category": "Smart Sort"
             },
             {
-                "command": "stableSort.sortDescending",
+                "command": "smartSort.sortDescending",
                 "title": "Sort (descending)",
-                "category": "Stable Sort"
+                "category": "Smart Sort"
             }
         ],
         "configuration": {
             "properties": {
-                "stableSort.preferWordSorting": {
+                "smartSort.preferWordSorting": {
                     "type": "boolean",
                     "default": false,
                     "description": "Prefer to sort words when you select multiple lines (you can always sort lines if you select from a beginning of a line to a beginning of another line)"
