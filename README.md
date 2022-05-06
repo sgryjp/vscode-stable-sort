@@ -1,5 +1,12 @@
 # Stable Sort
 
+<!-- markdownlint-configure-file
+{
+  "no-duplicate-header": false,
+  "no-inline-html": false
+}
+-->
+
 [![Version (VS Marketplace)](https://vsmarketplacebadge.apphb.com/version-short/sgryjp.vscode-stable-sort.svg)](https://marketplace.visualstudio.com/items?itemName=sgryjp.vscode-stable-sort)
 ![Rating (VS Marketplace)](https://vsmarketplacebadge.apphb.com/rating-star/sgryjp.vscode-stable-sort.svg)
 ![Installs (VS Marketplace)](https://vsmarketplacebadge.apphb.com/installs-short/sgryjp.vscode-stable-sort.svg)
@@ -8,7 +15,7 @@
 
 Sort CSV-like words or lines in [VS Code](https://code.visualstudio.com) using stable sort algorithm.
 
-# Feature
+## Feature
 
 With single shortcut <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>),
 you can:
@@ -32,7 +39,7 @@ Some other key ponits:
   - The order of semantically same (depends on locale) words or lines
     will be unchanged.
 
-## Sorting Words
+### Sorting words
 
 If there is only one selection range and either start position, end position
 or both are in the middle of a line, words inside the selection. You can select
@@ -51,7 +58,7 @@ Note that spaces surrounding word separators will be normalized as below:
   pipe character will be kept.
 - Space: Word separator will always be exactly one space character.
 
-### Example Animations
+#### Example animations
 
 - Comma<br>
   ![Sorting words separated by comma](images/sort-words-comma.gif)
@@ -62,7 +69,7 @@ Note that spaces surrounding word separators will be normalized as below:
 - Space<br>
   ![Sorting words separated by space](images/sort-words-space.gif)
 
-## Sorting Lines
+### Sorting lines
 
 If the condition to sort words are not met, selected lines will be sorted.
 
@@ -72,7 +79,7 @@ content but also by comparing a portion of them. This is useful if you want to
 sort on arbitrary column of visually aligned text data such as output of
 [`ps` command](<https://en.wikipedia.org/wiki/Ps_(Unix)>) or CSV data.
 
-### Example Animations
+#### Example animations
 
 - Sort lines by entire content (CSV colorized with
   [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv))<br>
@@ -82,7 +89,7 @@ sort on arbitrary column of visually aligned text data such as output of
 - Sort visually aligned lines by specific "column"<br>
   ![Sorting lines by selected parts](images/sort-visually-aligned.gif)
 
-## Sorting Words Spread over Multiple Lines
+### Sorting words spread over multiple lines
 
 By default you cannot sort words spread over multiple lines. If the selection
 covers multiple lines, those lines touched by the selection will be sorted.
@@ -97,7 +104,7 @@ the beginning of a line (as in the example animation above.)
   In this example, we don't need to care about where to insert a new target; just
   appending one and sorting them will move it to the right place.
 
-# Background
+## Background
 
 Stability of sorting is not valuable in most cases except for some.
 

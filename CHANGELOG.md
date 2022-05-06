@@ -1,5 +1,12 @@
 # Change Log
 
+<!-- markdownlint-configure-file
+{
+  "no-duplicate-header": false,
+  "no-inline-html": false
+}
+-->
+
 ## [Unreleased]
 
 ### Changed
