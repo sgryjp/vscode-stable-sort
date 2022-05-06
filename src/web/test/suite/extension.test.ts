@@ -87,8 +87,8 @@ suite("sortLines()", () => {
           selections,
           descending
         );
-        assert.equal(result.text.replace(/\n/g, ","), xtext);
-        assert.equal(
+        assert.strictEqual(result.text.replace(/\n/g, ","), xtext);
+        assert.strictEqual(
           stringifySelections(result.selections),
           stringifySelections(xsels)
         );
@@ -136,8 +136,8 @@ suite("sortLines()", () => {
           selections,
           false
         );
-        assert.equal(result.text.replace(/\n/g, ","), xtext);
-        assert.equal(
+        assert.strictEqual(result.text.replace(/\n/g, ","), xtext);
+        assert.strictEqual(
           stringifySelections(result.selections),
           stringifySelections(xsels)
         );
@@ -176,7 +176,7 @@ suite("sortLines()", () => {
       ],
       false
     );
-    assert.equal(result.text.replace(/\n/g, ","), expected);
+    assert.strictEqual(result.text.replace(/\n/g, ","), expected);
   });
 
   suite("excludes last line?", () => {
@@ -206,7 +206,7 @@ suite("sortLines()", () => {
           selections,
           false
         );
-        assert.equal(result.text.replace(/\n/g, ","), expected);
+        assert.strictEqual(result.text.replace(/\n/g, ","), expected);
       });
     }
   });
@@ -323,7 +323,7 @@ suite("sortWords()", () => {
         selections: editor.selections,
       };
 
-      assert.equal(result.text, expected);
+      assert.strictEqual(result.text, expected);
     });
   });
 
@@ -363,8 +363,8 @@ suite("sortWords()", () => {
           selections: editor.selections,
         };
 
-        assert.equal(result.text, xstr);
-        assert.equal(
+        assert.strictEqual(result.text, xstr);
+        assert.strictEqual(
           stringifySelections(result.selections),
           stringifySelections(xsels)
         );
