@@ -15,46 +15,56 @@
 
 Sort CSV-like words or lines in [Visual Studio Code](https://code.visualstudio.com).
 
-## Feature
+## Summary
 
-With single shortcut <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>),
-you can:
+Smart Sort allows you to:
 
-- Sort words separated by
-  - space, comma, tab, pipe (`|`)
-  - separators recognized automatically
-- Sort lines by
-  - entire content
-  - selected parts
+1. Sort words separated by comma, tab, pipe (`|`) or space
+2. Sort lines by comparing selected parts of them, or entire content of them
 
-If you want to sort in reversed (descending) order, use
-<kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kbd>).
+Smart Sort chooses how and what to sort according to the selection state
+so there are just 2 commands provided: one for sorting ascending order,
+one for sorting descending order.
 
-Some other key ponits:
+Note that Smart Sort recognizes numeric value (e.g.: `2` comes
+before `10`).
 
-- Words or lines will be sorted as numbers if every one of them starts with a
-  token which looks like a numeric value (e.g.: `2` comes before `10`)
+## Key bindings
 
-### Sorting words
+| Command                    | Shortcut                                                       |
+| -------------------------- | -------------------------------------------------------------- |
+| `smartSort.SortAscending`  | <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>)             |
+| `smartSort.SortDescending` | <kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kbd>) |
 
-If there is only one selection range and either start position, end position
-or both are in the middle of a line, words inside the selection. You can select
-words across lines; in that case the original indentation and line widths will
-be kept.
+Those key bindings will be enabled by default.
 
-Word separators will be recognized automatically. If one of comma (`U+0013`),
-tab (`U+0009`), or pipe (`U+007C`) was found it will be used as word separator.
-If not found any of them, a space (`U+0020`) will be used.
+## Configuration
 
-Note that spaces surrounding word separators will be normalized as below:
+- `smartSort.preferWordSorting`
+  - When multiple lines are selected by a single selection, setting `true` to
+    this configuration makes Smart Sort to sort words spread over the lines,
+    instead of sorting the lines. See
+    [explanation](#sorting-words-spread-over-multiple-lines)
+    below for detail. (default: `false`)
 
-- Comma: Zero or one space character following after the first comma will be kept.
-- Tab: Surrounding spaces are simply ignored.
-- Pipe: At most one spaces preceding before and/or following after the first
-  pipe character will be kept.
-- Space: Word separator will always be exactly one space character.
+## Sorting words
 
-#### Example animations
+To sort words, just select some words and hit <kbd>Ctrl+Alt+R</kbd>
+(or <kbd>Cmd+Ctrl+R</kbd> on mac.)
+
+Smart Sort automatically recognizes the word separator. In order of priority,
+supported separators are:
+
+1. Comma (`U+0013`)
+2. Tab (`U+0009`)
+3. Pipe (`U+007C`)
+4. Space (`U+0020`)
+
+On sorting words, word separators among them will be normalized. Strictly
+writing, whitespace characters surrounding the first word separator will be
+treated as part of the separator and they will be used to separate sorted words.
+
+Here are some example animations:
 
 - Comma<br>
   ![Sorting words separated by comma](images/sort-words-comma.gif)
@@ -65,37 +75,51 @@ Note that spaces surrounding word separators will be normalized as below:
 - Space<br>
   ![Sorting words separated by space](images/sort-words-space.gif)
 
-### Sorting lines
+## Sorting lines
 
-If the condition to sort words are not met, selected lines will be sorted.
+To sort lines, select multiple lines and hit <kbd>Ctrl+Alt+R</kbd>
+(or <kbd>Cmd+Ctrl+R</kbd> on mac.)
 
-Strictly writing, lines which contains selection range(s) will be sorted using
-selected part. This means that you can sort lines not only by comparing entire
-content but also by comparing a portion of them. This is useful if you want to
-sort on arbitrary column of visually aligned text data such as output of
-[`ps` command](<https://en.wikipedia.org/wiki/Ps_(Unix)>) or CSV data.
+If you select portions of lines by using
+[multple selections (multi-cursor)](https://code.visualstudio.com/docs/editor/codebasics#_multiple-selections-multicursor),
+the lines which are touched by the selection range will be sorted by comparing
+the selected parts.
+This is useful if you want to sort on arbitrary column of visually aligned text
+data such as output of
+[`ps` command](<https://en.wikipedia.org/wiki/Ps_(Unix)>)
+or CSV data.
 
-#### Example animations
+Here are some example animations:
 
-- Sort lines by entire content (CSV colorized with
-  [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv))<br>
-  ![Sorting lines by entire content](images/sort-lines-whole.gif)
-- Sort lines by selected parts<br>
-  ![Sorting lines by selected parts](images/sort-lines-part.gif)
-- Sort visually aligned lines by specific "column"<br>
-  ![Sorting lines by selected parts](images/sort-visually-aligned.gif)
+1. Sort visually aligned lines by specific "column"<br>
+   ![Sorting lines by selected parts](images/sort-visually-aligned.gif)
+2. Sort lines by entire content (CSV colorized with
+   [Rainbow CSV](https://marketplace.visualstudio.com/items?itemName=mechatroner.rainbow-csv))<br>
+   ![Sorting lines by entire content](images/sort-lines-whole.gif)
+3. Sort lines by comparing selected parts<br>
+   ![Sorting lines by selected parts](images/sort-lines-part.gif)
 
-### Sorting words spread over multiple lines
+## Sorting words spread over multiple lines
 
-By default you cannot sort words spread over multiple lines. If the selection
-covers multiple lines, those lines touched by the selection will be sorted.
-To change this behavior, set `true` to `smartSort.preferWordSorting` option.
-Doing so makes this extension sort selected words if start or end of the
-selection is in the middle of a line. Note that even if this option was enabled
-you can sort multiple words by placing both start and end of the selection at
-the beginning of a line (as in the example animation above.)
+If `smartSort.preferWordSorting` is configured as `true`, Smart Sort will sort
+words instead of lines under the condition shown below:
 
-- For example, we can sort import target in Julia language:<br>
+- there is only one selection range (not using multi-cursor), AND
+- both the start and end of the selection range are NOT placed at a beginning
+  of a line (placed in a middle of a line or at the end of a line).
+
+In this mode, sorted words will be reflowed. In other words, the original
+indentation and line widths will remain unchanged. (for example, the
+indentation characters of the second line is kept unchanged in the example
+animation below).
+
+Note that if you place both the start and end of the selection range are placed
+at a beginning of a line, you can always sort lines even if you set
+`true` to `smartSort.preferWordSorting`.
+
+Here is an example animation:
+
+- Sorting `import` target in Julia language:<br>
   ![Sorting words spread over multiple lines](images/sort-words-multiline.gif)<br>
   In this example, we don't need to care about where to insert a new target; just
   appending one and sorting them will move it to the right place.
@@ -119,6 +143,7 @@ them:
     2型糖尿病
     ２型糖尿病
 
-This behavior was very annoying when I was compositing dictionary data
-since I cannot normalize entries by simple sorting. To solve this problem, I
-wrote this extension.
+This behavior was very annoying when I was compositing dictionary data since I
+cannot normalize entries by simple sorting. Obviously an extension which allows
+me to sort entries using stable sort algorithm solves the problem.
+So, I created one.
