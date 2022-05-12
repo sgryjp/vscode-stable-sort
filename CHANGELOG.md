@@ -12,6 +12,15 @@
 ### Changed
 
 - Update [meaw](https://github.com/susisu/meaw) to v6.0.0
+- **BREAKING CHANGE**: Renamed the extension to "_Smart Sort_" (from Stable Sort)
+
+  - Name of commands and configurations are changed accordingly:
+
+    | Contribution Point | Before                         | After                         |
+    | ------------------ | ------------------------------ | ----------------------------- |
+    | Command            | `stableSort.sortAscending`     | `smartSort.sortAscending`     |
+    | Command            | `stableSort.sortDescending`    | `smartSort.sortDescending`    |
+    | Configuration      | `stableSort.preferWordSorting` | `smartSort.preferWordSorting` |
 
 ## [1.1.0] - 2019-06-23
 
