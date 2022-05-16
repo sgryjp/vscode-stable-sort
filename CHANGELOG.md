@@ -7,11 +7,12 @@
 }
 -->
 
-## [1.2.0] - 2022-05-12
+## [1.2.0] - 2022-05-16
 
 ### Changed
 
 - Update [meaw](https://github.com/susisu/meaw) to v6.0.0
+- Recreated as a Web extension (GitHub Codespaces supported)
 - **BREAKING CHANGE**: Renamed the extension to "_Smart Sort_" (from Stable Sort)
 
   - Name of commands and configurations are changed accordingly:
