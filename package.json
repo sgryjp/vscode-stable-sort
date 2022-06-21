@@ -17,6 +17,11 @@
     ],
     "badges": [
         {
+            "url": "https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml/badge.svg",
+            "href": "https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml",
+            "description": "CI status"
+        },
+        {
             "url": "https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=popout",
             "href": "https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md",
             "description": "MIT License"

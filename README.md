@@ -11,7 +11,7 @@
 ![Rating (VS Marketplace)](https://vsmarketplacebadge.apphb.com/rating-star/sgryjp.vscode-stable-sort.svg)
 ![Installs (VS Marketplace)](https://vsmarketplacebadge.apphb.com/installs-short/sgryjp.vscode-stable-sort.svg)
 &nbsp;
-[![Test status](https://github.com/sgryjp/vscode-stable-sort/actions/workflows/test.yml/badge.svg)](https://github.com/sgryjp/vscode-stable-sort/actions/workflows/test.yml)
+[![CI status](https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml/badge.svg)](https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml)
 [![MIT license](https://img.shields.io/badge/license-MIT-lightgray.svg?longCache=true&style=popout)](https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md)
 
 Sort CSV-like words or lines in [Visual Studio Code](https://code.visualstudio.com).
