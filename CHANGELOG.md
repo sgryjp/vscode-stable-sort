@@ -7,6 +7,14 @@
 }
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Set up GitHub Action to publish extension on pushing tags
+  to both Visual Studio Marketplace and Open VSX Repository.
+- Update dependencies
+
 ## [1.2.0] - 2022-05-16
 
 ### Changed
