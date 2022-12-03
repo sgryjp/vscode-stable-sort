@@ -51,7 +51,13 @@ jobs:
     if: "startsWith(github.ref, 'refs/tags/')"
     needs: package
     runs-on: ubuntu-latest
+    env:
+      VSCE_PAT: ${{ secrets.VSMARKETPLACE_TOKEN }}
+      OVSX_PAT: ${{ secrets.OPENVSX_TOKEN }}
     steps:
+      - name: Make sure PATs are accessible.
+        run: echo $VSCE_PAT | wc -c; echo $OVSX_PAT | wc -c
+
       - name: Check out the repository
         uses: actions/checkout@v3
 
@@ -69,16 +75,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install vsce and ovsx
-        run: npm install --save-dev @vscode/vsce ovsx
+      - name: Install vsce
+        run: npm install -g @vscode/vsce
 
-      - name: (Visual Studio Marketplace) Login
-        run: echo ${{ secrets.VSMARKETPLACE_TOKEN }} | npx vsce login sgryjp
-
-      - name: (Visual Studio Marketplace) Publish
-        run: npx vsce publish --packagePath ./dist/vscode-stable-sort-*.vsix
+      - name: Publish to Visual Studio Marketplace
+        run: vsce publish --packagePath ./dist/vscode-stable-sort-*.vsix
         timeout-minutes: 5
 
-      - name: (Open VSX Repository) Publish
-        run: npx ovsx publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ./dist/vscode-stable-sort-*.vsix
+      - name: Install ovsx
+        run: npm install -g ovsx
+
+      - name: Publish to Open VSX Repository
+        run: ovsx publish --packagePath ./dist/vscode-stable-sort-*.vsix
         timeout-minutes: 5
