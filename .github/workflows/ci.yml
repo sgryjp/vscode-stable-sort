@@ -73,7 +73,7 @@ jobs:
         run: npm install --save-dev @vscode/vsce ovsx
 
       - name: (Visual Studio Marketplace) Login
-        run: echo ${{ secrets.VSMARKETPLACE_TOKEN }} | vsce login sgryjp
+        run: echo ${{ secrets.VSMARKETPLACE_TOKEN }} | npx vsce login sgryjp
 
       - name: (Visual Studio Marketplace) Publish
         run: npx vsce publish --packagePath ./dist/vscode-stable-sort-*.vsix
