@@ -12,30 +12,30 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
+      - name: Download already built package files
+        uses: actions/download-artifact@v1
+        with:
+          name: vsix-file
+          path: dist
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      - uses: actions/download-artifact@v1
-        with:
-          name: vsix-file
-          path: dist
+      - name: Install dependencies
+        run: npm ci
 
-      - name: (Visual Studio Marketplace) Install vsce
-        if: "startsWith(github.ref, 'refs/tags/')"
-        run: npm install -g @vscode/vsce
+      - name: Install vsce and ovsx
+        run: npm install --save-dev @vscode/vsce ovsx
 
       - name: (Visual Studio Marketplace) Login
-        if: "startsWith(github.ref, 'refs/tags/')"
         run: echo ${{ secrets.VSMARKETPLACE_TOKEN }} | vsce login sgryjp
 
       - name: (Visual Studio Marketplace) Publish
-        if: "startsWith(github.ref, 'refs/tags/')"
-        run: vsce publish --packagePath ./dist/vscode-stable-sort-*.vsix
+        run: npx vsce publish --packagePath ./dist/vscode-stable-sort-*.vsix
         timeout-minutes: 5
 
       - name: (Open VSX Repository) Publish
-        if: "startsWith(github.ref, 'refs/tags/')"
-        run: npx ovsx@latest publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ./dist/vscode-stable-sort-*.vsix
+        run: npx ovsx publish --pat ${{ secrets.OPENVSX_TOKEN }} --packagePath ./dist/vscode-stable-sort-*.vsix
         timeout-minutes: 5
