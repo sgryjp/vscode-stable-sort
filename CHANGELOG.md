@@ -7,6 +7,12 @@
 }
 -->
 
+## [Unreleased]
+
+### Fixed
+
+- Fix badge image URL in REAMDE
+
 ## [1.2.1] - 2022-11-26
 
 ### Fixed
