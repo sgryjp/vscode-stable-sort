@@ -7,9 +7,9 @@
 }
 -->
 
-[![Version (VS Marketplace)](https://vsmarketplacebadge.apphb.com/version-short/sgryjp.vscode-stable-sort.svg)](https://marketplace.visualstudio.com/items?itemName=sgryjp.vscode-stable-sort)
-![Rating (VS Marketplace)](https://vsmarketplacebadge.apphb.com/rating-star/sgryjp.vscode-stable-sort.svg)
-![Installs (VS Marketplace)](https://vsmarketplacebadge.apphb.com/installs-short/sgryjp.vscode-stable-sort.svg)
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/sgryjp.vscode-stable-sort)
+![Visual Studio Marketplace Rating (Stars)](https://img.shields.io/visual-studio-marketplace/stars/sgryjp.vscode-stable-sort)
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/sgryjp.vscode-stable-sort)
 &nbsp;
 [![CI status](https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml/badge.svg)](https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml)
 [![MIT license](https://img.shields.io/badge/license-MIT-lightgray.svg?longCache=true&style=popout)](https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md)
