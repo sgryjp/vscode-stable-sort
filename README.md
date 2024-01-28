@@ -32,12 +32,12 @@ before `10`).
 
 ## Key bindings
 
-| Command                    | Shortcut                                                       |
-| -------------------------- | -------------------------------------------------------------- |
-| `smartSort.SortAscending`  | <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>)             |
-| `smartSort.SortDescending` | <kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kbd>) |
+Smart Sort provides the keybinding below by default:
 
-Those key bindings will be enabled by default.
+- <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>)
+  - `smartSort.SortAscending`
+- <kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kb
+  - `smartSort.SortDescending`
 
 ## Configuration
 

@@ -1,12 +1,5 @@
 # Change Log
 
-<!-- markdownlint-configure-file
-{
-  "no-duplicate-header": false,
-  "no-inline-html": false
-}
--->
-
 ## [1.2.2] - 2022-12-10
 
 ### Fixed
@@ -17,7 +10,7 @@
 
 ### Fixed
 
-- Set up GitHub Action to publish extension on pushing tags
+- Set< up GitHub Action to publish extension on pushing tags
   to both Visual Studio Marketplace and Open VSX Repository.
 - Update dependencies
 
@@ -31,11 +24,9 @@
 
   - Name of commands and configurations are changed accordingly:
 
-    | Contribution Point | Before                         | After                         |
-    | ------------------ | ------------------------------ | ----------------------------- |
-    | Command            | `stableSort.sortAscending`     | `smartSort.sortAscending`     |
-    | Command            | `stableSort.sortDescending`    | `smartSort.sortDescending`    |
-    | Configuration      | `stableSort.preferWordSorting` | `smartSort.preferWordSorting` |
+    - (Command) `stableSort.sortAscending` → `smartSort.sortAscending`
+    - (Command) `stableSort.sortDescending` → `smartSort.sortDescending`
+    - (Configuration) `stableSort.preferWordSorting` → `smartSort.preferWordSorting`
 
 ## [1.1.0] - 2019-06-23
 
