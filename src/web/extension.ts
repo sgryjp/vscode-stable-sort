@@ -78,7 +78,7 @@ export function sortLines(editor: TextEditor, descending: boolean) {
         selectionsPerLine.push(
           s.isReversed
             ? new Selection(r!.end, r!.start)
-            : new Selection(r!.start, r!.end)
+            : new Selection(r!.start, r!.end),
         );
         break;
       }
@@ -121,7 +121,7 @@ export function sortLines(editor: TextEditor, descending: boolean) {
         const lineNumber = lineNumbers[i];
         e.replace(
           document.lineAt(lineNumber).range,
-          document.lineAt(selection.start.line).text
+          document.lineAt(selection.start.line).text,
         );
       }
     })
@@ -139,8 +139,8 @@ export function sortLines(editor: TextEditor, descending: boolean) {
             lineNumber,
             selection.anchor.character,
             lineNumber,
-            selection.active.character
-          )
+            selection.active.character,
+          ),
         );
       }
       editor.selections = newSelections;
@@ -153,7 +153,7 @@ export function sortWords(editor: TextEditor, descending: boolean) {
 
   if (1 < editor.selections.length) {
     vscode.window.showInformationMessage(
-      "Sorting words in multiple selections are not supported."
+      "Sorting words in multiple selections are not supported.",
     );
     return;
   }
@@ -164,7 +164,7 @@ export function sortWords(editor: TextEditor, descending: boolean) {
     computeWidth(
       document
         .lineAt(selection.start.line)
-        .text.substring(selection.start.character)
+        .text.substring(selection.start.character),
     ),
   ];
   for (let i = selection.start.line + 1; i <= selection.end.line; i++) {

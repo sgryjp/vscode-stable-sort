@@ -7,7 +7,7 @@ suite("sortLines()", () => {
   async function doTest(
     input: string,
     selections: Selection[],
-    descending: boolean
+    descending: boolean,
   ) {
     // Set the test input text and the selection
     const editor = vscode.window.activeTextEditor!;
@@ -50,7 +50,7 @@ suite("sortLines()", () => {
       halfWidthOne.localeCompare(fullWidthOne, "ja") === 0,
       "Locale aware string comparison failed." +
         " Full ICU data must be installed on the test environment. See" +
-        " https://www.npmjs.com/package/full-icu"
+        " https://www.npmjs.com/package/full-icu",
     );
   });
 
@@ -85,12 +85,12 @@ suite("sortLines()", () => {
         const result = await doTest(
           input.replace(/,/g, "\n"),
           selections,
-          descending
+          descending,
         );
         assert.strictEqual(result.text.replace(/\n/g, ","), xtext);
         assert.strictEqual(
           stringifySelections(result.selections),
-          stringifySelections(xsels)
+          stringifySelections(xsels),
         );
       });
     }
@@ -134,12 +134,12 @@ suite("sortLines()", () => {
         const result = await doTest(
           input.replace(/,/g, "\n"),
           selections,
-          false
+          false,
         );
         assert.strictEqual(result.text.replace(/\n/g, ","), xtext);
         assert.strictEqual(
           stringifySelections(result.selections),
-          stringifySelections(xsels)
+          stringifySelections(xsels),
         );
       });
     }
@@ -174,7 +174,7 @@ suite("sortLines()", () => {
         new Selection(10, 0, 10, 1),
         new Selection(11, 0, 11, 1),
       ],
-      false
+      false,
     );
     assert.strictEqual(result.text.replace(/\n/g, ","), expected);
   });
@@ -204,7 +204,7 @@ suite("sortLines()", () => {
         const result = await doTest(
           "qux,foo,bar".replace(/,/g, "\n"),
           selections,
-          false
+          false,
         );
         assert.strictEqual(result.text.replace(/\n/g, ","), expected);
       });
@@ -366,7 +366,7 @@ suite("sortWords()", () => {
         assert.strictEqual(result.text, xstr);
         assert.strictEqual(
           stringifySelections(result.selections),
-          stringifySelections(xsels)
+          stringifySelections(xsels),
         );
       });
     }
