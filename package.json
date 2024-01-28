@@ -88,12 +88,14 @@
         "@vscode/test-web": "^0.0.50",
         "assert": "^2.0.0",
         "eslint": "^8.1.0",
+        "eslint-plugin-deprecation": "^2.0.0",
         "mocha": "^9.1.3",
+        "prettier": "^3.2.4",
         "process": "^0.11.10",
         "ts-loader": "^9.2.5",
         "typescript": "^4.4.4",
-        "webpack-cli": "^4.8.0",
-        "webpack": "^5.52.1"
+        "webpack": "^5.52.1",
+        "webpack-cli": "^4.8.0"
     },
     "dependencies": {
         "meaw": "^6.0.0"
