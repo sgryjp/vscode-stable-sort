@@ -1,20 +1,30 @@
 # Change Log
 
-## [1.2.2] - 2022-12-10
+<a name="unreleased"></a>
+
+## [Unreleased]
+
+<a name="v1.2.2"></a>
+
+## [v1.2.2] - 2022-12-10
 
 ### Fixed
 
 - Fix badge image URL in REAMDE
 
-## [1.2.1] - 2022-11-26
+<a name="v1.2.1"></a>
+
+## [v1.2.1] - 2022-11-26
 
 ### Fixed
 
-- Set< up GitHub Action to publish extension on pushing tags
+- Set up GitHub Action to publish extension on pushing tags
   to both Visual Studio Marketplace and Open VSX Repository.
 - Update dependencies
 
-## [1.2.0] - 2022-05-16
+<a name="v1.2.0"></a>
+
+## [v1.2.0] - 2022-05-16
 
 ### Changed
 
@@ -28,7 +38,9 @@
     - (Command) `stableSort.sortDescending` → `smartSort.sortDescending`
     - (Configuration) `stableSort.preferWordSorting` → `smartSort.preferWordSorting`
 
-## [1.1.0] - 2019-06-23
+<a name="v1.1.0"></a>
+
+## [v1.1.0] - 2019-06-23
 
 ### Added
 
@@ -46,7 +58,9 @@
 
 - Words may be concatenated on sorting (Issue #2)
 
-## [1.0.0] - 2019-06-16
+<a name="v1.0.0"></a>
+
+## [v1.0.0] - 2019-06-16
 
 ### Added
 
@@ -74,7 +88,9 @@
 - Now ignores spaces after tab characters on sorting words separated with them
 - Wrongly treated consecutive occurrence of separators as single occurrence
 
-## [0.3.0] - 2018-10-01
+<a name="v0.3.0"></a>
+
+## [v0.3.0] - 2018-10-01
 
 ### Added
 
@@ -84,7 +100,9 @@
 
 - Renamed to "Stable Sort"
 
-## [0.2.1-beta] - 2018-09-18
+<a name="v0.2.1-beta"></a>
+
+## [v0.2.1-beta] - 2018-09-18
 
 ### Changed
 
@@ -94,7 +112,9 @@
 
 - Sort result is not stable if sorting in descending order
 
-## [0.2.0-beta] - 2018-09-17
+<a name="v0.2.0"></a>
+
+## [v0.2.0-beta] - 2018-09-17
 
 ### Added
 
@@ -105,8 +125,18 @@
 
 - Renamed to "xsort"
 
-## [0.1.0-beta] - 2018-09-16
+<a name="v0.1.0-beta"></a>
+
+## [v0.1.0-beta] - 2018-09-16
 
 ### Add
 
 - Initial beta release
+
+[Unreleased]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.2...HEAD
+[v1.2.2]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.1...v1.2.2
+[v1.2.1]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.0...v1.2.1
+[v1.2.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.1.0...v1.2.0
+[v1.1.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.0.0...v1.1.0
+[v1.0.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v0.3.0...v1.0.0
+[v0.3.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v0.2.1...v0.3.0
