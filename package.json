@@ -27,10 +27,7 @@
             "description": "MIT License"
         }
     ],
-    "activationEvents": [
-        "onCommand:smartSort.sortAscending",
-        "onCommand:smartSort.sortDescending"
-    ],
+    "activationEvents": [],
     "browser": "./dist/web/extension.js",
     "contributes": {
         "keybindings": [
