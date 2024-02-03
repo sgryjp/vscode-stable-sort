@@ -20,7 +20,7 @@ Sort CSV-like words or lines in [Visual Studio Code](https://code.visualstudio.c
 
 Smart Sort allows you to:
 
-1. Sort words separated by comma, tab, pipe (`|`) or space
+1. Sort words separated by comma, tab, pipe (`|`), dots (`.`) or space
 2. Sort lines by comparing selected parts of them, or entire content of them
 
 Smart Sort chooses how and what to sort according to the selection state
@@ -42,11 +42,20 @@ Smart Sort provides the keybinding below by default:
 ## Configuration
 
 - `smartSort.preferWordSorting`
+
   - When multiple lines are selected by a single selection, setting `true` to
     this configuration makes Smart Sort to sort words spread over the lines,
     instead of sorting the lines. See
     [explanation](#sorting-words-spread-over-multiple-lines)
     below for detail. (default: `false`)
+
+- `smartSort.useDotAsWordSeparator`
+
+  - Controls whether to use dots (periods) as word separator or not.
+    This behavior is available only if there is just one selection range and
+    it contains no whitespaces.
+    This is useful for sorting CSV compound selectors like `.foo.bar`.
+    (default: `true`)
 
 ## Sorting words
 
@@ -56,10 +65,11 @@ To sort words, just select some words and hit <kbd>Ctrl+Alt+R</kbd>
 Smart Sort automatically recognizes the word separator. In order of priority,
 supported separators are:
 
-1. Comma (`U+0013`)
-2. Tab (`U+0009`)
-3. Pipe (`U+007C`)
-4. Space (`U+0020`)
+1. Comma (`,`, U+0013)
+2. Tab (U+0009)
+3. Pipe (`|`, U+007C)
+4. Dot (`.`, U+007C) # See notes below
+5. Space (` `, U+0020) <!-- markdownlint-disable-line no-space-in-code -->
 
 On sorting words, word separators among them will be normalized. Strictly
 writing, whitespace characters surrounding the first word separator will be
@@ -75,6 +85,12 @@ Here are some example animations:
   ![Sorting words separated by pipe](images/sort-words-pipe.gif)
 - Space<br>
   ![Sorting words separated by space](images/sort-words-space.gif)
+
+> [!NOTE]
+> Dots (periods) are used as separator only if there is just one selection range
+> and it contains no whitespaces.
+> This is designed for sorting CSS [compound selectors][compound-selector]
+> (sorting `.foo.bar` will be `.bar.foo`).
 
 ## Sorting lines
 
@@ -148,3 +164,5 @@ This behavior was very annoying when I was compositing dictionary data since I
 cannot normalize entries by simple sorting. Obviously an extension which allows
 me to sort entries using stable sort algorithm solves the problem.
 So, I created one.
+
+[compound-selector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors/Selector_structure#compound_selector
