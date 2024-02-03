@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+<a name="v1.3.0"></a>
+
+## [v1.3.0] - 2024-02-03
+
 ### Added
 
 - Try to sort tokens separated by dots (periods) if no whitespaces are selected.
@@ -139,7 +143,8 @@
 
 - Initial beta release
 
-[Unreleased]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.2...HEAD
+[Unreleased]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.3.0...HEAD
+[v1.3.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.2...v1.3.0
 [v1.2.2]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.1...v1.2.2
 [v1.2.1]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.2.0...v1.2.1
 [v1.2.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.1.0...v1.2.0
