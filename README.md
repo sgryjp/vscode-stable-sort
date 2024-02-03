@@ -25,41 +25,14 @@ Smart Sort allows you to:
 
 Smart Sort chooses how and what to sort according to the selection state
 so there are just 2 commands provided: one for sorting ascending order,
-one for sorting descending order.
+one for sorting descending order. For default key bindings,
+see ["Key bindings" section](#key-bindings).
 
-Note that Smart Sort recognizes numeric value (e.g.: `2` comes
-before `10`).
+Smart Sort recognizes numeric values so `2` comes before `10`.
 
-## Key bindings
+## Feature
 
-Smart Sort provides the keybinding below by default:
-
-- <kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>)
-  - `smartSort.SortAscending`
-- <kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kb
-  - `smartSort.SortDescending`
-
-## Configuration
-
-- `smartSort.preferWordSorting`
-
-  - Controls whether to sort words spread over the lines or not
-    when multiple lines are selected by a single selection.
-    Note that you can sort lines regardless of this configuration
-    by selecting from a beginning of a line to a beginning of another line.
-
-    See [explanation](#sorting-words-spread-over-multiple-lines) below for detail.
-    (default: `false`)
-
-- `smartSort.useDotAsWordSeparator`
-
-  - Controls whether to use dots (periods) as word separator or not.
-    This behavior is available only if there is just one selection range and
-    it contains no whitespaces.
-    This is useful for sorting CSV compound selectors like `.foo.bar`.
-    (default: `true`)
-
-## Sorting words
+### Sorting words
 
 To sort words, just select some words and hit <kbd>Ctrl+Alt+R</kbd>
 (or <kbd>Cmd+Ctrl+R</kbd> on mac.)
@@ -94,7 +67,7 @@ Here are some example animations:
 > This is designed for sorting CSS [compound selectors][compound-selector]
 > (sorting `.foo.bar` will be `.bar.foo`).
 
-## Sorting lines
+### Sorting lines
 
 To sort lines, select multiple lines and hit <kbd>Ctrl+Alt+R</kbd>
 (or <kbd>Cmd+Ctrl+R</kbd> on mac.)
@@ -118,7 +91,9 @@ Here are some example animations:
 3. Sort lines by comparing selected parts<br>
    ![Sorting lines by selected parts](images/sort-lines-part.gif)
 
-## Sorting words spread over multiple lines
+<a name="sorting-words-spread-over-multiple-lines"></a>
+
+### Sorting words spread over multiple line
 
 If `smartSort.preferWordSorting` is configured as `true`, Smart Sort will sort
 words instead of lines under the condition shown below:
@@ -142,6 +117,54 @@ Here is an example animation:
   ![Sorting words spread over multiple lines](images/sort-words-multiline.gif)<br>
   In this example, we don't need to care about where to insert a new target; just
   appending one and sorting them will move it to the right place.
+
+## Contribution Points
+
+### Commands
+
+Smart Sort provides the commands below:
+
+<dl>
+  <dt><code>smartSort.SortAscending</code></dt>
+  <dd>Smart Sort: Sort (ascending)</dd>
+  <dt><code>smartSort.SortDescending</code></dt>
+  <dd>Smart Sort: Sort (descending)</dd>
+</dl>
+
+By default [key bindings](#key-bindings) are automatically defined for those commands.
+
+<a name="key-bindings"></a>
+
+### Key bindings
+
+Smart Sort provides the default keybindings below:
+
+<dl>
+  <dt><kbd>Ctrl+Alt+R</kbd> (mac: <kbd>Cmd+Ctrl+R</kbd>)</dt>
+  <dd>Smart Sort: Sort (ascending)</dd>
+  <dt><kbd>Ctrl+Alt+Shift+R</kbd> (mac: <kbd>Cmd+Ctrl+Shift+R</kbd>)</dt>
+  <dd>Smart Sort: Sort (descending)</dd>
+</dl>
+
+### Configuration
+
+- `smartSort.preferWordSorting`
+
+  - Controls whether to sort words spread over the lines or not
+    when multiple lines are selected by a single selection.
+    Note that you can sort lines regardless of this configuration
+    by selecting from a beginning of a line to a beginning of another line.
+
+    See [explanation](#sorting-words-spread-over-multiple-lines) below for detail.
+    (default: `false`)
+
+- `smartSort.useDotAsWordSeparator`
+
+  - Controls whether to use dots (periods) as word separator or not.
+    This behavior is available only if there is just one selection range and
+    it contains no whitespaces.
+    This is useful for sorting CSV compound selectors like `.foo.bar`.
+    (default: `true`)
 
 ## Historical Background
 
