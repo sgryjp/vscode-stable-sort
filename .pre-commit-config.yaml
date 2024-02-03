@@ -13,12 +13,12 @@ repos:
     hooks:
       - id: prettier
         name: prettier
-        entry: npm exec --package prettier -c "prettier --write --ignore-unknown"
+        entry: npm exec -- prettier --write --ignore-unknown
         language: system
-        types: [javascript, json, markdown, ts, yaml]
+        types_or: [javascript, json, markdown, ts, yaml]
 
       - id: markdownlint
         name: markdownlint
-        entry: npm exec --package markdownlint-cli2 -c "markdownlint-cli2 --fix"
+        entry: npm exec -- markdownlint-cli2 --fix
         language: system
         types: [markdown]
