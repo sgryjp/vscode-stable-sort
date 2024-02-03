@@ -61,7 +61,7 @@
                 "smartSort.preferWordSorting": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Prefer to sort words when you select multiple lines (you can always sort lines if you select from a beginning of a line to a beginning of another line)"
+                    "description": "Controls whether to sort words spread over the lines or not when multiple lines are selected by a single selection. Note that you can sort lines regardless of this configuration by selecting from a beginning of a line to a beginning of another line."
                 },
                 "smartSort.useDotAsWordSeparator": {
                   "type": "boolean",

@@ -43,11 +43,13 @@ Smart Sort provides the keybinding below by default:
 
 - `smartSort.preferWordSorting`
 
-  - When multiple lines are selected by a single selection, setting `true` to
-    this configuration makes Smart Sort to sort words spread over the lines,
-    instead of sorting the lines. See
-    [explanation](#sorting-words-spread-over-multiple-lines)
-    below for detail. (default: `false`)
+  - Controls whether to sort words spread over the lines or not
+    when multiple lines are selected by a single selection.
+    Note that you can sort lines regardless of this configuration
+    by selecting from a beginning of a line to a beginning of another line.
+
+    See [explanation](#sorting-words-spread-over-multiple-lines) below for detail.
+    (default: `false`)
 
 - `smartSort.useDotAsWordSeparator`
 
