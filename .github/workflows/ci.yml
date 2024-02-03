@@ -42,7 +42,7 @@ jobs:
       - run: npm ci
       - run: npm install --global vsce
       - run: vsce package -o ./dist
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: vsix-file
           path: |
@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download already built package files
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: vsix-file
           path: dist
