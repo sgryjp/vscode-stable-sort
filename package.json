@@ -62,8 +62,13 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Prefer to sort words when you select multiple lines (you can always sort lines if you select from a beginning of a line to a beginning of another line)"
-                }
-            }
+                },
+                "smartSort.useDotAsWordSeparator": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Controls whether to use dots (periods) as word separator or not. This behavior is available only if there is just one selection range and it contains no whitespaces. This is useful for sorting CSV compound selectors like `.foo.bar`."
+              }
+          }
         }
     },
     "scripts": {

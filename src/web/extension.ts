@@ -22,11 +22,12 @@ export function deactivate() {}
 //-----------------------------------------------------------------------------
 export function sort(editor: TextEditor, descending: boolean) {
   const config = workspace.getConfiguration("smartSort", null);
-  const preferWordSorting = config.get("preferWordSorting");
+  const preferWordSorting = config.get("preferWordSorting") as boolean;
+  const useDotAsWordSeparator = config.get("useDotAsWordSeparator") as boolean;
   const selection = editor.selection;
   if (editor.selections.length === 1 && selection.isSingleLine) {
     // There is just one selection range inside a line
-    return sortWords(editor, descending);
+    return sortWords(editor, descending, useDotAsWordSeparator);
   } else if (
     editor.selections.length === 1 &&
     !selection.isSingleLine &&
@@ -34,7 +35,8 @@ export function sort(editor: TextEditor, descending: boolean) {
   ) {
     // There is one selection range and it covers multiple lines partially
     if (preferWordSorting) {
-      return sortWords(editor, descending);
+      // Disable dotAsWordSeparator in this case as it leads to unnatural behavior
+      return sortWords(editor, descending, false);
     } else {
       return sortLines(editor, descending);
     }
@@ -147,7 +149,11 @@ export function sortLines(editor: TextEditor, descending: boolean) {
     });
 }
 
-export function sortWords(editor: TextEditor, descending: boolean) {
+export function sortWords(
+  editor: TextEditor,
+  descending: boolean,
+  useDotAsWordSeparator: boolean,
+) {
   const document = editor.document;
   const selection = editor.selection;
 
@@ -177,7 +183,10 @@ export function sortWords(editor: TextEditor, descending: boolean) {
 
   // Get firstly used separator character in the selection
   const selectedText = document.getText(selection);
-  const [sepPattern, sepText] = _guessSeparator(selectedText);
+  const [sepPattern, sepText] = _guessSeparator(
+    selectedText,
+    useDotAsWordSeparator,
+  );
 
   // Separate words with it and sort them
   const sign = descending ? -1 : +1;
@@ -236,7 +245,17 @@ function _compare(str1: string, str2: string, numeric: boolean): number {
   return str1.localeCompare(str2, locale, options);
 }
 
-function _guessSeparator(text: string): [RegExp, string] {
+/** Guess separator from the given text.
+ *
+ * @param {string} text The string of which separator to be guesssed.
+ * @param {boolean} useDotAsWordSeparator Whether to use dots as separator or not.
+ * @returns {[RegExp, string]} A pair of a RegExp and a string where the former is for
+ *     matching tokens to be replaced and the latter is the replacement result.
+ */
+function _guessSeparator(
+  text: string,
+  useDotAsWordSeparator: boolean,
+): [RegExp, string] {
   // CSV?
   let matches = text.match(/^[^,\t\|]+,(\s*)(?:[^,]+,\s*)*/);
   if (matches) {
@@ -255,6 +274,14 @@ function _guessSeparator(text: string): [RegExp, string] {
     const pre = matches[1] !== "" ? " " : "";
     const post = matches[2] !== "" ? " " : "";
     return [/\|\s*/, pre + "|" + post];
+  }
+
+  // Dot separated fields such as CSV component selectors (e.g.: `.foo.bar` --> `.bar.foo`)
+  if (useDotAsWordSeparator) {
+    matches = text.match(/^[^\s]+(\.[^\s]+)+/);
+    if (matches) {
+      return [/\./, "."];
+    }
   }
 
   // Then we treat this as space delimited fields

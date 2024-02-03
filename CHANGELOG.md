@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- Try to sort tokens separated by dots (periods) if no whitespaces are selected.
+  - This is useful for sorting CSS [compound selectors][compound-selector].
+  - This feature can be disabled by setting `useDotAsWordSeparator` to `false`.
+
 <a name="v1.2.2"></a>
 
 ## [v1.2.2] - 2022-12-10
@@ -140,3 +146,4 @@
 [v1.1.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v0.3.0...v1.0.0
 [v0.3.0]: https://github.com/sgryjp/vscode-stable-sort/compare/v0.2.1...v0.3.0
+[compound-selector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_selectors/Selector_structure#compound_selector

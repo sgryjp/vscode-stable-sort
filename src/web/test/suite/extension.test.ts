@@ -230,79 +230,83 @@ suite("sortWords()", () => {
   });
 
   // prettier-ignore
-  const tt: Array<[string, boolean, string, string]> = [
+  const tt: Array<[string, boolean, boolean, string, string]> = [
     ["delimiter: comma",
-      false, "1,2,10", "1,2,10"],
+      false, true, "1,2,10", "1,2,10"],
     ["delimiter: comma; consecutive occurrence indicates an empty field",
-      false, "1,,2,10", ",1,2,10"],
+      false, true, "1,,2,10", ",1,2,10"],
     ["delimiter: comma; reproduce at most one trailing space",
-      false, "1,  2,10", "1, 2, 10"],
+      false, true, "1,  2,10", "1, 2, 10"],
     ["delimiter: tab",
-      false, "1\t2\t10", "1\t2\t10"],
+      false, true, "1\t2\t10", "1\t2\t10"],
     ["delimiter: tab; consecutive occurrence indicates an empty field",
-      false, "1\t\t2\t10", "\t1\t2\t10"],
+      false, true, "1\t\t2\t10", "\t1\t2\t10"],
     ["delimiter: tab; ignore spaces after them",
-      false, "1\t   2\t10", "1\t2\t10"],
+      false, true, "1\t   2\t10", "1\t2\t10"],
     ["delimiter: pipe",
-      false, "1|2|10", "1|2|10"],
+      false, true, "1|2|10", "1|2|10"],
     ["delimiter: pipe; consecutive occurrence indicates an empty field",
-      false, "1||2|10", "|1|2|10"],
+      false, true, "1||2|10", "|1|2|10"],
     ["delimiter: pipe; reproduce at most one preceding space",
-      false, "1  |2|10", "1 |2 |10"],
+      false, true, "1  |2|10", "1 |2 |10"],
     ["delimiter: pipe; reproduce at most one trailing space",
-      false, "1|  2|10", "1| 2| 10"],
+      false, true, "1|  2|10", "1| 2| 10"],
     ["delimiter: pipe; reproduce at most one preceding & trailing space",
-      false, "1  |  2|10", "1 | 2 | 10"],
+      false, true, "1  |  2|10", "1 | 2 | 10"],
+    ["delimiter: dot",
+        false, true, ".foo.bar", ".bar.foo"],
+    ["delimiter: dot (opt-out useDotAsWordSeparator)",
+      false, false, ".foo.bar", ".foo.bar"],
     ["delimiter: space",
-      false, "1 2 10", "1 2 10"],
+      false, true, "1 2 10", "1 2 10"],
     ["delimiter: space; treat consecutive occurrence as single occurrence",
-      false, "1  2 10", "1 2 10"],
+      false, true, "1  2 10", "1 2 10"],
     ["delimiter: priority; ',\\t' --> ', '",
-      false, "1,\t2,10", "1, 2, 10"],
+      false, true, "1,\t2,10", "1, 2, 10"],
     ["delimiter: priority; ',|' --> ','",
-      false, "1,|2,10", "|2,1,10"],
+      false, true, "1,|2,10", "|2,1,10"],
     ["delimiter: priority; ', ' --> ', '",
-      false, "1, 2,10", "1, 2, 10"],
+      false, true, "1, 2,10", "1, 2, 10"],
     ["delimiter: priority; '\\t,' --> '\\t'",
-      false, "1\t,2\t10", ",2\t1\t10"],
+      false, true, "1\t,2\t10", ",2\t1\t10"],
     ["delimiter: priority; '\\t|' --> '\\t'",
-      false, "1\t|2\t10", "|2\t1\t10"],
+      false, true, "1\t|2\t10", "|2\t1\t10"],
     ["delimiter: priority; '\\t ' --> '\\t'",
-      false, "1\t 2\t10", "1\t2\t10"],
+      false, true, "1\t 2\t10", "1\t2\t10"],
     ["delimiter: priority; '|,' --> '|'",
-      false, "1|,2|10", ",2|1|10"],
+      false, true, "1|,2|10", ",2|1|10"],
     ["delimiter: priority; '|\\t' --> '| '",
-      false, "1|\t2|10", "1| 2| 10"],
+      false, true, "1|\t2|10", "1| 2| 10"],
     ["delimiter: priority; '| ' --> '| '",
-      false, "1| 2|10", "1| 2| 10"],
+      false, true, "1| 2|10", "1| 2| 10"],
     ["delimiter: priority; ' ,' --> ','",
-      false, "1 ,2 10", "1,2 10"],
+      false, true, "1 ,2 10", "1,2 10"],
     ["delimiter: priority; ' \\t' --> ' '",
-      false, "1 \t2 10", "1 2 10"],
+      false, true, "1 \t2 10", "1 2 10"],
     ["delimiter: priority; ' |' --> ' |'",
-      false, "1 |2|10", "1 |2 |10"],
+      false, true, "1 |2|10", "1 |2 |10"],
     ["multiline: comma before an EOL",
-      false, "2,\n10,\n1", "1,\n2,\n10"],
+      false, true, "2,\n10,\n1", "1,\n2,\n10"],
     ["multiline: comma after an EOL",
-      false, "2\n, 10,1", "1,\n2, 10"],
+      false, true, "2\n, 10,1", "1,\n2, 10"],
     ["multiline: keep indentations",
-      false, "2,\n\t3,\n \t1", "1,\n\t2,\n \t3"],
+      false, true, "2,\n\t3,\n \t1", "1,\n\t2,\n \t3"],
     ["multiline: reflow: fill the spaces",
-      false, "peach\ngrape\napple", "apple\ngrape\npeach"],
+      false, true, "peach\ngrape\napple", "apple\ngrape\npeach"],
     ["multiline: reflow: first word can expand",
-      false, "lemon\nplum\ncherry", "cherry\nlemon\nplum"],
+      false, true, "lemon\nplum\ncherry", "cherry\nlemon\nplum"],
     ["multiline: reflow: last space is free to expand",
-      false, "watermelon\npineapple\nmango grape",
+      false, true, "watermelon\npineapple\nmango grape",
       "grape\nmango\npineapple watermelon"],
     ["multiline: nothing between first word and EOL (#2)",
-      false, "2\n10\n1", "1\n2\n10"],
+      false, true, "2\n10\n1", "1\n2\n10"],
     ["options: ascending",
-      false, "2,10,ab,Ac", "10,2,ab,Ac"],
+      false, true, "2,10,ab,Ac", "10,2,ab,Ac"],
     ["options: descending",
-      true, "2,10,ab,Ac", "Ac,ab,2,10"],
+      true, false, "2,10,ab,Ac", "Ac,ab,2,10"],
   ];
   tt.forEach((t) => {
-    const [title, descending, input, expected] = t;
+    const [title, descending, useDotAsWordSeparator, input, expected] = t;
     test(title, async () => {
       // Set the test input text and the selection
       const editor = vscode.window.activeTextEditor!;
@@ -316,7 +320,7 @@ suite("sortWords()", () => {
       editor.selections = [new Selection(0, 0, eod.line, eod.character)];
 
       // Call the logic
-      await my.sortWords(editor, descending);
+      await my.sortWords(editor, descending, useDotAsWordSeparator);
 
       const result = {
         text: editor.document.getText(),
@@ -357,7 +361,7 @@ suite("sortWords()", () => {
         editor.selections = sels;
 
         // Call the logic
-        await my.sortWords(editor, false);
+        await my.sortWords(editor, false, true);
         const result = {
           text: editor.document.getText(),
           selections: editor.selections,
