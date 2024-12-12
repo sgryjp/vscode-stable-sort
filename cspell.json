@@ -5,13 +5,15 @@
   "dictionaries": [],
   "words": [
     "codespaces",
+    "esbuild",
     "markdownlint",
     "meaw",
     "nosources-source-map",
     "sgryjp",
     "Suguru",
     "xsort",
-    "Yamamoto"
+    "Yamamoto",
+    "yarnrc"
   ],
   "ignoreWords": [],
   "import": []

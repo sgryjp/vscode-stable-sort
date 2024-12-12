@@ -1,108 +1,106 @@
 {
-    "name": "vscode-stable-sort",
-    "displayName": "Smart Sort",
-    "description": "Sort CSV-like words or lines.",
-    "license": "MIT",
-    "version": "1.3.0",
-    "publisher": "sgryjp",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/sgryjp/vscode-stable-sort.git"
+  "name": "vscode-stable-sort",
+  "displayName": "Smart Sort",
+  "description": "Sort CSV-like words or lines.",
+  "license": "MIT",
+  "version": "1.3.0",
+  "publisher": "sgryjp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sgryjp/vscode-stable-sort.git"
+  },
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "badges": [
+    {
+      "url": "https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml/badge.svg",
+      "href": "https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml",
+      "description": "CI status"
     },
-    "engines": {
-        "vscode": "^1.85.0"
-    },
-    "categories": [
-        "Formatters"
-    ],
-    "badges": [
-        {
-            "url": "https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml/badge.svg",
-            "href": "https://github.com/sgryjp/vscode-stable-sort/actions/workflows/ci.yml",
-            "description": "CI status"
-        },
-        {
-            "url": "https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=popout",
-            "href": "https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md",
-            "description": "MIT License"
-        }
-    ],
-    "activationEvents": [],
-    "browser": "./dist/web/extension.js",
-    "contributes": {
-        "keybindings": [
-            {
-                "command": "smartSort.sortAscending",
-                "key": "Ctrl+Alt+R",
-                "mac": "Cmd+Ctrl+R",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "smartSort.sortDescending",
-                "key": "Ctrl+Alt+Shift+R",
-                "mac": "Cmd+Ctrl+Shift+R",
-                "when": "editorTextFocus"
-            }
-        ],
-        "commands": [
-            {
-                "command": "smartSort.sortAscending",
-                "title": "Sort (ascending)",
-                "category": "Smart Sort"
-            },
-            {
-                "command": "smartSort.sortDescending",
-                "title": "Sort (descending)",
-                "category": "Smart Sort"
-            }
-        ],
-        "configuration": {
-            "properties": {
-                "smartSort.preferWordSorting": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls whether to sort words spread over the lines or not when multiple lines are selected by a single selection. Note that you can sort lines regardless of this configuration by selecting from a beginning of a line to a beginning of another line."
-                },
-                "smartSort.useDotAsWordSeparator": {
-                  "type": "boolean",
-                  "default": true,
-                  "description": "Controls whether to use dots (periods) as word separator or not. This behavior is available only if there is just one selection range and it contains no whitespaces. This is useful for sorting CSV compound selectors like `.foo.bar`."
-              }
-          }
-        }
-    },
-    "scripts": {
-        "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
-        "pretest": "npm run compile-web",
-        "vscode:prepublish": "npm run package-web",
-        "compile-web": "webpack",
-        "watch-web": "webpack --watch",
-        "package-web": "webpack --mode production --devtool hidden-source-map",
-        "lint": "eslint src --ext ts",
-        "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
-    },
-    "devDependencies": {
-		"@types/assert": "^1.5.10",
-        "@types/mocha": "^10.0.6",
-        "@types/vscode": "^1.61.0",
-        "@types/webpack-env": "^1.18.4",
-        "@typescript-eslint/eslint-plugin": "^6.19.1",
-        "@typescript-eslint/parser": "^6.19.1",
-        "@vscode/test-web": "^0.0.51",
-        "assert": "^2.1.0",
-        "eslint": "^8.56.0",
-        "eslint-plugin-deprecation": "^2.0.0",
-        "markdownlint": "^0.33.0",
-        "mocha": "^10.2.0",
-        "prettier": "^3.2.4",
-        "process": "^0.11.10",
-        "ts-loader": "^9.2.5",
-        "typescript": "^5.3.3",
-        "webpack": "^5.94.0",
-        "webpack-cli": "^5.1.4"
-    },
-    "dependencies": {
-        "markdownlint-cli2": "^0.12.1",
-        "meaw": "^6.0.0"
+    {
+      "url": "https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=popout",
+      "href": "https://github.com/sgryjp/vscode-stable-sort/blob/master/LICENSE.md",
+      "description": "MIT License"
     }
+  ],
+  "activationEvents": [],
+  "browser": "./dist/web/extension.js",
+  "contributes": {
+    "keybindings": [
+      {
+        "command": "smartSort.sortAscending",
+        "key": "Ctrl+Alt+R",
+        "mac": "Cmd+Ctrl+R",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "smartSort.sortDescending",
+        "key": "Ctrl+Alt+Shift+R",
+        "mac": "Cmd+Ctrl+Shift+R",
+        "when": "editorTextFocus"
+      }
+    ],
+    "commands": [
+      {
+        "command": "smartSort.sortAscending",
+        "title": "Sort (ascending)",
+        "category": "Smart Sort"
+      },
+      {
+        "command": "smartSort.sortDescending",
+        "title": "Sort (descending)",
+        "category": "Smart Sort"
+      }
+    ],
+    "configuration": {
+      "properties": {
+        "smartSort.preferWordSorting": {
+          "type": "boolean",
+          "default": false,
+          "description": "Controls whether to sort words spread over the lines or not when multiple lines are selected by a single selection. Note that you can sort lines regardless of this configuration by selecting from a beginning of a line to a beginning of another line."
+        },
+        "smartSort.useDotAsWordSeparator": {
+          "type": "boolean",
+          "default": true,
+          "description": "Controls whether to use dots (periods) as word separator or not. This behavior is available only if there is just one selection range and it contains no whitespaces. This is useful for sorting CSV compound selectors like `.foo.bar`."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/index.js",
+    "pretest": "npm run compile-web",
+    "vscode:prepublish": "npm run package-web",
+    "compile-web": "webpack",
+    "watch-web": "webpack --watch",
+    "package-web": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src",
+    "run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
+  },
+  "devDependencies": {
+    "@types/assert": "^1.5.11",
+    "@types/mocha": "^10.0.10",
+    "@types/vscode": "^1.96.0",
+    "@types/webpack-env": "^1.18.5",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "@vscode/test-web": "^0.0.65",
+    "assert": "^2.1.0",
+    "eslint": "^9.16.0",
+    "markdownlint": "^0.37.0",
+    "markdownlint-cli2": "^0.16.0",
+    "mocha": "^11.0.1",
+    "process": "^0.11.10",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "meaw": "^9.0.0"
+  }
 }
