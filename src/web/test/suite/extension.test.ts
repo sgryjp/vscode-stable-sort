@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import * as vscode from "vscode";
-import { Position, Range, TextEditorEdit, Selection, EndOfLine } from "vscode";
+import { EndOfLine, Position, Range, Selection, TextEditorEdit } from "vscode";
 import * as my from "../../extension";
 
 suite("sortLines()", () => {
@@ -42,7 +42,7 @@ suite("sortLines()", () => {
     await vscode.commands.executeCommand(commandName);
   });
 
-  test("prerequesties", async () => {
+  test("prerequisites", async () => {
     // full-icu package
     const halfWidthOne = "1";
     const fullWidthOne = "\uff11";
@@ -80,17 +80,17 @@ suite("sortLines()", () => {
         "Apple,Grape,Orange,", [new Selection(0, 3, 2, 4)]],
     ];
     for (const t of tt) {
-      const [title, input, selections, descending, xtext, xsels] = t;
+      const [title, input, selections, descending, xText, xSelections] = t;
       test(title, async () => {
         const result = await doTest(
           input.replace(/,/g, "\n"),
           selections,
           descending,
         );
-        assert.strictEqual(result.text.replace(/\n/g, ","), xtext);
+        assert.strictEqual(result.text.replace(/\n/g, ","), xText);
         assert.strictEqual(
           stringifySelections(result.selections),
-          stringifySelections(xsels),
+          stringifySelections(xSelections),
         );
       });
     }
@@ -129,17 +129,17 @@ suite("sortLines()", () => {
       ],
     ];
     for (const t of tt) {
-      const [title, input, selections, xtext, xsels] = t;
+      const [title, input, selections, xText, xSelections] = t;
       test(title, async () => {
         const result = await doTest(
           input.replace(/,/g, "\n"),
           selections,
           false,
         );
-        assert.strictEqual(result.text.replace(/\n/g, ","), xtext);
+        assert.strictEqual(result.text.replace(/\n/g, ","), xText);
         assert.strictEqual(
           stringifySelections(result.selections),
-          stringifySelections(xsels),
+          stringifySelections(xSelections),
         );
       });
     }
@@ -348,7 +348,7 @@ suite("sortWords()", () => {
       ],
     ];
     for (const t of tt) {
-      const [title, sels, str, xsels, xstr] = t;
+      const [title, selections, str, xSelections, xStr] = t;
       test(title, async () => {
         // Set the test input text and the selection
         const editor = vscode.window.activeTextEditor!;
@@ -358,7 +358,7 @@ suite("sortWords()", () => {
           const entireRange = new Range(new Position(0, 0), lastLine.range.end);
           editBuilder.replace(entireRange, str);
         });
-        editor.selections = sels;
+        editor.selections = selections;
 
         // Call the logic
         await my.sortWords(editor, false, true);
@@ -367,10 +367,10 @@ suite("sortWords()", () => {
           selections: editor.selections,
         };
 
-        assert.strictEqual(result.text, xstr);
+        assert.strictEqual(result.text, xStr);
         assert.strictEqual(
           stringifySelections(result.selections),
-          stringifySelections(xsels),
+          stringifySelections(xSelections),
         );
       });
     }

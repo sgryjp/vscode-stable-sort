@@ -1,0 +1,18 @@
+{
+  "version": "0.2",
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "codespaces",
+    "markdownlint",
+    "meaw",
+    "nosources-source-map",
+    "sgryjp",
+    "Suguru",
+    "xsort",
+    "Yamamoto"
+  ],
+  "ignoreWords": [],
+  "import": []
+}

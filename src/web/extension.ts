@@ -247,7 +247,7 @@ function _compare(str1: string, str2: string, numeric: boolean): number {
 
 /** Guess separator from the given text.
  *
- * @param {string} text The string of which separator to be guesssed.
+ * @param {string} text The string of which separator to be guessed.
  * @param {boolean} useDotAsWordSeparator Whether to use dots as separator or not.
  * @returns {[RegExp, string]} A pair of a RegExp and a string where the former is for
  *     matching tokens to be replaced and the latter is the replacement result.

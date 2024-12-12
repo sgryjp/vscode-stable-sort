@@ -73,7 +73,7 @@ To sort lines, select multiple lines and hit <kbd>Ctrl+Alt+R</kbd>
 (or <kbd>Cmd+Ctrl+R</kbd> on mac.)
 
 If you select portions of lines by using
-[multple selections (multi-cursor)](https://code.visualstudio.com/docs/editor/codebasics#_multiple-selections-multicursor),
+[multiple selections (multi-cursor)](https://code.visualstudio.com/docs/editor/codebasics#_multiple-selections-multicursor),
 the lines which are touched by the selection range will be sorted by comparing
 the selected parts.
 This is useful if you want to sort on arbitrary column of visually aligned text
@@ -178,7 +178,7 @@ swapping those is not a change by all means.
 
 Unfortunately, I encountered an exceptional case. In Japanese locale, an ASCII
 digit character and its counter part in
-[fullwidth forms](https://www.unicode.org/charts/PDF/UFF00.pdf)
+[full-width forms](https://www.unicode.org/charts/PDF/UFF00.pdf)
 are treated as equal so the order of words like below changed every time I sort
 them:
 
