@@ -20,7 +20,7 @@ Sort CSV-like words or lines in [Visual Studio Code](https://code.visualstudio.c
 
 Smart Sort allows you to:
 
-1. Sort words separated by comma, tab, pipe (`|`), dots (`.`) or space
+1. Sort words separated by comma, tab, pipe (`|`), dot (`.`) or space
 2. Sort lines by comparing selected parts of them, or entire content of them
 
 Smart Sort chooses how and what to sort according to the selection state
